@@ -1,6 +1,6 @@
 # LaChispa Docker Documentation
 
-English | [Español](#descripción-general)
+English | [Español](#espanol-section)
 
 ---
 
@@ -187,6 +187,8 @@ docker exec -it lachispa-web sh
 See root project LICENSE file.
 
 ---
+
+<a name="espanol-section"></a>
 
 # Documentación de Docker - LaChispa
 
