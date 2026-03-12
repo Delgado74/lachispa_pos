@@ -578,6 +578,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 16),
           _buildCreateLnAddressCta(),
         ],
       ),
