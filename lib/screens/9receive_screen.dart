@@ -378,21 +378,17 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   ) {
     final defaultAddress = lnAddressProvider.defaultAddress;
 
-    if (lnAddressProvider.isLoading) {
-      return _buildLoadingState();
-    }
-
-    if (lnAddressProvider.error != null) {
-      return _buildErrorState(lnAddressProvider.error!);
-    }
-
-    // Show Lightning Address with QR if available
+    // Show Lightning Address with QR if available - prioritize this
     if (defaultAddress != null) {
       return _buildLightningAddressCard(defaultAddress, walletProvider);
     }
 
-    // No Lightning Address - allow creating invoice directly
-    return _buildNoAddressState(walletProvider);
+    // No address - show invoice-only flow with loading/error as secondary info
+    return _buildNoAddressState(
+      walletProvider,
+      isLoading: lnAddressProvider.isLoading,
+      error: lnAddressProvider.error,
+    );
   }
 
   Widget _buildLoadingState() {
@@ -493,7 +489,11 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     );
   }
 
-  Widget _buildNoAddressState(WalletProvider walletProvider) {
+  Widget _buildNoAddressState(
+    WalletProvider walletProvider, {
+    bool isLoading = false,
+    String? error,
+  }) {
     if (_generatedInvoice != null) {
       return _buildInvoiceOnlyCard(walletProvider);
     }
@@ -511,6 +511,30 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (isLoading)
+            const Padding(
+              padding: EdgeInsets.only(bottom: 16),
+              child: SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white54,
+                ),
+              ),
+            )
+          else if (error != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Text(
+                error,
+                style: TextStyle(
+                  color: Colors.red.shade300,
+                  fontSize: 12,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
           Icon(
             Icons.qr_code_2,
             color: Colors.white.withValues(alpha: 0.6),
@@ -1730,6 +1754,22 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
         originalFiatRate:
             _selectedCurrency != 'sats' ? (amountInSats / amount) : null,
       );
+
+      // Validate BOLT11 response before updating state
+      if (invoice.paymentRequest.isEmpty) {
+        setState(() {
+          _isGeneratingInvoice = false;
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to generate invoice'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
 
       // Check if widget was disposed during async operation
       if (!mounted) {
