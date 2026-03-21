@@ -194,7 +194,7 @@ class AppLocalizationsIt extends AppLocalizations {
       'Errore nel caricamento delle transazioni: ';
 
   @override
-  String get create_lnaddress_label => 'oppure crea un indirizzo:';
+  String get create_lnaddress_label => 'o anche puoi creare un :';
 
   @override
   String get lightning_address_title => 'Indirizzo Lightning';
@@ -295,9 +295,6 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get invoice_generation_error_prefix =>
       'Errore nella generazione della fattura: ';
-
-  @override
-  String get invoice_empty_response_error => 'Impossibile generare la fattura';
 
   @override
   String get send_title => 'Invia';
@@ -885,37 +882,4 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get deep_link_login_required_message =>
       'Devi accedere al tuo account LaChispa per elaborare questo pagamento.';
-
-  @override
-  String get invoice_key_qr_title => 'QR Chiave fattura';
-
-  @override
-  String get invoice_key_qr_description =>
-      'Usa questo codice QR con LaChispaPOS o altre app Lightning per ricevere pagamenti senza esporre la tua chiave amministratore.';
-
-  @override
-  String get invoice_key_qr_subtitle => 'Mostra QR per altre app';
-
-  @override
-  String get copy_invoice_key => 'Copia chiave';
-
-  @override
-  String get invoice_key_copied => 'Chiave fattura copiata negli appunti';
-
-  @override
-  String get invoice_key_unavailable_title => 'Portafoglio non trovato';
-
-  @override
-  String get invoice_key_unavailable_subtitle => 'Crea prima un portafoglio';
-
-  @override
-  String currency_count(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count valute',
-      one: '1 valuta',
-    );
-    return '$_temp0';
-  }
 }

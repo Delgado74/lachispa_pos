@@ -292,9 +292,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invoice_generation_error_prefix => 'Error generating invoice: ';
 
   @override
-  String get invoice_empty_response_error => 'Failed to generate invoice';
-
-  @override
   String get send_title => 'Send';
 
   @override
@@ -862,37 +859,4 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deep_link_login_required_message =>
       'You must log in to your LaChispa account to process this payment.';
-
-  @override
-  String get invoice_key_qr_title => 'Invoice Key QR';
-
-  @override
-  String get invoice_key_qr_description =>
-      'Use this QR code with LaChispaPOS or other Lightning apps to receive payments without exposing your admin key.';
-
-  @override
-  String get invoice_key_qr_subtitle => 'Show QR for other apps';
-
-  @override
-  String get copy_invoice_key => 'Copy Key';
-
-  @override
-  String get invoice_key_copied => 'Invoice key copied to clipboard';
-
-  @override
-  String get invoice_key_unavailable_title => 'No wallet found';
-
-  @override
-  String get invoice_key_unavailable_subtitle => 'Please create a wallet first';
-
-  @override
-  String currency_count(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count currencies',
-      one: '1 currency',
-    );
-    return '$_temp0';
-  }
 }

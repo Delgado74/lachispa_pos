@@ -253,7 +253,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get create_invoice_label =>
-      'Crea una factura para recibir pagos directamente en tu billetera';
+      'Crea una factura para recibir pagos directamente en tu wallet';
 
   @override
   String get amount_sats_label => 'Solicitar Monto';
@@ -293,9 +293,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get invoice_generation_error_prefix => 'Error generando factura: ';
-
-  @override
-  String get invoice_empty_response_error => 'Error al generar la factura';
 
   @override
   String get send_title => 'Enviar';
@@ -871,39 +868,4 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get deep_link_login_required_message =>
       'Debes iniciar sesión en tu cuenta LaChispa para procesar este pago.';
-
-  @override
-  String get invoice_key_qr_title => 'QR de Clave de Facturación';
-
-  @override
-  String get invoice_key_qr_description =>
-      'Usa este código QR con LaChispaPOS u otras apps Lightning para recibir pagos sin exponer tu clave de administrador.';
-
-  @override
-  String get invoice_key_qr_subtitle => 'Mostrar QR para otras apps';
-
-  @override
-  String get copy_invoice_key => 'Copiar Clave';
-
-  @override
-  String get invoice_key_copied =>
-      'Clave de facturación copiada al portapapeles';
-
-  @override
-  String get invoice_key_unavailable_title => 'Billetera no encontrada';
-
-  @override
-  String get invoice_key_unavailable_subtitle =>
-      'Por favor crea una billetera primero';
-
-  @override
-  String currency_count(int count) {
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$count monedas',
-      one: '1 moneda',
-    );
-    return '$_temp0';
-  }
 }
