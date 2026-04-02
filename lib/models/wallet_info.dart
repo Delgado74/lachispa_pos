@@ -12,7 +12,7 @@ class WalletInfo {
     required this.name,
     required this.adminKey,
     required this.inKey,
-    this.readKey = '',
+    required this.readKey,
     required this.balanceMsat,
   });
 
