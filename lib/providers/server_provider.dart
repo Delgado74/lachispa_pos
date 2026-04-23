@@ -10,10 +10,29 @@ class ServerProvider with ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   ServerHealth _serverHealth = ServerHealth.checking;
+  int _healthRequestId = 0;
+
+  final Dio _dio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 3),
+    receiveTimeout: const Duration(seconds: 3),
+    validateStatus: (_) => true,
+  ));
 
   static const Map<String, String> _defaultServers = {
     'LaChispa': 'https://lachispa.me',
   };
+
+  String _normalizeServerUrl(String url) {
+    var normalized = url.trim();
+    if (!normalized.startsWith('http://') &&
+        !normalized.startsWith('https://')) {
+      normalized = 'https://$normalized';
+    }
+    while (normalized.endsWith('/')) {
+      normalized = normalized.substring(0, normalized.length - 1);
+    }
+    return normalized;
+  }
 
   String get selectedServer => _selectedServer;
   String get customServerUrl => _customServerUrl;
@@ -24,19 +43,17 @@ class ServerProvider with ChangeNotifier {
   ServerHealth get serverHealth => _serverHealth;
 
   Future<void> checkHealth() async {
+    final requestId = ++_healthRequestId;
     _serverHealth = ServerHealth.checking;
     notifyListeners();
     try {
-      final dio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 3),
-        receiveTimeout: const Duration(seconds: 3),
-        validateStatus: (_) => true,
-      ));
-      final resp = await dio.get('$_selectedServer/api/v1/health');
+      final resp = await _dio.get('$_selectedServer/api/v1/health');
+      if (requestId != _healthRequestId) return;
       _serverHealth = (resp.statusCode == 200)
           ? ServerHealth.healthy
           : ServerHealth.unhealthy;
     } catch (_) {
+      if (requestId != _healthRequestId) return;
       _serverHealth = ServerHealth.unhealthy;
     }
     notifyListeners();
@@ -66,9 +83,13 @@ class ServerProvider with ChangeNotifier {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      _selectedServer = prefs.getString('selected_server') ?? 'https://lachispa.me';
-      _customServerUrl = prefs.getString('custom_server_url') ?? '';
-      
+      final storedServer =
+          prefs.getString('selected_server') ?? 'https://lachispa.me';
+      final storedCustom = prefs.getString('custom_server_url') ?? '';
+      _selectedServer = _normalizeServerUrl(storedServer);
+      _customServerUrl =
+          storedCustom.isEmpty ? '' : _normalizeServerUrl(storedCustom);
+
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -86,19 +107,15 @@ class ServerProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      String normalizedUrl = serverUrl.trim();
-      
-      if (!normalizedUrl.startsWith('http://') && !normalizedUrl.startsWith('https://')) {
-        normalizedUrl = 'https://$normalizedUrl';
-      }
+      final normalizedUrl = _normalizeServerUrl(serverUrl);
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('selected_server', normalizedUrl);
-      
+
       if (!_defaultServers.containsValue(normalizedUrl)) {
         await prefs.setString('custom_server_url', normalizedUrl);
       }
-      
+
       _selectedServer = normalizedUrl;
       _isLoading = false;
       notifyListeners();
@@ -127,14 +144,12 @@ class ServerProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      if (!_customServerUrl.startsWith('http://') && !_customServerUrl.startsWith('https://')) {
-        _customServerUrl = 'https://$_customServerUrl';
-      }
+      _customServerUrl = _normalizeServerUrl(_customServerUrl);
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('selected_server', _customServerUrl);
       await prefs.setString('custom_server_url', _customServerUrl);
-      
+
       _selectedServer = _customServerUrl;
       _isLoading = false;
       notifyListeners();
