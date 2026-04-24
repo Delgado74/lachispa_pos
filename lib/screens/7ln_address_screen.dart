@@ -937,7 +937,7 @@ class _LNAddressScreenState extends State<LNAddressScreen> {
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${address.fullAddress} ${AppLocalizations.of(context)!.lightning_address_title}'),
+          content: Text(AppLocalizations.of(context)!.lightning_address_set_default_success(address.fullAddress)),
           backgroundColor: context.tokens.statusHealthy,
           behavior: SnackBarBehavior.floating,
         ),
@@ -952,11 +952,11 @@ class _LNAddressScreenState extends State<LNAddressScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: t.dialogBackground,
         title: Text(
-          AppLocalizations.of(context)!.lightning_address_title,
+          AppLocalizations.of(context)!.lightning_address_delete_title,
           style: TextStyle(color: t.textPrimary),
         ),
         content: Text(
-          'Are you sure you want to delete ${address.fullAddress}?',
+          AppLocalizations.of(context)!.lightning_address_delete_confirm(address.fullAddress),
           style: TextStyle(color: t.textPrimary),
         ),
         actions: [
@@ -971,14 +971,17 @@ class _LNAddressScreenState extends State<LNAddressScreen> {
               if (success && mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(AppLocalizations.of(context)!.lightning_address_title),
+                    content: Text(AppLocalizations.of(context)!.lightning_address_deleted_success),
                     backgroundColor: context.tokens.statusHealthy,
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
               }
             },
-            child: Text('Delete', style: TextStyle(color: t.statusUnhealthy)),
+            child: Text(
+              AppLocalizations.of(context)!.lightning_address_delete,
+              style: TextStyle(color: t.statusUnhealthy),
+            ),
           ),
         ],
       ),
@@ -1011,7 +1014,7 @@ class _LNAddressScreenState extends State<LNAddressScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.lightning_address_title),
+          content: Text(AppLocalizations.of(context)!.lightning_address_created_success),
           backgroundColor: context.tokens.statusHealthy,
           behavior: SnackBarBehavior.floating,
         ),
