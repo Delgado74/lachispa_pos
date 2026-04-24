@@ -86,11 +86,19 @@ class PaymentError implements Exception {
     if (body is Map) {
       final d = body['detail'] ?? body['message'] ?? body['error'];
       if (d is String) return d;
-      // Fall through to stringifying the whole body — substring matching
-      // will still find "Insufficient balance" etc. even if nested.
-      return body.toString();
+      // FastAPI-style: detail may be a list of {loc, msg, type}. Join msgs
+      // so substring matching still works and users don't see raw maps.
+      if (d is List) {
+        final msgs = d
+            .whereType<Map>()
+            .map((m) => m['msg'])
+            .whereType<String>()
+            .toList();
+        if (msgs.isNotEmpty) return msgs.join('; ');
+      }
+      return null;
     }
-    return body.toString();
+    return null;
   }
 
   @override

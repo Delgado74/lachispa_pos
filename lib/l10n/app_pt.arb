@@ -143,8 +143,8 @@
   "payment_error_route_not_found": "Nenhuma rota encontrada para este pagamento",
   "payment_error_payment_not_found": "Pagamento não encontrado nesta carteira",
   "payment_error_lnurl_generic": "Erro LNURL: {detail}",
-  "payment_error_auth": "Erro de autenticação. Verifique suas credenciais.",
-  "payment_error_server": "Erro do servidor Lightning. Tente novamente.",
+  "payment_error_auth": "Erro de autenticação. Verifique as suas credenciais.",
+  "payment_error_server": "Erro do servidor Lightning. Tente de novo.",
   "payment_error_unknown": "Erro desconhecido ({code})",
   
   "confirm_payment_title": "Confirmar Pagamento",

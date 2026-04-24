@@ -552,11 +552,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get payment_error_auth =>
-      'Erro de autenticação. Verifique suas credenciais.';
+      'Erro de autenticação. Verifique as suas credenciais.';
 
   @override
   String get payment_error_server =>
-      'Erro do servidor Lightning. Tente novamente.';
+      'Erro do servidor Lightning. Tente de novo.';
 
   @override
   String payment_error_unknown(Object code) {
