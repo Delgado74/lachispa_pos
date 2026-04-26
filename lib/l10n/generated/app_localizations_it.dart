@@ -955,36 +955,34 @@ class AppLocalizationsIt extends AppLocalizations {
       'Devi accedere al tuo account LaChispa per elaborare questo pagamento.';
 
   @override
-  String get invoice_key_qr_title => 'QR de Clave de Facturación';
+  String get invoice_key_qr_title => 'QR Chiave fattura';
 
   @override
   String get invoice_key_qr_description =>
-      'Usa este código QR con LaChispaPOS u otras apps Lightning para recibir pagos sin exponer tu clave de administrador.';
+      'Usa questo codice QR con LaChispaPOS o altre app Lightning per ricevere pagamenti senza esporre la tua chiave amministratore.';
 
   @override
-  String get invoice_key_qr_subtitle => 'Mostrar QR para otras apps';
+  String get invoice_key_qr_subtitle => 'Mostra QR per altre app';
 
   @override
-  String get copy_invoice_key => 'Copiar Clave';
+  String get copy_invoice_key => 'Copia chiave';
 
   @override
-  String get invoice_key_copied =>
-      'Clave de facturación copiada al portapapeles';
+  String get invoice_key_copied => 'Chiave fattura copiata negli appunti';
 
   @override
-  String get invoice_key_unavailable_title => 'Billetera no encontrada';
+  String get invoice_key_unavailable_title => 'Portafoglio non trovato';
 
   @override
-  String get invoice_key_unavailable_subtitle =>
-      'Por favor crea una billetera primero';
+  String get invoice_key_unavailable_subtitle => 'Crea prima un portafoglio';
 
   @override
   String currency_count(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count monedas',
-      one: '1 moneda',
+      other: '$count valute',
+      one: '1 valuta',
     );
     return '$_temp0';
   }
