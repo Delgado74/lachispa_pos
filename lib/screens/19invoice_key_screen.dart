@@ -81,11 +81,9 @@ class InvoiceKeyScreen extends StatelessWidget {
     return Consumer<WalletProvider>(
       builder: (context, walletProvider, child) {
         final wallet = walletProvider.primaryWallet;
-        final invoiceKey = (wallet?.readKey ?? '').isEmpty
-            ? (wallet?.inKey ?? '')
-            : (wallet?.readKey ?? '');
+        final inKey = wallet?.inKey ?? '';
 
-        if (wallet == null || invoiceKey.isEmpty) {
+        if (wallet == null || inKey.isEmpty) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(24),
@@ -99,7 +97,7 @@ class InvoiceKeyScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    AppLocalizations.of(context)!.invoice_key_unavailable_title,
+                    'No wallet found',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 18,
@@ -109,8 +107,7 @@ class InvoiceKeyScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    AppLocalizations.of(context)!
-                        .invoice_key_unavailable_subtitle,
+                    'Please create a wallet first',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
@@ -128,11 +125,11 @@ class InvoiceKeyScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              _buildQRCode(invoiceKey),
+              _buildQRCode(inKey),
               const SizedBox(height: 24),
-              _buildKeyInfo(context, invoiceKey),
+              _buildKeyInfo(context, inKey),
               const SizedBox(height: 24),
-              _buildCopyButton(context, invoiceKey),
+              _buildCopyButton(context, inKey),
               const SizedBox(height: 24),
               _buildWarning(context),
             ],
@@ -142,7 +139,7 @@ class InvoiceKeyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQRCode(String invoiceKey) {
+  Widget _buildQRCode(String inKey) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -157,7 +154,7 @@ class InvoiceKeyScreen extends StatelessWidget {
         ],
       ),
       child: QrImageView(
-        data: invoiceKey,
+        data: inKey,
         version: QrVersions.auto,
         size: 220.0,
         backgroundColor: Colors.white,
@@ -166,7 +163,7 @@ class InvoiceKeyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildKeyInfo(BuildContext context, String invoiceKey) {
+  Widget _buildKeyInfo(BuildContext context, String inKey) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -192,7 +189,7 @@ class InvoiceKeyScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            invoiceKey,
+            inKey,
             style: const TextStyle(
               fontFamily: 'monospace',
               fontSize: 12,
@@ -206,11 +203,11 @@ class InvoiceKeyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCopyButton(BuildContext context, String invoiceKey) {
+  Widget _buildCopyButton(BuildContext context, String inKey) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: () => _copyToClipboard(context, invoiceKey),
+        onPressed: () => _copyToClipboard(context, inKey),
         icon: const Icon(Icons.copy, size: 20),
         label: Text(
           AppLocalizations.of(context)!.copy_invoice_key,
