@@ -207,6 +207,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Fehler beim Laden der Transaktionen: ';
 
   @override
+  String get create_lnaddress_label => 'oder Sie können auch eine erstellen:';
+
+  @override
   String get lightning_address_title => 'Lightning-Adresse';
 
   @override
@@ -952,4 +955,14 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get deep_link_login_required_message =>
       'Sie müssen sich in Ihr LaChispa-Konto einloggen, um diese Zahlung zu verarbeiten.';
+
+  @override
+  String get clear_invoice_button => 'Rechnung löschen';
+
+  @override
+  String get invoice_cleared_message => 'Rechnung gelöscht';
+
+  @override
+  String get invoice_monitoring_timeout_message =>
+      'Überwachung gestoppt. Erstellen Sie eine neue Rechnung.';
 }

@@ -206,6 +206,9 @@ class AppLocalizationsIt extends AppLocalizations {
       'Errore nel caricamento delle transazioni: ';
 
   @override
+  String get create_lnaddress_label => 'oppure crea un indirizzo:';
+
+  @override
   String get lightning_address_title => 'Indirizzo Lightning';
 
   @override
@@ -953,4 +956,14 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get deep_link_login_required_message =>
       'Devi accedere al tuo account LaChispa per elaborare questo pagamento.';
+
+  @override
+  String get clear_invoice_button => 'Cancella fattura';
+
+  @override
+  String get invoice_cleared_message => 'Fattura cancellata';
+
+  @override
+  String get invoice_monitoring_timeout_message =>
+      'Monitoraggio interrotto. Genera una nuova fattura.';
 }

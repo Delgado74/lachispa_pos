@@ -71,7 +71,8 @@
   "pending_label": "Ausstehend",
   "failed_label": "Fehlgeschlagen",
   "loading_transactions_error_prefix": "Fehler beim Laden der Transaktionen: ",
-  
+
+  "create_lnaddress_label": "oder Sie können auch eine erstellen:",
   "lightning_address_title": "Lightning-Adresse",
   "loading_address_text": "Lade Adresse...",
   "your_lightning_address_label": "Ihre Lightning-Adresse:",
@@ -357,5 +358,9 @@
   "error_checking_currency": "Fehler beim Überprüfen von {currency}: {error}",
   
   "deep_link_login_required_title": "Anmeldung erforderlich",
-  "deep_link_login_required_message": "Sie müssen sich in Ihr LaChispa-Konto einloggen, um diese Zahlung zu verarbeiten."
+  "deep_link_login_required_message": "Sie müssen sich in Ihr LaChispa-Konto einloggen, um diese Zahlung zu verarbeiten.",
+
+  "clear_invoice_button": "Rechnung löschen",
+  "invoice_cleared_message": "Rechnung gelöscht",
+  "invoice_monitoring_timeout_message": "Überwachung gestoppt. Erstellen Sie eine neue Rechnung."
 }

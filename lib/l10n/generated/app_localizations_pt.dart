@@ -205,6 +205,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'Erro ao carregar transações: ';
 
   @override
+  String get create_lnaddress_label => 'ou também pode criar um:';
+
+  @override
   String get lightning_address_title => 'Endereço Lightning';
 
   @override
@@ -940,4 +943,14 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get deep_link_login_required_message =>
       'Você deve fazer login em sua conta LaChispa para processar este pagamento.';
+
+  @override
+  String get clear_invoice_button => 'Limpar fatura';
+
+  @override
+  String get invoice_cleared_message => 'Fatura limpa';
+
+  @override
+  String get invoice_monitoring_timeout_message =>
+      'Monitoramento parado. Gera uma nova fatura.';
 }
