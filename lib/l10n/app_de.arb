@@ -398,6 +398,11 @@
   "@invoice_key_security_warning": {
     "description": "Sicherheitswarnung für Rechnungsschlüssel"
   },
+  "invoice_key_show": "Schlüssel anzeigen",
+  "invoice_key_hide": "Schlüssel verbergen",
+  "invoice_key_copy_failed": "Rechnungsschlüssel darf nicht leer sein",
+  "invoice_key_copy_error": "Rechnungsschlüssel konnte nicht kopiert werden",
+
   "currency_count": "{count, plural, =1{1 Währung} other{{count} Währungen}}",
   "@currency_count": {
     "description": "Anzahl der ausgewählten Währungen",

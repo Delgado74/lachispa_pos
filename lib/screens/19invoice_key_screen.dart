@@ -290,7 +290,9 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
                   color: t.textSecondary,
                 ),
                 onPressed: () => setState(() => _showFullKey = !_showFullKey),
-                tooltip: _showFullKey ? 'Hide key' : 'Show key',
+                tooltip: _showFullKey
+                    ? AppLocalizations.of(context)?.invoice_key_hide ?? 'Hide key'
+                    : AppLocalizations.of(context)?.invoice_key_show ?? 'Show key',
               ),
             ],
           ),
@@ -311,7 +313,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
         onPressed: () => _copyToClipboard(context, t, inKey),
         icon: const Icon(Icons.copy, size: 20),
         label: Text(
-          AppLocalizations.of(context)!.copy_invoice_key,
+          AppLocalizations.of(context)?.copy_invoice_key ?? 'Copy invoice key',
           style: const TextStyle(
             fontFamily: 'Inter',
             fontSize: 16,
@@ -364,11 +366,26 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
 
 void _copyToClipboard(BuildContext context, AppTokens t, String text) async {
     if (text.isEmpty) {
-      _showErrorMessage(context, 'Invoice key cannot be empty');
+      _showErrorMessage(
+        context,
+        AppLocalizations.of(context)?.invoice_key_copy_failed ??
+            'Invoice key cannot be empty',
+      );
       return;
     }
 
-    await Clipboard.setData(ClipboardData(text: text));
+    try {
+      await Clipboard.setData(ClipboardData(text: text));
+    } catch (e) {
+      if (!context.mounted) return;
+      _showErrorMessage(
+        context,
+        AppLocalizations.of(context)?.invoice_key_copy_error ??
+            'Failed to copy invoice key',
+      );
+      return;
+    }
+
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

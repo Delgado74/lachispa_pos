@@ -973,6 +973,19 @@ class AppLocalizationsPt extends AppLocalizations {
       'Esta chave permite a terceiros criar faturas. Compartilhe apenas com dispositivos POS confiáveis. Nunca publique ou compartilhe publicamente.';
 
   @override
+  String get invoice_key_show => 'Mostrar chave';
+
+  @override
+  String get invoice_key_hide => 'Ocultar chave';
+
+  @override
+  String get invoice_key_copy_failed =>
+      'A chave de fatura não pode estar vazia';
+
+  @override
+  String get invoice_key_copy_error => 'Falha ao copiar a chave de fatura';
+
+  @override
   String currency_count(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

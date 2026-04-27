@@ -396,6 +396,11 @@
   "@invoice_key_security_warning": {
     "description": "Aviso de segurança para a chave de fatura"
   },
+  "invoice_key_show": "Mostrar chave",
+  "invoice_key_hide": "Ocultar chave",
+  "invoice_key_copy_failed": "A chave de fatura não pode estar vazia",
+  "invoice_key_copy_error": "Falha ao copiar a chave de fatura",
+
   "currency_count": "{count, plural, =1{1 moeda} other{{count} moedas}}",
   "@currency_count": {
     "description": "Quantidade de moedas selecionadas",

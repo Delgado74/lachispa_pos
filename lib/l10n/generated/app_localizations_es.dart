@@ -974,6 +974,20 @@ class AppLocalizationsEs extends AppLocalizations {
       'Esta clave permite a terceros crear facturas. Solo compártela con dispositivos POS confiables. Nunca publiques ni compartas públicamente.';
 
   @override
+  String get invoice_key_show => 'Mostrar clave';
+
+  @override
+  String get invoice_key_hide => 'Ocultar clave';
+
+  @override
+  String get invoice_key_copy_failed =>
+      'La clave de facturación no puede estar vacía';
+
+  @override
+  String get invoice_key_copy_error =>
+      'Error al copiar la clave de facturación';
+
+  @override
   String currency_count(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

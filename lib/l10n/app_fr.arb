@@ -143,7 +143,7 @@
   "payment_error_still_pending": "Un paiement pour cette facture est déjà en cours",
   "payment_error_route_not_found": "Aucune route trouvée pour ce paiement",
   "payment_error_payment_not_found": "Paiement introuvable dans ce portefeuille",
-"payment_error_lnurl_generic": "Erreur LNURL : {detail}",
+  "payment_error_lnurl_generic": "Erreur LNURL : {detail}",
   "@payment_error_lnurl_generic": {
     "placeholders": {
       "detail": {
@@ -381,7 +381,7 @@
   "deep_link_login_required_title": "Connexion requise",
   "deep_link_login_required_message": "Vous devez vous connecter à votre compte LaChispa pour traiter ce paiement.",
   
-  "invoice_key_qr_title": "QR de clé de facturation",
+  "invoice_key_qr_title": "Code QR de la clé de facturation",
   "invoice_key_qr_description": "Utilisez ce code QR avec LaChispaPOS ou d'autres applications Lightning pour recevoir des paiements sans exposer votre clé administrateur.",
   "invoice_key_qr_subtitle": "Afficher le QR pour d'autres apps",
   "copy_invoice_key": "Copier la clé",
@@ -398,6 +398,11 @@
   "@invoice_key_security_warning": {
     "description": "Avertissement de sécurité pour la clé de facturation"
   },
+  "invoice_key_show": "Afficher la clé",
+  "invoice_key_hide": "Masquer la clé",
+  "invoice_key_copy_failed": "La clé de facturation ne peut pas être vide",
+  "invoice_key_copy_error": "Échec de la copie de la clé de facturation",
+
   "currency_count": "{count, plural, =1{1 devise} other{{count} devises}}",
   "@currency_count": {
     "description": "Nombre de devises sélectionnées",

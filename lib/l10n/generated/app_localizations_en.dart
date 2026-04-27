@@ -959,6 +959,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'This key allows third parties to create invoices. Only share with trusted POS devices. Never post or share publicly.';
 
   @override
+  String get invoice_key_show => 'Show key';
+
+  @override
+  String get invoice_key_hide => 'Hide key';
+
+  @override
+  String get invoice_key_copy_failed => 'Invoice key cannot be empty';
+
+  @override
+  String get invoice_key_copy_error => 'Failed to copy invoice key';
+
+  @override
   String currency_count(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

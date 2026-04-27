@@ -398,6 +398,11 @@
   "@invoice_key_security_warning": {
     "description": "Advertencia de seguridad para clave de facturación"
   },
+  "invoice_key_show": "Mostrar clave",
+  "invoice_key_hide": "Ocultar clave",
+  "invoice_key_copy_failed": "La clave de facturación no puede estar vacía",
+  "invoice_key_copy_error": "Error al copiar la clave de facturación",
+
   "currency_count": "{count, plural, =1{1 moneda} other{{count} monedas}}",
   "@currency_count": {
     "description": "Cantidad de monedas seleccionadas",

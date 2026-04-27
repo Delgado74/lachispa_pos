@@ -392,6 +392,11 @@
   "@invoice_key_security_warning": {
     "description": "Security warning for invoice key"
   },
+  "invoice_key_show": "Show key",
+  "invoice_key_hide": "Hide key",
+  "invoice_key_copy_failed": "Invoice key cannot be empty",
+  "invoice_key_copy_error": "Failed to copy invoice key",
+
   "currency_count": "{count, plural, =1{1 currency} other{{count} currencies}}",
   "@currency_count": {
     "description": "Number of selected currencies",

@@ -964,6 +964,18 @@ class AppLocalizationsRu extends AppLocalizations {
       'Этот ключ позволяет третьим лицам создавать счета. Предоставляйте только доверенным устройствам POS. Никогда не публикуйте и не распространяйте публично.';
 
   @override
+  String get invoice_key_show => 'Показать ключ';
+
+  @override
+  String get invoice_key_hide => 'Скрыть ключ';
+
+  @override
+  String get invoice_key_copy_failed => 'Ключ счета не может быть пустым';
+
+  @override
+  String get invoice_key_copy_error => 'Не удалось скопировать ключ счета';
+
+  @override
   String currency_count(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

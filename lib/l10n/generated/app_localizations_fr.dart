@@ -963,7 +963,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Vous devez vous connecter à votre compte LaChispa pour traiter ce paiement.';
 
   @override
-  String get invoice_key_qr_title => 'QR de clé de facturation';
+  String get invoice_key_qr_title => 'Code QR de la clé de facturation';
 
   @override
   String get invoice_key_qr_description =>
@@ -989,6 +989,20 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get invoice_key_security_warning =>
       'Cette clé permet à des tiers de créer des factures. Ne la partagez qu\'avec des appareils POS de confiance. Ne publiez jamais ni ne partagez publiquement.';
+
+  @override
+  String get invoice_key_show => 'Afficher la clé';
+
+  @override
+  String get invoice_key_hide => 'Masquer la clé';
+
+  @override
+  String get invoice_key_copy_failed =>
+      'La clé de facturation ne peut pas être vide';
+
+  @override
+  String get invoice_key_copy_error =>
+      'Échec de la copie de la clé de facturation';
 
   @override
   String currency_count(int count) {

@@ -396,6 +396,11 @@
   "@invoice_key_security_warning": {
     "description": "Предупреждение о безопасности для ключа счета"
   },
+  "invoice_key_show": "Показать ключ",
+  "invoice_key_hide": "Скрыть ключ",
+  "invoice_key_copy_failed": "Ключ счета не может быть пустым",
+  "invoice_key_copy_error": "Не удалось скопировать ключ счета",
+
   "currency_count": "{count, plural, =1{1 валюта} few{{count} валюты} other{{count} валют}}",
   "@currency_count": {
     "description": "Количество выбранных валют",

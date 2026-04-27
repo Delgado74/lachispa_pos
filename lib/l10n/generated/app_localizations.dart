@@ -1866,6 +1866,30 @@ abstract class AppLocalizations {
   /// **'Esta clave permite a terceros crear facturas. Solo compártela con dispositivos POS confiables. Nunca publiques ni compartas públicamente.'**
   String get invoice_key_security_warning;
 
+  /// No description provided for @invoice_key_show.
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar clave'**
+  String get invoice_key_show;
+
+  /// No description provided for @invoice_key_hide.
+  ///
+  /// In es, this message translates to:
+  /// **'Ocultar clave'**
+  String get invoice_key_hide;
+
+  /// No description provided for @invoice_key_copy_failed.
+  ///
+  /// In es, this message translates to:
+  /// **'La clave de facturación no puede estar vacía'**
+  String get invoice_key_copy_failed;
+
+  /// No description provided for @invoice_key_copy_error.
+  ///
+  /// In es, this message translates to:
+  /// **'Error al copiar la clave de facturación'**
+  String get invoice_key_copy_error;
+
   /// Cantidad de monedas seleccionadas
   ///
   /// In es, this message translates to:

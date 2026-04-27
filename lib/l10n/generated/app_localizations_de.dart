@@ -985,6 +985,20 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dieser Schlüssel ermöglicht Dritten, Rechnungen zu erstellen. Nur mit vertrauenswürdigen POS-Geräten teilen. Nie öffentlich posten oder teilen.';
 
   @override
+  String get invoice_key_show => 'Schlüssel anzeigen';
+
+  @override
+  String get invoice_key_hide => 'Schlüssel verbergen';
+
+  @override
+  String get invoice_key_copy_failed =>
+      'Rechnungsschlüssel darf nicht leer sein';
+
+  @override
+  String get invoice_key_copy_error =>
+      'Rechnungsschlüssel konnte nicht kopiert werden';
+
+  @override
   String currency_count(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
