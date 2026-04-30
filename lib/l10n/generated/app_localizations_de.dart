@@ -968,4 +968,31 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get invoice_monitoring_timeout_message =>
       'Überwachung gestoppt. Erstellen Sie eine neue Rechnung.';
+
+  @override
+  String get nfc_action_label => 'NFC';
+
+  @override
+  String get nfc_unavailable_message => 'NFC auf diesem Gerät nicht verfügbar';
+
+  @override
+  String get nfc_scanning_title => 'Mit NFC einziehen';
+
+  @override
+  String get nfc_scanning_message => 'Halten Sie die Boltcard an das Telefon';
+
+  @override
+  String get nfc_charging_message => 'Wird belastet...';
+
+  @override
+  String get nfc_invalid_tag_message => 'Ungültiges Tag oder keine Boltcard';
+
+  @override
+  String get nfc_charge_error_prefix => 'NFC-Fehler beim Einziehen: ';
+
+  @override
+  String get share_ready_message => 'Bereit zum Teilen';
+
+  @override
+  String get lnurl_copied_message => 'LNURL in die Zwischenablage kopiert';
 }

@@ -363,5 +363,14 @@
 
   "clear_invoice_button": "Cancella fattura",
   "invoice_cleared_message": "Fattura cancellata",
-  "invoice_monitoring_timeout_message": "Monitoraggio interrotto. Genera una nuova fattura."
+  "invoice_monitoring_timeout_message": "Monitoraggio interrotto. Genera una nuova fattura.",
+  "nfc_action_label": "NFC",
+  "nfc_unavailable_message": "NFC non disponibile su questo dispositivo",
+  "nfc_scanning_title": "Incassa con NFC",
+  "nfc_scanning_message": "Avvicina la Boltcard al telefono",
+  "nfc_charging_message": "Incasso in corso...",
+  "nfc_invalid_tag_message": "Tag non valido o non è una Boltcard",
+  "nfc_charge_error_prefix": "Errore incasso NFC: ",
+  "share_ready_message": "Pronto da condividere",
+  "lnurl_copied_message": "LNURL copiato negli appunti"
 }
