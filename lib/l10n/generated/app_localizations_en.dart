@@ -967,6 +967,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nfc_charge_error_prefix => 'NFC charge error: ';
 
   @override
+  String get nfc_charge_unknown_error => 'Unknown error during charge';
+
+  @override
   String get share_ready_message => 'Ready to share';
 
   @override

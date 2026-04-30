@@ -1630,7 +1630,10 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> {
         return l10n.nfc_invalid_tag_message;
       case NfcChargeStatus.networkError:
       case NfcChargeStatus.callbackError:
-        return '${l10n.nfc_charge_error_prefix}${_errorMessage ?? ''}';
+        final detail = _errorMessage?.trim() ?? '';
+        return detail.isNotEmpty
+            ? '${l10n.nfc_charge_error_prefix}$detail'
+            : l10n.nfc_charge_unknown_error;
     }
   }
 

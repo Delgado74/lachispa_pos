@@ -980,6 +980,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nfc_charge_error_prefix => 'Error en cobro NFC: ';
 
   @override
+  String get nfc_charge_unknown_error => 'Error desconocido al cobrar';
+
+  @override
   String get share_ready_message => 'Listo para compartir';
 
   @override

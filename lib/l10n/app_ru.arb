@@ -371,6 +371,7 @@
   "nfc_charging_message": "Списание...",
   "nfc_invalid_tag_message": "Неверный тег или это не Boltcard",
   "nfc_charge_error_prefix": "Ошибка приёма по NFC: ",
+  "nfc_charge_unknown_error": "Неизвестная ошибка при списании",
   "share_ready_message": "Готово к отправке",
   "lnurl_copied_message": "LNURL скопирован в буфер обмена"
 }

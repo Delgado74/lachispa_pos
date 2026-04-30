@@ -1884,6 +1884,12 @@ abstract class AppLocalizations {
   /// **'Error en cobro NFC: '**
   String get nfc_charge_error_prefix;
 
+  /// No description provided for @nfc_charge_unknown_error.
+  ///
+  /// In es, this message translates to:
+  /// **'Error desconocido al cobrar'**
+  String get nfc_charge_unknown_error;
+
   /// No description provided for @share_ready_message.
   ///
   /// In es, this message translates to:

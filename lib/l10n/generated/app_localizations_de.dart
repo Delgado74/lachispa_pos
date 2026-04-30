@@ -991,6 +991,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nfc_charge_error_prefix => 'NFC-Fehler beim Einziehen: ';
 
   @override
+  String get nfc_charge_unknown_error => 'Unbekannter Fehler beim Einziehen';
+
+  @override
   String get share_ready_message => 'Bereit zum Teilen';
 
   @override

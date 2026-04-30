@@ -997,6 +997,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get nfc_charge_error_prefix => 'Erreur d\'encaissement NFC : ';
 
   @override
+  String get nfc_charge_unknown_error =>
+      'Erreur inconnue lors de l\'encaissement';
+
+  @override
   String get share_ready_message => 'Prêt à partager';
 
   @override

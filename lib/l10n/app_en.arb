@@ -386,6 +386,7 @@
   "nfc_charging_message": "Charging...",
   "nfc_invalid_tag_message": "Invalid tag or not a Boltcard",
   "nfc_charge_error_prefix": "NFC charge error: ",
+  "nfc_charge_unknown_error": "Unknown error during charge",
   "share_ready_message": "Ready to share",
   "lnurl_copied_message": "LNURL copied to clipboard"
 }

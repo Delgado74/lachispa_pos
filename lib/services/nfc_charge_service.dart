@@ -122,8 +122,8 @@ class NfcChargeService {
               await _safeStop(alertMessage: 'OK');
             } else {
               final reason = claimData is Map
-                  ? (claimData['reason']?.toString() ?? 'Error desconocido')
-                  : 'Error desconocido';
+                  ? claimData['reason']?.toString()
+                  : null;
               onStatus(NfcChargeResult(
                 NfcChargeStatus.callbackError,
                 message: reason,

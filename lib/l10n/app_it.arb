@@ -371,6 +371,7 @@
   "nfc_charging_message": "Incasso in corso...",
   "nfc_invalid_tag_message": "Tag non valido o non è una Boltcard",
   "nfc_charge_error_prefix": "Errore incasso NFC: ",
+  "nfc_charge_unknown_error": "Errore sconosciuto durante l'incasso",
   "share_ready_message": "Pronto da condividere",
   "lnurl_copied_message": "LNURL copiato negli appunti"
 }

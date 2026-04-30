@@ -971,6 +971,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nfc_charge_error_prefix => 'Ошибка приёма по NFC: ';
 
   @override
+  String get nfc_charge_unknown_error => 'Неизвестная ошибка при списании';
+
+  @override
   String get share_ready_message => 'Готово к отправке';
 
   @override

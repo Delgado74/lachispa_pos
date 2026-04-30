@@ -993,6 +993,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get nfc_charge_error_prefix => 'Errore incasso NFC: ';
 
   @override
+  String get nfc_charge_unknown_error =>
+      'Errore sconosciuto durante l\'incasso';
+
+  @override
   String get share_ready_message => 'Pronto da condividere';
 
   @override

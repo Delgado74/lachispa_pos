@@ -371,6 +371,7 @@
   "nfc_charging_message": "Cobrando...",
   "nfc_invalid_tag_message": "Tag inválido o no es una Boltcard",
   "nfc_charge_error_prefix": "Error en cobro NFC: ",
+  "nfc_charge_unknown_error": "Error desconocido al cobrar",
   "share_ready_message": "Listo para compartir",
   "lnurl_copied_message": "LNURL copiado al portapapeles"
 }
