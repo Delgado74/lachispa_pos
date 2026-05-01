@@ -1011,13 +1011,13 @@ abstract class AppLocalizations {
   /// No description provided for @loading_rates_text.
   ///
   /// In es, this message translates to:
-  /// **'Loading rates...'**
+  /// **'Cargando tipo de cambio...'**
   String get loading_rates_text;
 
   /// No description provided for @send_button_prefix.
   ///
   /// In es, this message translates to:
-  /// **'SEND '**
+  /// **'ENVIAR '**
   String get send_button_prefix;
 
   /// No description provided for @amount_processing_button.

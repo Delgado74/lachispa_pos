@@ -483,10 +483,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get calculating_text => 'Calculando...';
 
   @override
-  String get loading_rates_text => 'Loading rates...';
+  String get loading_rates_text => 'Cargando tipo de cambio...';
 
   @override
-  String get send_button_prefix => 'SEND ';
+  String get send_button_prefix => 'ENVIAR ';
 
   @override
   String get amount_processing_button => 'PROCESANDO...';
