@@ -101,13 +101,18 @@ class NfcChargeService {
               await _safeStop(errorMessage: 'No es Boltcard');
               return;
             }
-            final callback = meta['callback'] as String?;
-            final k1 = meta['k1'] as String?;
-            if (callback == null || k1 == null) {
+            final callbackValue = meta['callback'];
+            final k1Value = meta['k1'];
+            if (callbackValue is! String ||
+                callbackValue.isEmpty ||
+                k1Value is! String ||
+                k1Value.isEmpty) {
               onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
               await _safeStop(errorMessage: 'Datos incompletos');
               return;
             }
+            final callback = callbackValue;
+            final k1 = k1Value;
 
             onStatus(const NfcChargeResult(NfcChargeStatus.charging));
 
