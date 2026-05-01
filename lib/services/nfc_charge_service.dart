@@ -215,8 +215,20 @@ class NfcChargeService {
       } else {
         final payload = record.payload;
         if (payload.isNotEmpty) {
-          raw = utf8.decode(payload, allowMalformed: true).trim();
-          _debugLog('Payload crudo leído: $raw');
+          // Handle RTD_TEXT properly
+          if (payload.length > 1) {
+            final statusByte = payload[0];
+            final encoding = (statusByte & 0x80) == 0 ? utf8 : Encoding.getByName('utf-16');
+            final langLength = statusByte & 0x3F;
+            if (payload.length > 1 + langLength) {
+              final contentBytes = payload.sublist(1 + langLength);
+              raw = encoding.decode(contentBytes);
+              _debugLog('Payload decodificado (RTD_TEXT): $raw');
+            }
+          } else {
+            raw = utf8.decode(payload, allowMalformed: true).trim();
+            _debugLog('Payload crudo leído: $raw');
+          }
         }
       }
 
