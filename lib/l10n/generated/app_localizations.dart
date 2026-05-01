@@ -1841,6 +1841,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Monitoreo detenido. Genera una nueva factura.'**
   String get invoice_monitoring_timeout_message;
+
+  /// No description provided for @nfc_action_label.
+  ///
+  /// In es, this message translates to:
+  /// **'NFC'**
+  String get nfc_action_label;
+
+  /// No description provided for @nfc_unavailable_message.
+  ///
+  /// In es, this message translates to:
+  /// **'NFC no disponible en este dispositivo'**
+  String get nfc_unavailable_message;
+
+  /// No description provided for @nfc_scanning_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Cobrar con NFC'**
+  String get nfc_scanning_title;
+
+  /// No description provided for @nfc_scanning_message.
+  ///
+  /// In es, this message translates to:
+  /// **'Acerca la Boltcard al teléfono'**
+  String get nfc_scanning_message;
+
+  /// No description provided for @nfc_charging_message.
+  ///
+  /// In es, this message translates to:
+  /// **'Cobrando...'**
+  String get nfc_charging_message;
+
+  /// No description provided for @nfc_invalid_tag_message.
+  ///
+  /// In es, this message translates to:
+  /// **'Tag inválido o no es una Boltcard'**
+  String get nfc_invalid_tag_message;
+
+  /// No description provided for @nfc_charge_error_prefix.
+  ///
+  /// In es, this message translates to:
+  /// **'Error en cobro NFC: '**
+  String get nfc_charge_error_prefix;
+
+  /// No description provided for @nfc_charge_unknown_error.
+  ///
+  /// In es, this message translates to:
+  /// **'Error desconocido al cobrar'**
+  String get nfc_charge_unknown_error;
+
+  /// No description provided for @share_ready_message.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo para compartir'**
+  String get share_ready_message;
+
+  /// No description provided for @lnurl_copied_message.
+  ///
+  /// In es, this message translates to:
+  /// **'LNURL copiado al portapapeles'**
+  String get lnurl_copied_message;
 }
 
 class _AppLocalizationsDelegate

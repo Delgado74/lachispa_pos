@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 0.4.1+5
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -25,6 +25,8 @@ dependencies:
   webview_flutter: ^4.4.2
   package_info_plus: ^8.3.1
   app_links: ^6.3.2
+  share_plus: ^10.1.4
+  nfc_manager: ^3.5.0
 
 dev_dependencies:
   flutter_test:
