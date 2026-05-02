@@ -1368,7 +1368,9 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       _startInvoicePaymentMonitoring(invoice, wallet, serverUrl);
 
       if (autoStartNfcAfterGenerate && _nfcAvailable) {
-        _openNfcChargeSheet(invoice.paymentRequest);
+        // Para HCE: pasar LNURL de Lightning Address (Phoenix lo lee y paga)
+        final lnurlForHce = defaultAddress?.lnurl ?? invoice.paymentRequest;
+        _openNfcChargeSheet(lnurlForHce);
       }
     } catch (e) {
       setState(() {
