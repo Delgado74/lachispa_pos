@@ -211,7 +211,7 @@ class NfcChargeService {
           // Handle RTD_TEXT properly
           if (payload.length > 1) {
             final statusByte = payload[0];
-            final encoding = (statusByte & 0x80) == 0 ? utf8 : Encoding.getByName('utf-16');
+            final encoding = ((statusByte & 0x80) == 0 ? utf8 : Encoding.getByName('utf-16')) ?? utf8;
             final langLength = statusByte & 0x3F;
             if (payload.length > 1 + langLength) {
               final contentBytes = payload.sublist(1 + langLength);
