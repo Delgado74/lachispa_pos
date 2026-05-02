@@ -44,6 +44,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
   bool _nfcAvailable = false;
   bool _nfcChecked = false;
+  bool _isHceActive = false;
 
   @override
   void initState() {
@@ -1380,6 +1381,10 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       _startInvoicePaymentMonitoring(invoice, wallet, serverUrl);
 
       if (autoStartNfcAfterGenerate && _nfcAvailable) {
+        // Obtener Lightning Address del provider
+        final lnAddressProvider = context.read<LNAddressProvider>();
+        final defaultAddress = lnAddressProvider.defaultAddress;
+        
         // Detectar qué modo usar: si hay LNURL de Lightning Address, usar HCE (Phoenix)
         // Si no, intentar BoltCard (lector)
         final lnurlForHce = defaultAddress?.lnurl ?? invoice.paymentRequest;
@@ -1584,7 +1589,7 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> {
 
   Future<void> _start() async {
     await _service.startChargeSession(
-      invoice: widget.invoice,
+      lnurlWithdraw: widget.invoice,
       useHce: widget.useHce,
       onStatus: (result) {
         if (!mounted) return;
