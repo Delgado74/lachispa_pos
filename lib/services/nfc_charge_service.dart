@@ -23,6 +23,11 @@ enum NfcChargeStatus {
   callbackError,
 }
 
+enum ModoNfcRecibir {
+  hceWallet,    // Emitir HCE → pagador usa Phoenix u otra wallet
+  lectorBoltcard, // Lector NFC   → pagador usa BoltCard física
+}
+
 class NfcChargeResult {
   final NfcChargeStatus status;
   final String? message;
@@ -65,97 +70,113 @@ class NfcChargeService {
   bool get isSessionActive => _sessionActive;
 
   Future<void> startChargeSession({
-    required String lnurlWithdraw,
+    required String lnurlOrInvoice,
+    required ModoNfcRecibir modo,
     required void Function(NfcChargeResult) onStatus,
-    bool useHce = true, // true para Phoenix (emular), false para BoltCard (leer)
   }) async {
     if (_sessionActive) return;
     _sessionActive = true;
+
+    // CRÍTICO: asegurarse que HCE está detenido antes de activar lector
+    if (modo == ModoNfcRecibir.lectorBoltcard) {
+      try { await _hce.stopNfcHce(); } catch (_) {}
+      await Future.delayed(const Duration(milliseconds: 300));
+    }
+
     onStatus(const NfcChargeResult(NfcChargeStatus.scanning));
 
     try {
-      if (useHce) {
-        // HCE Mode: Emular tarjeta NFC con LNURL para recibir pagos (Phoenix)
-        _debugLog('HCE: Iniciando emulación NFC con LNURL: $lnurlWithdraw');
-        await _hce.startNfcHce(
-          lnurlWithdraw,
-          mimeType: 'text/plain',
-          persistMessage: false,
-        );
-        _debugLog('HCE: Emulación NFC iniciada correctamente');
-        onStatus(const NfcChargeResult(NfcChargeStatus.reading));
-      } else {
-        // BoltCard Mode: Leer tarjeta NFC (lector)
-        _debugLog('NFC: Iniciando lectura de tarjeta');
-        await NfcManager.instance.startSession(
-          pollingOptions: NfcPollingOption.values.toSet(),
-          invalidateAfterFirstRead: true,
-          alertMessage: 'Acerca la tarjeta',
-          onDiscovered: (NfcTag tag) async {
-            try {
-              onStatus(const NfcChargeResult(NfcChargeStatus.reading));
-              final url = _extractUriFromTag(tag);
-              if (url == null) {
-                onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                await _safeStop(errorMessage: 'Tag no compatible');
-                return;
-              }
-              _debugLog('Tag URL: $url');
-              final metaResponse = await _dio.get(url);
-              final meta = metaResponse.data;
-              if (meta is! Map) {
-                onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                await _safeStop(errorMessage: 'Respuesta inválida');
-                return;
-              }
-              if (meta['tag'] != 'withdrawRequest') {
-                onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                await _safeStop(errorMessage: 'No es Boltcard');
-                return;
-              }
-              final callbackValue = meta['callback'];
-              final k1Value = meta['k1'];
-              if (callbackValue is! String ||
-                  callbackValue.isEmpty ||
-                  k1Value is! String ||
-                  k1Value.isEmpty) {
-                onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                await _safeStop(errorMessage: 'Datos incompletos');
-                return;
-              }
-              final callback = callbackValue;
-              final k1 = k1Value;
-              onStatus(const NfcChargeResult(NfcChargeStatus.charging));
-              final claim = await _dio.get(callback, queryParameters: {
-                'k1': k1,
-                'pr': lnurlWithdraw,
-              });
-              final claimData = claim.data;
-              if (claimData is Map && claimData['status'] == 'OK') {
-                onStatus(const NfcChargeResult(NfcChargeStatus.success));
-                await _safeStop(alertMessage: 'OK');
-              } else {
-                final reason = claimData is Map
-                    ? claimData['reason']?.toString()
-                    : null;
+      switch (modo) {
+        case ModoNfcRecibir.hceWallet:
+          // HCE Mode: Emitir para wallet (Phoenix)
+          _debugLog('HCE: Emitiendo para wallet: $lnurlOrInvoice');
+          await _hce.startNfcHce(
+            lnurlOrInvoice,
+            mimeType: 'text/plain',
+            persistMessage: false,
+          );
+          _debugLog('HCE: Emulación NFC iniciada correctamente');
+          onStatus(const NfcChargeResult(NfcChargeStatus.reading));
+          break;
+
+        case ModoNfcRecibir.lectorBoltcard:
+          // BoltCard Mode: Lector NFC
+          _debugLog('NFC: Iniciando lectura de tarjeta');
+          await NfcManager.instance.startSession(
+            pollingOptions: {NfcPollingOption.iso14443},
+            invalidateAfterFirstRead: false,
+            alertMessage: 'Acerca la tarjeta',
+            onDiscovered: (NfcTag tag) async {
+              try {
+                onStatus(const NfcChargeResult(NfcChargeStatus.reading));
+
+                final url = _extractUriFromTag(tag);
+                if (url == null) {
+                  onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
+                  await _safeStop(errorMessage: 'Tag no compatible');
+                  return;
+                }
+                _debugLog('Tag URL: $url');
+
+                final metaResponse = await _dio.get(url);
+                final meta = metaResponse.data;
+                if (meta is! Map) {
+                  onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
+                  await _safeStop(errorMessage: 'Respuesta inválida');
+                  return;
+                }
+                if (meta['tag'] != 'withdrawRequest') {
+                  onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
+                  await _safeStop(errorMessage: 'No es Boltcard');
+                  return;
+                }
+                final callbackValue = meta['callback'];
+                final k1Value = meta['k1'];
+                if (callbackValue is! String ||
+                    callbackValue.isEmpty ||
+                    k1Value is! String ||
+                    k1Value.isEmpty) {
+                  onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
+                  await _safeStop(errorMessage: 'Datos incompletos');
+                  return;
+                }
+                final callback = callbackValue;
+                final k1 = k1Value;
+
+                onStatus(const NfcChargeResult(NfcChargeStatus.charging));
+
+                final claim = await _dio.get(callback, queryParameters: {
+                  'k1': k1,
+                  'pr': lnurlOrInvoice,
+                });
+
+                final claimData = claim.data;
+                if (claimData is Map && claimData['status'] == 'OK') {
+                  onStatus(const NfcChargeResult(NfcChargeStatus.success));
+                  await _safeStop(alertMessage: 'OK');
+                } else {
+                  final reason = claimData is Map
+                      ? claimData['reason']?.toString()
+                      : null;
+                  onStatus(NfcChargeResult(
+                    NfcChargeStatus.callbackError,
+                    message: reason,
+                  ));
+                  await _safeStop(errorMessage: reason);
+                }
+              } catch (e) {
+                _debugLog('Discovery handler error: $e');
                 onStatus(NfcChargeResult(
-                  NfcChargeStatus.callbackError,
-                  message: reason,
+                  NfcChargeStatus.networkError,
+                  message: e.toString(),
                 ));
-                await _safeStop(errorMessage: reason);
+                await _safeStop(errorMessage: 'Error de red');
+              } finally {
+                _sessionActive = false;
               }
-            } catch (e) {
-              _debugLog('Discovery handler error: $e');
-              onStatus(NfcChargeResult(
-                NfcChargeStatus.networkError,
-                message: e.toString(),
-              ));
-              await _safeStop(errorMessage: 'Error de red');
-            } finally {
-              _sessionActive = false;
-            }
-          },
-        );
+            },
+          );
+          break;
       }
     } catch (e) {
       _debugLog('startSession error: $e');

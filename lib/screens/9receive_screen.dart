@@ -980,17 +980,57 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       return;
     }
 
-    if (_generatedInvoice != null) {
-      _openNfcChargeSheet(_generatedInvoice!.paymentRequest);
+    // Sin factura → HCE directo (BoltCard requiere factura)
+    if (_generatedInvoice == null) {
+      final lnAddressProvider = context.read<LNAddressProvider>();
+      final lnurl = lnAddressProvider.defaultAddress?.lnurl;
+      if (lnurl != null) {
+        _openNfcChargeSheet(lnurl, modo: ModoNfcRecibir.hceWallet);
+      } else {
+        _showRequestAmountModal(autoStartNfcAfterGenerate: true);
+      }
       return;
     }
 
-    _showRequestAmountModal(autoStartNfcAfterGenerate: true);
+    // Con factura → preguntar modo
+    final modo = await showDialog<ModoNfcRecibir>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Modo NFC'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.credit_card),
+              title: const Text('Cargar BoltCard'),
+              subtitle: const Text('Leer tarjeta y enviar factura'),
+              onTap: () => Navigator.pop(context, ModoNfcRecibir.lectorBoltcard),
+            ),
+            ListTile(
+              leading: const Icon(Icons.nfc),
+              title: const Text('Emular HCE (Phoenix)'),
+              subtitle: const Text('Teléfono como tarjeta'),
+              onTap: () => Navigator.pop(context, ModoNfcRecibir.hceWallet),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (modo == null) return;
+
+    if (modo == ModoNfcRecibir.hceWallet) {
+      _openNfcChargeSheet(_generatedInvoice!.paymentRequest, 
+                          modo: modo);
+    } else {
+      _openNfcChargeSheet(_generatedInvoice!.paymentRequest, 
+                          modo: modo);
+    }
   }
 
-  void _openNfcChargeSheet(String lnurl, {bool useHce = true}) {
+  void _openNfcChargeSheet(String contenido, {required ModoNfcRecibir modo}) {
     setState(() {
-      _isHceActive = useHce;
+      _isHceActive = modo == ModoNfcRecibir.hceWallet;
     });
     showModalBottomSheet(
       context: context,
@@ -999,8 +1039,8 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       isDismissible: false,
       enableDrag: false,
       builder: (sheetContext) => _NfcChargeSheet(
-        invoice: lnurl,
-        useHce: useHce,
+        invoice: contenido,
+        modo: modo,
         onFinish: () {
           setState(() {
             _isHceActive = false;
@@ -1020,7 +1060,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     );
   }
 
-  void _showRequestAmountModal({bool autoStartNfcAfterGenerate = false}) {
+  void _showRequestAmountModal({bool autoStartNfcAfterGenerate = false, bool modoLector = false}) {
     _amountController.clear();
     _noteController.clear();
     setState(() {
@@ -1272,6 +1312,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                                   onPressed: () => _confirmRequestAmount(
                                     modalContext,
                                     autoStartNfcAfterGenerate: autoStartNfcAfterGenerate,
+                                    modoLector: modoLector,
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: context.tokens.accentSolid,
@@ -1309,6 +1350,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   void _confirmRequestAmount(
     BuildContext modalContext, {
     bool autoStartNfcAfterGenerate = false,
+    bool modoLector = false,
   }) async {
     if (_amountController.text.trim().isEmpty) {
       _showErrorSnackBar(AppLocalizations.of(context)!.invalid_amount_error);
@@ -1381,15 +1423,25 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       _startInvoicePaymentMonitoring(invoice, wallet, serverUrl);
 
       if (autoStartNfcAfterGenerate && _nfcAvailable) {
-        // Obtener Lightning Address del provider
-        final lnAddressProvider = context.read<LNAddressProvider>();
-        final defaultAddress = lnAddressProvider.defaultAddress;
-        
-        // Detectar qué modo usar: si hay LNURL de Lightning Address, usar HCE (Phoenix)
-        // Si no, intentar BoltCard (lector)
-        final lnurlForHce = defaultAddress?.lnurl ?? invoice.paymentRequest;
-        final useHce = defaultAddress?.lnurl != null;
-        _openNfcChargeSheet(lnurlForHce, useHce: useHce);
+        // Decidir modo según si es lector o HCE
+        if (modoLector) {
+          // Leer BoltCard → usar invoice generada
+          if (_generatedInvoice != null) {
+            _openNfcChargeSheet(_generatedInvoice!.paymentRequest, 
+                                modo: ModoNfcRecibir.lectorBoltcard);
+          }
+        } else {
+          // HCE → usar LNURL o invoice según corresponda
+          final lnAddressProvider = context.read<LNAddressProvider>();
+          final lnurl = lnAddressProvider.defaultAddress?.lnurl;
+          
+          if (lnurl != null) {
+            _openNfcChargeSheet(lnurl, modo: ModoNfcRecibir.hceWallet);
+          } else if (_generatedInvoice != null) {
+            _openNfcChargeSheet(_generatedInvoice!.paymentRequest, 
+                                  modo: ModoNfcRecibir.hceWallet);
+          }
+        }
       }
     } catch (e) {
       setState(() {
@@ -1562,11 +1614,11 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
 class _NfcChargeSheet extends StatefulWidget {
   final String invoice;
-  final bool useHce;
+  final ModoNfcRecibir modo;
   final VoidCallback? onFinish;
   const _NfcChargeSheet({
     required this.invoice,
-    this.useHce = true,
+    required this.modo,
     this.onFinish,
   });
 
@@ -1589,8 +1641,8 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> {
 
   Future<void> _start() async {
     await _service.startChargeSession(
-      lnurlWithdraw: widget.invoice,
-      useHce: widget.useHce,
+      lnurlOrInvoice: widget.invoice,
+      modo: widget.modo,
       onStatus: (result) {
         if (!mounted) return;
         setState(() {
@@ -1652,7 +1704,7 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> {
     switch (_status) {
       case NfcChargeStatus.scanning:
       case NfcChargeStatus.reading:
-        return widget.useHce 
+        return widget.modo == ModoNfcRecibir.hceWallet 
             ? l10n.nfc_hce_message 
             : l10n.nfc_scanning_message;
       case NfcChargeStatus.charging:
