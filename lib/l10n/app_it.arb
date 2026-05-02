@@ -374,5 +374,15 @@
   "nfc_charge_error_prefix": "Errore incasso NFC: ",
   "nfc_charge_unknown_error": "Errore sconosciuto durante l'incasso",
   "share_ready_message": "Pronto da condividere",
-  "lnurl_copied_message": "LNURL copiato negli appunti"
+  "lnurl_copied_message": "LNURL copiato negli appunti",
+  "nfc_mode_title": "Modalità NFC",
+  "nfc_mode_boltcard": "Carica BoltCard",
+  "nfc_mode_boltcard_subtitle": "Leggi carta e invia fattura",
+  "nfc_mode_hce": "Emula HCE",
+  "nfc_mode_hce_subtitle": "Telefono come carta",
+  "nfc_tag_not_compatible": "Tag non compatibile",
+  "nfc_not_boltcard": "Non è una Boltcard",
+  "nfc_incomplete_data": "Dati incompleti",
+  "nfc_invalid_response": "Risposta non valida",
+  "nfc_network_error": "Errore di rete"
 }

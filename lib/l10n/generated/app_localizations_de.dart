@@ -1001,4 +1001,34 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get lnurl_copied_message => 'LNURL in die Zwischenablage kopiert';
+
+  @override
+  String get nfc_mode_title => 'NFC-Modus';
+
+  @override
+  String get nfc_mode_boltcard => 'BoltCard laden';
+
+  @override
+  String get nfc_mode_boltcard_subtitle => 'Karte lesen und Rechnung senden';
+
+  @override
+  String get nfc_mode_hce => 'HCE emulieren';
+
+  @override
+  String get nfc_mode_hce_subtitle => 'Telefon als Karte';
+
+  @override
+  String get nfc_tag_not_compatible => 'Tag nicht kompatibel';
+
+  @override
+  String get nfc_not_boltcard => 'Keine Boltcard';
+
+  @override
+  String get nfc_incomplete_data => 'Unvollständige Daten';
+
+  @override
+  String get nfc_invalid_response => 'Ungültige Antwort';
+
+  @override
+  String get nfc_network_error => 'Netzwerkfehler';
 }

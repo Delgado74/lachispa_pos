@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import '../core/utils/proxy_config.dart';
 import 'app_info_service.dart';
+import '../l10n/generated/app_localizations.dart';
 
 void _debugLog(String message) {
   if (kDebugMode) {
@@ -37,8 +38,9 @@ class NfcChargeResult {
 class NfcChargeService {
   final Dio _dio = Dio();
   bool _sessionActive = false;
+  final AppLocalizations _l10n;
 
-  NfcChargeService() {
+  NfcChargeService(this._l10n) {
     _configureDio();
   }
 
@@ -113,7 +115,7 @@ class NfcChargeService {
                 final url = _extractUriFromTag(tag);
                 if (url == null) {
                   onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                  await _safeStop(errorMessage: 'Tag no compatible');
+                  await _safeStop(errorMessage: _l10n.nfc_tag_not_compatible);
                   return;
                 }
                 _debugLog('Tag URL: $url');
@@ -122,12 +124,12 @@ class NfcChargeService {
                 final meta = metaResponse.data;
                 if (meta is! Map) {
                   onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                  await _safeStop(errorMessage: 'Respuesta inválida');
+                  await _safeStop(errorMessage: _l10n.nfc_invalid_response);
                   return;
                 }
                 if (meta['tag'] != 'withdrawRequest') {
                   onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                  await _safeStop(errorMessage: 'No es Boltcard');
+                  await _safeStop(errorMessage: _l10n.nfc_not_boltcard);
                   return;
                 }
                 final callbackValue = meta['callback'];
@@ -137,7 +139,7 @@ class NfcChargeService {
                     k1Value is! String ||
                     k1Value.isEmpty) {
                   onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                  await _safeStop(errorMessage: 'Datos incompletos');
+                  await _safeStop(errorMessage: _l10n.nfc_incomplete_data);
                   return;
                 }
                 final callback = callbackValue;
@@ -164,13 +166,13 @@ class NfcChargeService {
                   ));
                   await _safeStop(errorMessage: reason);
                 }
-              } catch (e) {
+                } catch (e) {
                 _debugLog('Discovery handler error: $e');
                 onStatus(NfcChargeResult(
                   NfcChargeStatus.networkError,
                   message: e.toString(),
                 ));
-                await _safeStop(errorMessage: 'Error de red');
+                await _safeStop(errorMessage: _l10n.nfc_network_error);
               } finally {
                 _sessionActive = false;
               }

@@ -980,6 +980,8 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       return;
     }
 
+    final l10n = AppLocalizations.of(context)!;
+
     // Sin factura → HCE directo (BoltCard requiere factura)
     if (_generatedInvoice == null) {
       final lnAddressProvider = context.read<LNAddressProvider>();
@@ -996,20 +998,20 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     final modo = await showDialog<ModoNfcRecibir>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Modo NFC'),
+        title: Text(l10n.nfc_mode_title),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               leading: const Icon(Icons.credit_card),
-              title: const Text('Cargar BoltCard'),
-              subtitle: const Text('Leer tarjeta y enviar factura'),
+              title: Text(l10n.nfc_mode_boltcard),
+              subtitle: Text(l10n.nfc_mode_boltcard_subtitle),
               onTap: () => Navigator.pop(context, ModoNfcRecibir.lectorBoltcard),
             ),
             ListTile(
               leading: const Icon(Icons.nfc),
-              title: const Text('Emular HCE (Phoenix)'),
-              subtitle: const Text('Teléfono como tarjeta'),
+              title: Text(l10n.nfc_mode_hce),
+              subtitle: Text(l10n.nfc_mode_hce_subtitle),
               onTap: () => Navigator.pop(context, ModoNfcRecibir.hceWallet),
             ),
           ],
@@ -1626,17 +1628,28 @@ class _NfcChargeSheet extends StatefulWidget {
   State<_NfcChargeSheet> createState() => _NfcChargeSheetState();
 }
 
-class _NfcChargeSheetState extends State<_NfcChargeSheet> {
+class _NfcChargeSheetState extends State<_NfcChargeSheet> with SingleTickerProviderStateMixin {
   late final NfcChargeService _service;
   NfcChargeStatus _status = NfcChargeStatus.scanning;
   String? _errorMessage;
   bool _autoCloseScheduled = false;
+  late final TabController _tabController;
+  bool _serviceInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _service = NfcChargeService();
-    _start();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_serviceInitialized) {
+      _service = NfcChargeService(AppLocalizations.of(context)!);
+      _serviceInitialized = true;
+      _start();
+    }
   }
 
   Future<void> _start() async {

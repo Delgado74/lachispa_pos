@@ -1907,6 +1907,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'LNURL copiado al portapapeles'**
   String get lnurl_copied_message;
+
+  /// No description provided for @nfc_mode_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Modo NFC'**
+  String get nfc_mode_title;
+
+  /// No description provided for @nfc_mode_boltcard.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar BoltCard'**
+  String get nfc_mode_boltcard;
+
+  /// No description provided for @nfc_mode_boltcard_subtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Leer tarjeta y enviar factura'**
+  String get nfc_mode_boltcard_subtitle;
+
+  /// No description provided for @nfc_mode_hce.
+  ///
+  /// In es, this message translates to:
+  /// **'Emular HCE'**
+  String get nfc_mode_hce;
+
+  /// No description provided for @nfc_mode_hce_subtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono como tarjeta'**
+  String get nfc_mode_hce_subtitle;
+
+  /// No description provided for @nfc_tag_not_compatible.
+  ///
+  /// In es, this message translates to:
+  /// **'Tag no compatible'**
+  String get nfc_tag_not_compatible;
+
+  /// No description provided for @nfc_not_boltcard.
+  ///
+  /// In es, this message translates to:
+  /// **'No es Boltcard'**
+  String get nfc_not_boltcard;
+
+  /// No description provided for @nfc_incomplete_data.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos incompletos'**
+  String get nfc_incomplete_data;
+
+  /// No description provided for @nfc_invalid_response.
+  ///
+  /// In es, this message translates to:
+  /// **'Respuesta inválida'**
+  String get nfc_invalid_response;
+
+  /// No description provided for @nfc_network_error.
+  ///
+  /// In es, this message translates to:
+  /// **'Error de red'**
+  String get nfc_network_error;
 }
 
 class _AppLocalizationsDelegate

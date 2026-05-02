@@ -374,5 +374,15 @@
   "nfc_charge_error_prefix": "Ошибка приёма по NFC: ",
   "nfc_charge_unknown_error": "Неизвестная ошибка при списании",
   "share_ready_message": "Готово к отправке",
-  "lnurl_copied_message": "LNURL скопирован в буфер обмена"
+  "lnurl_copied_message": "LNURL скопирован в буфер обмена",
+  "nfc_mode_title": "Режим NFC",
+  "nfc_mode_boltcard": "Загрузить BoltCard",
+  "nfc_mode_boltcard_subtitle": "Считать карту и отправить счёт",
+  "nfc_mode_hce": "Эмуляция HCE",
+  "nfc_mode_hce_subtitle": "Телефон как карта",
+  "nfc_tag_not_compatible": "Тег не совместим",
+  "nfc_not_boltcard": "Не Boltcard",
+  "nfc_incomplete_data": "Неполные данные",
+  "nfc_invalid_response": "Неверный ответ",
+  "nfc_network_error": "Ошибка сети"
 }

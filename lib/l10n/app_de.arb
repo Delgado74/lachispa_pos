@@ -374,5 +374,15 @@
   "nfc_charge_error_prefix": "NFC-Fehler beim Einziehen: ",
   "nfc_charge_unknown_error": "Unbekannter Fehler beim Einziehen",
   "share_ready_message": "Bereit zum Teilen",
-  "lnurl_copied_message": "LNURL in die Zwischenablage kopiert"
+  "lnurl_copied_message": "LNURL in die Zwischenablage kopiert",
+  "nfc_mode_title": "NFC-Modus",
+  "nfc_mode_boltcard": "BoltCard laden",
+  "nfc_mode_boltcard_subtitle": "Karte lesen und Rechnung senden",
+  "nfc_mode_hce": "HCE emulieren",
+  "nfc_mode_hce_subtitle": "Telefon als Karte",
+  "nfc_tag_not_compatible": "Tag nicht kompatibel",
+  "nfc_not_boltcard": "Keine Boltcard",
+  "nfc_incomplete_data": "Unvollständige Daten",
+  "nfc_invalid_response": "Ungültige Antwort",
+  "nfc_network_error": "Netzwerkfehler"
 }
