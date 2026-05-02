@@ -4,7 +4,6 @@ import 'dart:io' show Platform;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nfc_manager/nfc_manager.dart';
-import 'package:flutter_nfc_hce/flutter_nfc_hce.dart';
 import '../core/utils/proxy_config.dart';
 import 'app_info_service.dart';
 
@@ -32,7 +31,6 @@ class NfcChargeResult {
 
 class NfcChargeService {
   final Dio _dio = Dio();
-  final FlutterNfcHce _hce = FlutterNfcHce();
   bool _sessionActive = false;
 
   NfcChargeService() {
@@ -170,11 +168,6 @@ class NfcChargeService {
         alertMessage: alertMessage,
         errorMessage: errorMessage,
       );
-    } catch (_) {
-      // ignore
-    }
-    try {
-      await _hce.stopNfcHce();
     } catch (_) {
       // ignore
     }
