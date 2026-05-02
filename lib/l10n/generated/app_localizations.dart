@@ -1866,6 +1866,12 @@ abstract class AppLocalizations {
   /// **'Acerca la Boltcard al teléfono'**
   String get nfc_scanning_message;
 
+  /// No description provided for @nfc_hce_message.
+  ///
+  /// In es, this message translates to:
+  /// **'Acerca el dispositivo pagador'**
+  String get nfc_hce_message;
+
   /// No description provided for @nfc_charging_message.
   ///
   /// In es, this message translates to:

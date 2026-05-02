@@ -383,6 +383,7 @@
   "nfc_unavailable_message": "NFC not available on this device",
   "nfc_scanning_title": "Charge with NFC",
   "nfc_scanning_message": "Tap the Boltcard against the phone",
+  "nfc_hce_message": "Tap the payer's device",
   "nfc_charging_message": "Charging...",
   "nfc_invalid_tag_message": "Invalid tag or not a Boltcard",
   "nfc_charge_error_prefix": "NFC charge error: ",

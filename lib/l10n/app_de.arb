@@ -368,6 +368,7 @@
   "nfc_unavailable_message": "NFC auf diesem Gerät nicht verfügbar",
   "nfc_scanning_title": "Mit NFC einziehen",
   "nfc_scanning_message": "Halten Sie die Boltcard an das Telefon",
+  "nfc_hce_message": "Halten Sie das Gerät des Zahlers an",
   "nfc_charging_message": "Wird belastet...",
   "nfc_invalid_tag_message": "Ungültiges Tag oder keine Boltcard",
   "nfc_charge_error_prefix": "NFC-Fehler beim Einziehen: ",

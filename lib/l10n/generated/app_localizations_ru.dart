@@ -962,6 +962,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nfc_scanning_message => 'Поднесите Boltcard к телефону';
 
   @override
+  String get nfc_hce_message => 'Поднесите устройство плательщика';
+
+  @override
   String get nfc_charging_message => 'Списание...';
 
   @override

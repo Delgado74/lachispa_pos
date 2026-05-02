@@ -958,6 +958,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nfc_scanning_message => 'Tap the Boltcard against the phone';
 
   @override
+  String get nfc_hce_message => 'Tap the payer\'s device';
+
+  @override
   String get nfc_charging_message => 'Charging...';
 
   @override

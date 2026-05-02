@@ -368,6 +368,7 @@
   "nfc_unavailable_message": "NFC no disponible en este dispositivo",
   "nfc_scanning_title": "Cobrar con NFC",
   "nfc_scanning_message": "Acerca la Boltcard al teléfono",
+  "nfc_hce_message": "Acerca el dispositivo pagador",
   "nfc_charging_message": "Cobrando...",
   "nfc_invalid_tag_message": "Tag inválido o no es una Boltcard",
   "nfc_charge_error_prefix": "Error en cobro NFC: ",

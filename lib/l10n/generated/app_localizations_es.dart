@@ -971,6 +971,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nfc_scanning_message => 'Acerca la Boltcard al teléfono';
 
   @override
+  String get nfc_hce_message => 'Acerca el dispositivo pagador';
+
+  @override
   String get nfc_charging_message => 'Cobrando...';
 
   @override
