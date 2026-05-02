@@ -4,6 +4,7 @@ import 'dart:io' show Platform;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:flutter_nfc_hce/flutter_nfc_hce.dart';
 import '../core/utils/proxy_config.dart';
 import 'app_info_service.dart';
 
@@ -31,6 +32,7 @@ class NfcChargeResult {
 
 class NfcChargeService {
   final Dio _dio = Dio();
+  final FlutterNfcHce _hce = FlutterNfcHce();
   bool _sessionActive = false;
 
   NfcChargeService() {
@@ -171,15 +173,34 @@ class NfcChargeService {
     } catch (_) {
       // ignore
     }
+    try {
+      await _hce.stopNfcHce();
+    } catch (_) {
+      // ignore
+    }
   }
 
   String? _extractUriFromTag(NfcTag tag) {
     final ndef = Ndef.from(tag);
-    if (ndef == null) return null;
+    if (ndef == null) {
+      _debugLog('Ndef es null - la tarjeta no soporta NDEF');
+      return null;
+    }
     final message = ndef.cachedMessage;
-    if (message == null || message.records.isEmpty) return null;
+    if (message == null || message.records.isEmpty) {
+      _debugLog('No hay registros NDEF en la tarjeta');
+      return null;
+    }
+
+    _debugLog('Registros encontrados: ${message.records.length}');
 
     for (final record in message.records) {
+      _debugLog('Record typeNameFormat: ${record.typeNameFormat}');
+      _debugLog('Record type: ${record.type}');
+      _debugLog('Record payload length: ${record.payload.length}');
+
+      String? raw;
+
       if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
           record.type.length == 1 &&
           record.type[0] == 0x55 &&
@@ -189,22 +210,51 @@ class NfcChargeService {
             ? NdefRecord.URI_PREFIX_LIST[prefixIndex]
             : '';
         final urlBytes = record.payload.sublist(1);
-        final raw = prefix + utf8.decode(urlBytes, allowMalformed: true);
-        return _normalizeLnurlw(raw);
+        raw = prefix + utf8.decode(urlBytes, allowMalformed: true);
+        _debugLog('URI estándar leído: $raw');
+      } else {
+        final payload = record.payload;
+        if (payload.isNotEmpty) {
+          // Handle RTD_TEXT properly
+          if (payload.length > 1) {
+            final statusByte = payload[0];
+            final encoding = (statusByte & 0x80) == 0 ? utf8 : Encoding.getByName('utf-16');
+            final langLength = statusByte & 0x3F;
+            if (payload.length > 1 + langLength) {
+              final contentBytes = payload.sublist(1 + langLength);
+              raw = encoding.decode(contentBytes);
+              _debugLog('Payload decodificado (RTD_TEXT): $raw');
+            }
+          } else {
+            raw = utf8.decode(payload, allowMalformed: true).trim();
+            _debugLog('Payload crudo leído: $raw');
+          }
+        }
+      }
+
+      if (raw != null) {
+        _debugLog('Intentando normalizar: $raw');
+        final normalized = _normalizeLnurlw(raw);
+        if (normalized != null) {
+          _debugLog('URL normalizada: $normalized');
+          return normalized;
+        }
       }
     }
+    _debugLog('No se encontró una URL LNURLW válida');
     return null;
   }
 
   String? _normalizeLnurlw(String raw) {
     if (raw.isEmpty) return null;
-    if (raw.startsWith('lnurlw://')) {
+    final lower = raw.toLowerCase();
+    if (lower.startsWith('lnurlw://')) {
       return 'https://${raw.substring(9)}';
     }
-    if (raw.startsWith('lnurlw:')) {
+    if (lower.startsWith('lnurlw:') && !lower.startsWith('lnurlw://')) {
       return 'https://${raw.substring(7)}';
     }
-    if (raw.startsWith('https://') || raw.startsWith('http://')) {
+    if (lower.startsWith('https://') || lower.startsWith('http://')) {
       return raw;
     }
     return null;
