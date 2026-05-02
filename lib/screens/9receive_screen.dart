@@ -987,14 +987,26 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     _showRequestAmountModal(autoStartNfcAfterGenerate: true);
   }
 
-  void _openNfcChargeSheet(String invoice) {
+  void _openNfcChargeSheet(String lnurl, {bool useHce = true}) {
+    setState(() {
+      _isHceActive = useHce;
+    });
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       isDismissible: false,
       enableDrag: false,
-      builder: (sheetContext) => _NfcChargeSheet(invoice: invoice),
+      builder: (sheetContext) => _NfcChargeSheet(
+        invoice: lnurl,
+        useHce: useHce,
+        onFinish: () {
+          setState(() {
+            _isHceActive = false;
+          });
+          Navigator.pop(sheetContext);
+        },
+      ),
     );
   }
 
@@ -1368,9 +1380,11 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       _startInvoicePaymentMonitoring(invoice, wallet, serverUrl);
 
       if (autoStartNfcAfterGenerate && _nfcAvailable) {
-        // Para HCE: pasar LNURL de Lightning Address (Phoenix lo lee y paga)
+        // Detectar qué modo usar: si hay LNURL de Lightning Address, usar HCE (Phoenix)
+        // Si no, intentar BoltCard (lector)
         final lnurlForHce = defaultAddress?.lnurl ?? invoice.paymentRequest;
-        _openNfcChargeSheet(lnurlForHce);
+        final useHce = defaultAddress?.lnurl != null;
+        _openNfcChargeSheet(lnurlForHce, useHce: useHce);
       }
     } catch (e) {
       setState(() {
@@ -1543,7 +1557,13 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
 class _NfcChargeSheet extends StatefulWidget {
   final String invoice;
-  const _NfcChargeSheet({required this.invoice});
+  final bool useHce;
+  final VoidCallback? onFinish;
+  const _NfcChargeSheet({
+    required this.invoice,
+    this.useHce = true,
+    this.onFinish,
+  });
 
   @override
   State<_NfcChargeSheet> createState() => _NfcChargeSheetState();
@@ -1565,6 +1585,7 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> {
   Future<void> _start() async {
     await _service.startChargeSession(
       invoice: widget.invoice,
+      useHce: widget.useHce,
       onStatus: (result) {
         if (!mounted) return;
         setState(() {
@@ -1574,7 +1595,10 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> {
         if (result.status == NfcChargeStatus.success && !_autoCloseScheduled) {
           _autoCloseScheduled = true;
           Future.delayed(const Duration(milliseconds: 1400), () {
-            if (mounted) Navigator.of(context).pop();
+            if (mounted) {
+              Navigator.of(context).pop();
+              if (widget.onFinish != null) widget.onFinish!();
+            }
           });
         }
       },
@@ -1623,7 +1647,9 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> {
     switch (_status) {
       case NfcChargeStatus.scanning:
       case NfcChargeStatus.reading:
-        return l10n.nfc_scanning_message;
+        return widget.useHce 
+            ? l10n.nfc_hce_message 
+            : l10n.nfc_scanning_message;
       case NfcChargeStatus.charging:
         return l10n.nfc_charging_message;
       case NfcChargeStatus.success:
