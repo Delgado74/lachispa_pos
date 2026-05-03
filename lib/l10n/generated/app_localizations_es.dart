@@ -976,7 +976,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nfc_unavailable_message => 'NFC no disponible en este dispositivo';
 
   @override
-String get nfc_scanning_title => 'Cobrar con NFC';
+  String get nfc_scanning_title => 'Cobrar con NFC';
 
   @override
   String get nfc_scanning_send => 'Pagando con NFC...';
@@ -988,19 +988,16 @@ String get nfc_scanning_title => 'Cobrar con NFC';
   String get nfc_hce_message => 'Acerca el dispositivo pagador';
 
   @override
-  String get nfc_card_detected => '¡Tarjeta detectada!';
+  String get nfc_charging_message => 'Cargando...';
 
   @override
-  String get nfc_charging_message => 'Cobrando...';
+  String get nfc_invalid_tag_message => 'Tag inválido o no es Boltcard';
 
   @override
-  String get nfc_invalid_tag_message => 'Tag inválido o no es una Boltcard';
+  String get nfc_charge_error_prefix => 'Error de cargo NFC: ';
 
   @override
-  String get nfc_charge_error_prefix => 'Error en cobro NFC: ';
-
-  @override
-  String get nfc_charge_unknown_error => 'Error desconocido al cobrar';
+  String get nfc_charge_unknown_error => 'Error desconocido durante el cargo';
 
   @override
   String get share_ready_message => 'Listo para compartir';
@@ -1009,7 +1006,10 @@ String get nfc_scanning_title => 'Cobrar con NFC';
   String get lnurl_copied_message => 'LNURL copiado al portapapeles';
 
   @override
-String get nfc_mode_title => 'Modo NFC';
+  String get nfc_card_detected => '¡Tarjeta detectada!';
+
+  @override
+  String get nfc_mode_title => 'Modo NFC';
 
   @override
   String get nfc_mode_boltcard => 'Cobrar BoltCard';
@@ -1037,21 +1037,6 @@ String get nfc_mode_title => 'Modo NFC';
 
   @override
   String get nfc_network_error => 'Error de red';
-
-  @override
-  String get nfc_scanning_title => 'Cobrar con NFC';
-
-  @override
-  String get nfc_scanning_send => 'Pagando con NFC...';
-
-  @override
-  String get nfc_scanning_message => 'Acerca la Boltcard al teléfono';
-
-  @override
-  String get nfc_hce_message => 'Acerca el dispositivo pagador';
-
-  @override
-  String get nfc_card_detected => '¡Tarjeta detectada!';
 
   @override
   String nfc_read_error(String error) {

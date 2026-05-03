@@ -987,7 +987,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nfc_unavailable_message => 'NFC auf diesem Gerät nicht verfügbar';
 
   @override
-String get nfc_scanning_title => 'Mit NFC einziehen';
+  String get nfc_scanning_title => 'Mit NFC einziehen';
 
   @override
   String get nfc_scanning_send => 'Mit NFC bezahlen...';
@@ -997,9 +997,6 @@ String get nfc_scanning_title => 'Mit NFC einziehen';
 
   @override
   String get nfc_hce_message => 'Halten Sie das Gerät des Zahlers an';
-
-  @override
-  String get nfc_card_detected => 'Karte erkannt!';
 
   @override
   String get nfc_charging_message => 'Wird belastet...';
@@ -1020,7 +1017,10 @@ String get nfc_scanning_title => 'Mit NFC einziehen';
   String get lnurl_copied_message => 'LNURL in die Zwischenablage kopiert';
 
   @override
-String get nfc_mode_title => 'NFC-Modus';
+  String get nfc_card_detected => 'Karte erkannt!';
+
+  @override
+  String get nfc_mode_title => 'NFC-Modus';
 
   @override
   String get nfc_mode_boltcard => 'BoltCard abbuchen';
@@ -1048,21 +1048,6 @@ String get nfc_mode_title => 'NFC-Modus';
 
   @override
   String get nfc_network_error => 'Netzwerkfehler';
-
-  @override
-  String get nfc_scanning_title => 'Mit NFC einziehen';
-
-  @override
-  String get nfc_scanning_send => 'Mit NFC bezahlen...';
-
-  @override
-  String get nfc_scanning_message => 'Halten Sie die Boltcard an das Telefon';
-
-  @override
-  String get nfc_hce_message => 'Halten Sie das Gerät des Zahlers an';
-
-  @override
-  String get nfc_card_detected => 'Karte erkannt!';
 
   @override
   String nfc_read_error(String error) {
@@ -1093,7 +1078,8 @@ String get nfc_mode_title => 'NFC-Modus';
   String get invoice_key_unavailable_title => 'Keine Wallet gefunden';
 
   @override
-  String get invoice_key_unavailable_subtitle => 'Bitte erstellen Sie zuerst eine Wallet';
+  String get invoice_key_unavailable_subtitle =>
+      'Bitte erstellen Sie zuerst eine Wallet';
 
   @override
   String get invoice_key_security_warning =>
@@ -1106,7 +1092,8 @@ String get nfc_mode_title => 'NFC-Modus';
   String get invoice_key_hide => 'Schlüssel verbergen';
 
   @override
-  String get invoice_key_copy_failed => 'Rechnungsschlüssel konnte nicht kopiert werden';
+  String get invoice_key_copy_failed =>
+      'Rechnungsschlüssel konnte nicht kopiert werden';
 
   @override
   String get invoice_key_empty => 'Rechnungsschlüssel darf nicht leer sein';

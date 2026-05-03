@@ -975,7 +975,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get nfc_unavailable_message => 'NFC não disponível neste dispositivo';
 
   @override
-String get nfc_scanning_title => 'Cobrar com NFC';
+  String get nfc_scanning_title => 'Cobrar com NFC';
 
   @override
   String get nfc_scanning_send => 'Pagando com NFC...';
@@ -985,9 +985,6 @@ String get nfc_scanning_title => 'Cobrar com NFC';
 
   @override
   String get nfc_hce_message => 'Aproxime o dispositivo do pagador';
-
-  @override
-  String get nfc_card_detected => 'Cartão detetado!';
 
   @override
   String get nfc_charging_message => 'Cobrando...';
@@ -1009,7 +1006,10 @@ String get nfc_scanning_title => 'Cobrar com NFC';
       'LNURL copiado para a área de transferência';
 
   @override
-String get nfc_mode_title => 'Modo NFC';
+  String get nfc_card_detected => 'Cartão detetado!';
+
+  @override
+  String get nfc_mode_title => 'Modo NFC';
 
   @override
   String get nfc_mode_boltcard => 'Cobrar BoltCard';
@@ -1037,21 +1037,6 @@ String get nfc_mode_title => 'Modo NFC';
 
   @override
   String get nfc_network_error => 'Erro de rede';
-
-  @override
-  String get nfc_scanning_title => 'Cobrar com NFC';
-
-  @override
-  String get nfc_scanning_send => 'Pagando com NFC...';
-
-  @override
-  String get nfc_scanning_message => 'Aproxime a Boltcard do telefone';
-
-  @override
-  String get nfc_hce_message => 'Aproxime o dispositivo do pagador';
-
-  @override
-  String get nfc_card_detected => 'Cartão detetado!';
 
   @override
   String nfc_read_error(String error) {

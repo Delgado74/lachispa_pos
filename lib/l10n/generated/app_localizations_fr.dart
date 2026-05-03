@@ -993,7 +993,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get nfc_unavailable_message => 'NFC non disponible sur cet appareil';
 
   @override
-String get nfc_scanning_title => 'Encaisser avec NFC';
+  String get nfc_scanning_title => 'Encaisser avec NFC';
 
   @override
   String get nfc_scanning_send => 'Paiement par NFC...';
@@ -1003,9 +1003,6 @@ String get nfc_scanning_title => 'Encaisser avec NFC';
 
   @override
   String get nfc_hce_message => 'Approchez l\'appareil du payeur';
-
-  @override
-  String get nfc_card_detected => 'Carte détectée !';
 
   @override
   String get nfc_charging_message => 'Encaissement en cours...';
@@ -1027,7 +1024,10 @@ String get nfc_scanning_title => 'Encaisser avec NFC';
   String get lnurl_copied_message => 'LNURL copié dans le presse-papiers';
 
   @override
-String get nfc_mode_title => 'Mode NFC';
+  String get nfc_card_detected => 'Carte détectée !';
+
+  @override
+  String get nfc_mode_title => 'Mode NFC';
 
   @override
   String get nfc_mode_boltcard => 'Débiter BoltCard';
@@ -1058,21 +1058,6 @@ String get nfc_mode_title => 'Mode NFC';
   String get nfc_network_error => 'Erreur réseau';
 
   @override
-  String get nfc_scanning_title => 'Encaisser avec NFC';
-
-  @override
-  String get nfc_scanning_send => 'Paiement par NFC...';
-
-  @override
-  String get nfc_scanning_message => 'Approchez la Boltcard du téléphone';
-
-  @override
-  String get nfc_hce_message => 'Approchez l\'appareil du payeur';
-
-  @override
-  String get nfc_card_detected => 'Carte détectée !';
-
-  @override
   String nfc_read_error(String error) {
     return 'Erreur : $error';
   }
@@ -1088,19 +1073,22 @@ String get nfc_mode_title => 'Mode NFC';
       'Utilisez ce code QR avec LaChispaPOS ou d\'autres applications Lightning pour recevoir des paiements sans exposer votre clé administrateur.';
 
   @override
-  String get invoice_key_qr_subtitle => 'Afficher le QR pour d\'autres applications';
+  String get invoice_key_qr_subtitle =>
+      'Afficher le QR pour d\'autres applications';
 
   @override
   String get copy_invoice_key => 'Copier la clé';
 
   @override
-  String get invoice_key_copied => 'Clé de facturation copiée dans le presse-papiers';
+  String get invoice_key_copied =>
+      'Clé de facturation copiée dans le presse-papiers';
 
   @override
   String get invoice_key_unavailable_title => 'Aucun portefeuille trouvé';
 
   @override
-  String get invoice_key_unavailable_subtitle => 'Créez d\'abord un portefeuille';
+  String get invoice_key_unavailable_subtitle =>
+      'Créez d\'abord un portefeuille';
 
   @override
   String get invoice_key_security_warning =>
@@ -1113,7 +1101,8 @@ String get nfc_mode_title => 'Mode NFC';
   String get invoice_key_hide => 'Masquer la clé';
 
   @override
-  String get invoice_key_copy_failed => 'Impossible de copier la clé de facturation';
+  String get invoice_key_copy_failed =>
+      'Impossible de copier la clé de facturation';
 
   @override
   String get invoice_key_empty => 'La clé de facturation ne peut pas être vide';

@@ -989,7 +989,7 @@ class AppLocalizationsIt extends AppLocalizations {
       'NFC non disponibile su questo dispositivo';
 
   @override
-String get nfc_scanning_title => 'Incassa con NFC';
+  String get nfc_scanning_title => 'Incassa con NFC';
 
   @override
   String get nfc_scanning_send => 'Pagamento con NFC...';
@@ -999,9 +999,6 @@ String get nfc_scanning_title => 'Incassa con NFC';
 
   @override
   String get nfc_hce_message => 'Avvicina il dispositivo del pagatore';
-
-  @override
-  String get nfc_card_detected => 'Carta rilevata!';
 
   @override
   String get nfc_charging_message => 'Incasso in corso...';
@@ -1023,7 +1020,10 @@ String get nfc_scanning_title => 'Incassa con NFC';
   String get lnurl_copied_message => 'LNURL copiato negli appunti';
 
   @override
-String get nfc_mode_title => 'Modalità NFC';
+  String get nfc_card_detected => 'Carta rilevata!';
+
+  @override
+  String get nfc_mode_title => 'Modalità NFC';
 
   @override
   String get nfc_mode_boltcard => 'Addebita BoltCard';
@@ -1051,21 +1051,6 @@ String get nfc_mode_title => 'Modalità NFC';
 
   @override
   String get nfc_network_error => 'Errore di rete';
-
-  @override
-  String get nfc_scanning_title => 'Incassa con NFC';
-
-  @override
-  String get nfc_scanning_send => 'Pagamento con NFC...';
-
-  @override
-  String get nfc_scanning_message => 'Avvicina la Boltcard al telefono';
-
-  @override
-  String get nfc_hce_message => 'Avvicina il dispositivo del pagatore';
-
-  @override
-  String get nfc_card_detected => 'Carta rilevata!';
 
   @override
   String nfc_read_error(String error) {
