@@ -1009,10 +1009,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get nfc_mode_title => 'Modalità NFC';
 
   @override
-  String get nfc_mode_boltcard => 'Carica BoltCard';
+  String get nfc_mode_boltcard => 'Addebita BoltCard';
 
   @override
-  String get nfc_mode_boltcard_subtitle => 'Leggi carta e invia fattura';
+  String get nfc_mode_boltcard_subtitle => 'Leggi carta e addebita fattura';
 
   @override
   String get nfc_mode_hce => 'Emula HCE';

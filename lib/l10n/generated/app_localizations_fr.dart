@@ -1013,11 +1013,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get nfc_mode_title => 'Mode NFC';
 
   @override
-  String get nfc_mode_boltcard => 'Charger BoltCard';
+  String get nfc_mode_boltcard => 'Débiter BoltCard';
 
   @override
   String get nfc_mode_boltcard_subtitle =>
-      'Lire la carte et envoyer la facture';
+      'Lire la carte et débiter la facture';
 
   @override
   String get nfc_mode_hce => 'Émuler HCE';

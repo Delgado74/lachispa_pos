@@ -995,10 +995,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get nfc_mode_title => 'Modo NFC';
 
   @override
-  String get nfc_mode_boltcard => 'Cargar BoltCard';
+  String get nfc_mode_boltcard => 'Cobrar BoltCard';
 
   @override
-  String get nfc_mode_boltcard_subtitle => 'Leer tarjeta y enviar factura';
+  String get nfc_mode_boltcard_subtitle => 'Leer tarjeta y cobrar factura';
 
   @override
   String get nfc_mode_hce => 'Emular HCE';

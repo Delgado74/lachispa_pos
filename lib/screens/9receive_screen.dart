@@ -1021,13 +1021,8 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
     if (modo == null) return;
 
-    if (modo == ModoNfcRecibir.hceWallet) {
-      _openNfcChargeSheet(_generatedInvoice!.paymentRequest, 
-                          modo: modo);
-    } else {
-      _openNfcChargeSheet(_generatedInvoice!.paymentRequest, 
-                          modo: modo);
-    }
+    _openNfcChargeSheet(_generatedInvoice!.paymentRequest, 
+                        modo: modo);
   }
 
   void _openNfcChargeSheet(String contenido, {required ModoNfcRecibir modo}) {
@@ -1633,13 +1628,11 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> with SingleTickerProvi
   NfcChargeStatus _status = NfcChargeStatus.scanning;
   String? _errorMessage;
   bool _autoCloseScheduled = false;
-  late final TabController _tabController;
   bool _serviceInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -1662,15 +1655,14 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> with SingleTickerProvi
           _status = result.status;
           _errorMessage = result.message;
         });
-        if (result.status == NfcChargeStatus.success && !_autoCloseScheduled) {
-          _autoCloseScheduled = true;
-          Future.delayed(const Duration(milliseconds: 1400), () {
-            if (mounted) {
-              Navigator.of(context).pop();
-              if (widget.onFinish != null) widget.onFinish!();
-            }
-          });
-        }
+          if (result.status == NfcChargeStatus.success && !_autoCloseScheduled) {
+            _autoCloseScheduled = true;
+            Future.delayed(const Duration(milliseconds: 1400), () {
+              if (mounted) {
+                if (widget.onFinish != null) widget.onFinish!();
+              }
+            });
+          }
       },
     );
   }

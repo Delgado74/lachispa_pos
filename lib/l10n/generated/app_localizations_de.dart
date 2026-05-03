@@ -1006,10 +1006,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nfc_mode_title => 'NFC-Modus';
 
   @override
-  String get nfc_mode_boltcard => 'BoltCard laden';
+  String get nfc_mode_boltcard => 'BoltCard abbuchen';
 
   @override
-  String get nfc_mode_boltcard_subtitle => 'Karte lesen und Rechnung senden';
+  String get nfc_mode_boltcard_subtitle => 'Karte lesen und Rechnung einziehen';
 
   @override
   String get nfc_mode_hce => 'HCE emulieren';

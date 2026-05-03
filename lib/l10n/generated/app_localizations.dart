@@ -1917,13 +1917,13 @@ abstract class AppLocalizations {
   /// No description provided for @nfc_mode_boltcard.
   ///
   /// In es, this message translates to:
-  /// **'Cargar BoltCard'**
+  /// **'Cobrar BoltCard'**
   String get nfc_mode_boltcard;
 
   /// No description provided for @nfc_mode_boltcard_subtitle.
   ///
   /// In es, this message translates to:
-  /// **'Leer tarjeta y enviar factura'**
+  /// **'Leer tarjeta y cobrar factura'**
   String get nfc_mode_boltcard_subtitle;
 
   /// No description provided for @nfc_mode_hce.

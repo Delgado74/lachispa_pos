@@ -986,10 +986,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get nfc_mode_title => 'Режим NFC';
 
   @override
-  String get nfc_mode_boltcard => 'Загрузить BoltCard';
+  String get nfc_mode_boltcard => 'Списать с BoltCard';
 
   @override
-  String get nfc_mode_boltcard_subtitle => 'Считать карту и отправить счёт';
+  String get nfc_mode_boltcard_subtitle => 'Считать карту и списать средства';
 
   @override
   String get nfc_mode_hce => 'Эмуляция HCE';

@@ -982,10 +982,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nfc_mode_title => 'NFC Mode';
 
   @override
-  String get nfc_mode_boltcard => 'Load BoltCard';
+  String get nfc_mode_boltcard => 'Charge BoltCard';
 
   @override
-  String get nfc_mode_boltcard_subtitle => 'Read card and send invoice';
+  String get nfc_mode_boltcard_subtitle => 'Read card and charge invoice';
 
   @override
   String get nfc_mode_hce => 'Emulate HCE';

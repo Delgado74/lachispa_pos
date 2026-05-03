@@ -40,6 +40,7 @@ class NfcChargeService {
   final Dio _dio = Dio();
   final FlutterNfcHce _hce = FlutterNfcHce();
   bool _sessionActive = false;
+  bool _processingTag = false;
   final AppLocalizations _l10n;
 
   NfcChargeService(this._l10n) {
@@ -101,6 +102,8 @@ class NfcChargeService {
           );
           _debugLog('HCE: Emulación NFC iniciada correctamente');
           onStatus(const NfcChargeResult(NfcChargeStatus.reading));
+          // HCE queda activo esperando que un lector se conecte
+          // El usuario debe detener la sesión manualmente
           break;
 
         case ModoNfcRecibir.lectorBoltcard:
@@ -111,6 +114,8 @@ class NfcChargeService {
             invalidateAfterFirstRead: false,
             alertMessage: 'Acerca la tarjeta',
             onDiscovered: (NfcTag tag) async {
+              if (_processingTag) return;
+              _processingTag = true;
               try {
                 onStatus(const NfcChargeResult(NfcChargeStatus.reading));
 
@@ -176,6 +181,7 @@ class NfcChargeService {
                 ));
                 await _safeStop(errorMessage: _l10n.nfc_network_error);
               } finally {
+                _processingTag = false;
                 _sessionActive = false;
               }
             },
@@ -194,7 +200,9 @@ class NfcChargeService {
 
   Future<void> stopSession() async {
     await _safeStop();
+    try { await _hce.stopNfcHce(); } catch (_) {}
     _sessionActive = false;
+    _processingTag = false;
   }
 
   Future<void> _safeStop({String? alertMessage, String? errorMessage}) async {
@@ -289,6 +297,7 @@ class NfcChargeService {
   }
 
   void dispose() {
+    try { _hce.stopNfcHce(); } catch (_) {}
     _dio.close(force: true);
   }
 }
