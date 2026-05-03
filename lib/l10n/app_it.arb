@@ -352,6 +352,15 @@
   "voucher_generic_error": "Impossibile elaborare il voucher",
   "voucher_generic_error_desc": "C'è stato un errore imprevisto nell'elaborazione di questo voucher. Riprova o contatta il supporto.",
   
+  "currency_count": "{count, plural, =1{1 valuta} other{{count} valute}}",
+  "@currency_count": {
+    "description": "Number of currencies available",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "currency_validation_info": "Quando si seleziona una valuta, verrà verificato se è disponibile su questo server",
   "checking_currency_availability": "Verifica disponibilità di {currency}...",
   "currency_added_successfully": "{currency} aggiunto con successo",

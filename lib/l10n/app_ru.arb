@@ -352,6 +352,15 @@
   "voucher_generic_error": "Не удается обработать ваучер",
   "voucher_generic_error_desc": "Произошла неожиданная ошибка при обработке этого ваучера. Попробуйте еще раз или обратитесь в поддержку.",
   
+  "currency_count": "{count, plural, =1{1 валюта} other{{count} валют}}",
+  "@currency_count": {
+    "description": "Number of currencies available",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "currency_validation_info": "При выборе валюты будет проверено, доступна ли она на этом сервере",
   "checking_currency_availability": "Проверка доступности {currency}...",
   "currency_added_successfully": "{currency} успешно добавлен",

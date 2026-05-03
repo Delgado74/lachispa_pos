@@ -352,6 +352,15 @@
   "voucher_generic_error": "Voucher kann nicht verarbeitet werden",
   "voucher_generic_error_desc": "Es gab einen unerwarteten Fehler beim Verarbeiten dieses Vouchers. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
   
+  "currency_count": "{count, plural, =1{1 Währung} other{{count} Währungen}}",
+  "@currency_count": {
+    "description": "Number of currencies available",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "currency_validation_info": "Bei der Auswahl einer Währung wird überprüft, ob sie auf diesem Server verfügbar ist",
   "checking_currency_availability": "Überprüfung der Verfügbarkeit von {currency}...",
   "currency_added_successfully": "{currency} erfolgreich hinzugefügt",

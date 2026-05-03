@@ -917,6 +917,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get about_title => 'Acerca de';
 
   @override
+  String currency_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count monedas',
+      one: '1 moneda',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get currency_validation_info =>
       'Al seleccionar una moneda, se verificará si está disponible en este servidor';
 
@@ -987,4 +998,45 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get lnurl_copied_message => 'LNURL copiado al portapapeles';
+
+  @override
+  String get invoice_key_qr_title => 'QR de Clave de Facturación';
+
+  @override
+  String get invoice_key_qr_description =>
+      'Usa este código QR con LaChispaPOS u otras apps Lightning para recibir pagos sin exponer tu clave de administrador.';
+
+  @override
+  String get invoice_key_qr_subtitle => 'Mostrar QR para otras apps';
+
+  @override
+  String get copy_invoice_key => 'Copiar Clave';
+
+  @override
+  String get invoice_key_copied =>
+      'Clave de facturación copiada al portapapeles';
+
+  @override
+  String get invoice_key_unavailable_title => 'No se encontró billetera';
+
+  @override
+  String get invoice_key_unavailable_subtitle => 'Crea una billetera primero';
+
+  @override
+  String get invoice_key_security_warning =>
+      'Esta clave permite a terceros crear facturas. Compártela solo con dispositivos POS de confianza. Nunca la publiques ni compartas públicamente.';
+
+  @override
+  String get invoice_key_show => 'Mostrar clave';
+
+  @override
+  String get invoice_key_hide => 'Ocultar clave';
+
+  @override
+  String get invoice_key_copy_failed =>
+      'No se pudo copiar la clave de facturación';
+
+  @override
+  String get invoice_key_empty =>
+      'La clave de facturación no puede estar vacía';
 }

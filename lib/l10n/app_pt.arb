@@ -352,6 +352,15 @@
   "settings_screen_title": "Configurações",
   "about_title": "Sobre",
   
+  "currency_count": "{count, plural, =1{1 moeda} other{{count} moedas}}",
+  "@currency_count": {
+    "description": "Number of currencies available",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "currency_validation_info": "Ao selecionar uma moeda, será verificado se está disponível neste servidor",
   "checking_currency_availability": "Verificando disponibilidade de {currency}...",
   "currency_added_successfully": "{currency} adicionado com sucesso",

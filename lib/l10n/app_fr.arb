@@ -352,6 +352,15 @@
   "voucher_generic_error": "Impossible de traiter le voucher",
   "voucher_generic_error_desc": "Il y a eu une erreur inattendue lors du traitement de ce voucher. Veuillez réessayer ou contacter le support.",
   
+  "currency_count": "{count, plural, =1{1 monnaie} other{{count} monnaies}}",
+  "@currency_count": {
+    "description": "Number of currencies available",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "currency_validation_info": "Lors de la sélection d'une devise, il sera vérifié si elle est disponible sur ce serveur",
   "checking_currency_availability": "Vérification de la disponibilité de {currency}...",
   "currency_added_successfully": "{currency} ajouté avec succès",
