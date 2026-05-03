@@ -976,13 +976,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nfc_unavailable_message => 'NFC auf diesem Gerät nicht verfügbar';
 
   @override
-  String get nfc_scanning_title => 'Mit NFC einziehen';
+String get nfc_scanning_title => 'Mit NFC einziehen';
+
+  @override
+  String get nfc_scanning_send => 'Mit NFC bezahlen...';
 
   @override
   String get nfc_scanning_message => 'Halten Sie die Boltcard an das Telefon';
 
   @override
   String get nfc_hce_message => 'Halten Sie das Gerät des Zahlers an';
+
+  @override
+  String get nfc_card_detected => 'Karte erkannt!';
 
   @override
   String get nfc_charging_message => 'Wird belastet...';
@@ -1031,4 +1037,78 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get nfc_network_error => 'Netzwerkfehler';
+
+  @override
+  String nfc_read_error(String error) {
+    return 'Fehler: $error';
+  }
+
+  @override
+  String get nfc_processing_card => 'Kartendaten werden verarbeitet...';
+  String get nfc_charging_message => 'Wird belastet...';
+
+  @override
+  String get nfc_invalid_tag_message => 'Ungültiges Tag oder keine Boltcard';
+
+  @override
+  String get nfc_charge_error_prefix => 'NFC-Fehler beim Einziehen: ';
+
+  @override
+  String get nfc_charge_unknown_error => 'Unbekannter Fehler beim Einziehen';
+
+  @override
+  String get share_ready_message => 'Bereit zum Teilen';
+
+  @override
+  String get lnurl_copied_message => 'LNURL in die Zwischenablage kopiert';
+
+  @override
+String get nfc_mode_title => 'NFC-Modus';
+
+  @override
+  String get nfc_mode_boltcard => 'BoltCard abbuchen';
+
+  @override
+  String get nfc_mode_boltcard_subtitle => 'Karte lesen und Rechnung einziehen';
+
+  @override
+  String get nfc_mode_hce => 'HCE emulieren';
+
+  @override
+  String get nfc_mode_hce_subtitle => 'Telefon als Karte';
+
+  @override
+  String get nfc_tag_not_compatible => 'Tag nicht kompatibel';
+
+  @override
+  String get nfc_not_boltcard => 'Keine Boltcard';
+
+  @override
+  String get nfc_incomplete_data => 'Unvollständige Daten';
+
+  @override
+  String get nfc_invalid_response => 'Ungültige Antwort';
+
+  @override
+  String get nfc_network_error => 'Netzwerkfehler';
+
+  @override
+  String get nfc_scanning_title => 'Mit NFC einziehen';
+
+  @override
+  String get nfc_scanning_send => 'Mit NFC bezahlen...';
+
+  @override
+  String get nfc_scanning_message => 'Halten Sie die Boltcard an das Telefon';
+
+  @override
+  String get nfc_card_detected => 'Karte erkannt!';
+
+  @override
+  String nfc_read_error(String error) {
+    return 'Fehler: $error';
+  }
+
+  @override
+  String get nfc_processing_card => 'Kartendaten werden verarbeitet...';
 }

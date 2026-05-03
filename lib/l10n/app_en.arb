@@ -382,8 +382,10 @@
   "nfc_action_label": "NFC",
   "nfc_unavailable_message": "NFC not available on this device",
   "nfc_scanning_title": "Charge with NFC",
+  "nfc_scanning_send": "Paying with NFC...",
   "nfc_scanning_message": "Tap the Boltcard against the phone",
   "nfc_hce_message": "Tap the payer's device",
+  "nfc_card_detected": "Card detected!",
   "nfc_charging_message": "Charging...",
   "nfc_invalid_tag_message": "Invalid tag or not a Boltcard",
   "nfc_charge_error_prefix": "NFC charge error: ",
@@ -399,5 +401,12 @@
   "nfc_not_boltcard": "Not a Boltcard",
   "nfc_incomplete_data": "Incomplete data",
   "nfc_invalid_response": "Invalid response",
-  "nfc_network_error": "Network error"
+  "nfc_network_error": "Network error",
+  "nfc_read_error": "Error: {error}",
+  "@nfc_read_error": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "nfc_processing_card": "Processing card data..."
 }

@@ -1854,11 +1854,17 @@ abstract class AppLocalizations {
   /// **'NFC no disponible en este dispositivo'**
   String get nfc_unavailable_message;
 
-  /// No description provided for @nfc_scanning_title.
+/// No description provided for @nfc_scanning_title.
   ///
   /// In es, this message translates to:
   /// **'Cobrar con NFC'**
   String get nfc_scanning_title;
+
+  /// No description provided for @nfc_scanning_send.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagando con NFC...'**
+  String get nfc_scanning_send;
 
   /// No description provided for @nfc_scanning_message.
   ///
@@ -1871,6 +1877,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Acerca el dispositivo pagador'**
   String get nfc_hce_message;
+
+  /// No description provided for @nfc_card_detected.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Tarjeta detectada!'**
+  String get nfc_card_detected;
 
   /// No description provided for @nfc_charging_message.
   ///
@@ -1967,6 +1979,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Error de red'**
   String get nfc_network_error;
+
+  /// No description provided for @nfc_read_error.
+  ///
+  /// In es, this message translates to:
+  /// **'Error: {error}'**
+  String nfc_read_error(String error);
+
+  /// No description provided for @nfc_processing_card.
+  ///
+  /// In es, this message translates to:
+  /// **'Procesando datos de la tarjeta...'**
+  String get nfc_processing_card;
 }
 
 class _AppLocalizationsDelegate

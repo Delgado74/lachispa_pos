@@ -964,13 +964,19 @@ class AppLocalizationsPt extends AppLocalizations {
   String get nfc_unavailable_message => 'NFC não disponível neste dispositivo';
 
   @override
-  String get nfc_scanning_title => 'Cobrar com NFC';
+String get nfc_scanning_title => 'Cobrar com NFC';
+
+  @override
+  String get nfc_scanning_send => 'Pagando com NFC...';
 
   @override
   String get nfc_scanning_message => 'Aproxime a Boltcard do telefone';
 
   @override
   String get nfc_hce_message => 'Aproxime o dispositivo do pagador';
+
+  @override
+  String get nfc_card_detected => 'Cartão detetado!';
 
   @override
   String get nfc_charging_message => 'Cobrando...';
@@ -1020,4 +1026,79 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get nfc_network_error => 'Erro de rede';
+
+  @override
+  String nfc_read_error(String error) {
+    return 'Erro: $error';
+  }
+
+  @override
+  String get nfc_processing_card => 'Processando dados do cartão...';
+  String get nfc_charging_message => 'Cobrando...';
+
+  @override
+  String get nfc_invalid_tag_message => 'Tag inválido ou não é uma Boltcard';
+
+  @override
+  String get nfc_charge_error_prefix => 'Erro ao cobrar com NFC: ';
+
+  @override
+  String get nfc_charge_unknown_error => 'Erro desconhecido ao cobrar';
+
+  @override
+  String get share_ready_message => 'Pronto para compartilhar';
+
+  @override
+  String get lnurl_copied_message =>
+      'LNURL copiado para a área de transferência';
+
+  @override
+String get nfc_mode_title => 'Modo NFC';
+
+  @override
+  String get nfc_mode_boltcard => 'Cobrar BoltCard';
+
+  @override
+  String get nfc_mode_boltcard_subtitle => 'Ler cartão e cobrar fatura';
+
+  @override
+  String get nfc_mode_hce => 'Emular HCE';
+
+  @override
+  String get nfc_mode_hce_subtitle => 'Telefone como cartão';
+
+  @override
+  String get nfc_tag_not_compatible => 'Tag não compatível';
+
+  @override
+  String get nfc_not_boltcard => 'Não é Boltcard';
+
+  @override
+  String get nfc_incomplete_data => 'Dados incompletos';
+
+  @override
+  String get nfc_invalid_response => 'Resposta inválida';
+
+  @override
+  String get nfc_network_error => 'Erro de rede';
+
+  @override
+  String get nfc_scanning_title => 'Cobrar com NFC';
+
+  @override
+  String get nfc_scanning_send => 'Pagando com NFC...';
+
+  @override
+  String get nfc_scanning_message => 'Aproxime a Boltcard do telefone';
+
+  @override
+  String get nfc_card_detected => 'Cartão detetado!';
+
+  @override
+  String nfc_read_error(String error) {
+    return 'Erro: $error';
+  }
+
+  @override
+  String get nfc_processing_card => 'Processando dados do cartão...';
 }

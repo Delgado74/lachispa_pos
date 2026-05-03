@@ -5,6 +5,7 @@ import '11amount_screen.dart';
 import '12invoice_confirm_screen.dart';
 import '../services/invoice_service.dart';
 import '../services/payment_error.dart';
+import '../services/nfc_read_service.dart';
 import '../providers/auth_provider.dart';
 import '../providers/wallet_provider.dart';
 import '../widgets/qr_scanner_widget.dart';
@@ -23,13 +24,18 @@ class SendScreen extends StatefulWidget {
 class _SendScreenState extends State<SendScreen> {
   final TextEditingController _inputController = TextEditingController();
   final InvoiceService _invoiceService = InvoiceService();
+  final NfcReadService _nfcReadService = NfcReadService();
   bool _isProcessing = false;
+  bool _nfcAvailable = false;
 
   @override
   void initState() {
     super.initState();
     // Listen to text changes for automatic validation
     _inputController.addListener(_onTextChanged);
+
+    // Check NFC availability
+    _checkNfcAvailability();
 
     // Set initial payment data if provided from deep link
     if (widget.initialPaymentData != null) {
@@ -47,6 +53,15 @@ class _SendScreenState extends State<SendScreen> {
       });
     } else {
       print('[SendScreen] No initial payment data provided');
+    }
+  }
+
+  Future<void> _checkNfcAvailability() async {
+    final available = await NfcReadService.isAvailable();
+    if (mounted) {
+      setState(() {
+        _nfcAvailable = available;
+      });
     }
   }
 
@@ -115,8 +130,8 @@ class _SendScreenState extends State<SendScreen> {
 
     // Basic Lightning BOLT11 invoice validation
     return normalizedText.startsWith('lnbc') ||
-           normalizedText.startsWith('lntb') ||
-           normalizedText.startsWith('lnbcrt');
+        normalizedText.startsWith('lntb') ||
+        normalizedText.startsWith('lnbcrt');
   }
 
   bool _isValidLNURL(String text) {
@@ -125,7 +140,7 @@ class _SendScreenState extends State<SendScreen> {
 
     // Basic LNURL validation
     return normalizedText.startsWith('lnurl') ||
-           (text.startsWith('http') && text.contains('lnurl'));
+        (text.startsWith('http') && text.contains('lnurl'));
   }
 
   bool _isValidLightningAddress(String text) {
@@ -225,7 +240,6 @@ class _SendScreenState extends State<SendScreen> {
           );
         }
       }
-
     } catch (e) {
       print('[SEND_SCREEN] Error decoding invoice: $e');
       _showErrorSnackBar('${AppLocalizations.of(context)!.decode_invoice_error_prefix}$e');
@@ -237,6 +251,101 @@ class _SendScreenState extends State<SendScreen> {
       }
     }
   }
+
+  // FIX 1: onTap is always passed (never null), so the disabled NFC button
+  // still fires _showNfcUnavailable instead of being silently swallowed.
+  Widget _buildBarAction({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    bool enabled = true,
+  }) {
+    final color = enabled
+        ? context.tokens.textPrimary
+        : context.tokens.textPrimary.withValues(alpha: 0.32);
+    return Expanded(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap, // always forward the tap; caller decides the action
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, color: color, size: 24),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // FIX 2: bottom bar now uses the same brand gradient as the send screen body,
+  // matching the gradient used in receive_screen's action bar.
+  Widget _buildBottomActionBar() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF0F1419),
+            Color(0xFF2D3FE7),
+          ],
+        ),
+        border: Border(
+          top: BorderSide(color: context.tokens.outline, width: 1),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      padding: EdgeInsets.fromLTRB(
+        8,
+        10,
+        8,
+        10 + MediaQuery.of(context).viewPadding.bottom,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildBarAction(
+            icon: Icons.content_paste_rounded,
+            label: AppLocalizations.of(context)!.paste_button,
+            onTap: _pasteFromClipboard,
+          ),
+          _buildBarAction(
+            icon: Icons.qr_code_scanner,
+            label: AppLocalizations.of(context)!.scan_button,
+            onTap: _scanQR,
+          ),
+          _buildBarAction(
+            icon: Icons.nfc_rounded,
+            label: AppLocalizations.of(context)!.nfc_action_label,
+            enabled: _nfcAvailable,
+            onTap: _nfcAvailable ? _activateNfcRead : _showNfcUnavailable,
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Future<void> _processLNURLPayment(String lnurl) async {
     // Clean LNURL by removing prefixes if they exist
@@ -268,6 +377,47 @@ class _SendScreenState extends State<SendScreen> {
         ),
       ),
     );
+  }
+
+  void _showNfcUnavailable() {
+    _showInfoSnackBar(AppLocalizations.of(context)!.nfc_unavailable_message);
+  }
+
+  void _activateNfcRead() {
+    if (!_nfcAvailable) {
+      _showInfoSnackBar(AppLocalizations.of(context)!.nfc_unavailable_message);
+      return;
+    }
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (sheetContext) => _NfcReadSheet(
+        nfcService: _nfcReadService,
+        onRead: (result) {
+          Navigator.pop(sheetContext);
+          _handleNfcReadResult(result);
+        },
+        onError: (error) {
+          Navigator.pop(sheetContext);
+          _showErrorSnackBar(error);
+        },
+      ),
+    );
+  }
+
+  void _handleNfcReadResult(NfcReadResult result) {
+    setState(() {
+      _inputController.text = result.value;
+    });
+
+    if (result.type == NfcReadResultType.lightningAddress) {
+      _processLightningAddressPayment(result.value);
+    } else if (result.type == NfcReadResultType.lnurl) {
+      _processLNURLPayment(result.value);
+    }
   }
 
   // ignore: unused_element
@@ -323,6 +473,33 @@ class _SendScreenState extends State<SendScreen> {
     }
   }
 
+  void _showInfoSnackBar(String message) {
+    final t = context.tokens;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.info, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                message,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: t.accentSolid,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   void _showErrorSnackBar(String message) {
     final t = context.tokens;
     ScaffoldMessenger.of(context).showSnackBar(
@@ -351,6 +528,7 @@ class _SendScreenState extends State<SendScreen> {
   Widget build(BuildContext context) {
     final t = context.tokens;
     return Scaffold(
+      bottomNavigationBar: _buildBottomActionBar(),
       body: LayoutBuilder(
         builder: (context, constraints) {
           final screenWidth = constraints.maxWidth;
@@ -494,174 +672,66 @@ class _SendScreenState extends State<SendScreen> {
 
                           SizedBox(height: isMobile ? 16 : 24),
 
-                          Column(
-                            children: [
-                              Row(
+                          SizedBox(height: isMobile ? 16 : 24),
+
+                          SizedBox(
+                            width: double.infinity,
+                            height: isMobile ? 52 : 64,
+                            child: ElevatedButton(
+                              onPressed: (_hasValidInput() && !_isProcessing) ? _processPayment : null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _hasValidInput()
+                                    ? t.accentSolid
+                                    : t.surface,
+                                foregroundColor: t.accentForeground,
+                                elevation: _hasValidInput() ? 8 : 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                  side: BorderSide(
+                                    color: _hasValidInput()
+                                        ? t.accentSolid
+                                        : t.outline,
+                                    width: 1,
+                                  ),
+                                ),
+                                shadowColor: _hasValidInput()
+                                    ? t.accentSolid.withValues(alpha: 0.3)
+                                    : Colors.transparent,
+                              ),
+                              child: _isProcessing
+                                  ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                    child: SizedBox(
-                                      height: isMobile ? 48 : 56,
-                                      child: ElevatedButton(
-                                        onPressed: _pasteFromClipboard,
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: t.surface,
-                                          foregroundColor: t.textPrimary,
-                                          elevation: 0,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(16),
-                                            side: BorderSide(
-                                              color: t.outline,
-                                              width: 1,
-                                            ),
-                                          ),
-                                          shadowColor: Colors.transparent,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 20,
-                                              height: 20,
-                                              decoration: BoxDecoration(
-                                                color: t.textPrimary.withValues(alpha: 0.2),
-                                                borderRadius: BorderRadius.circular(4),
-                                              ),
-                                              child: Icon(
-                                                Icons.content_paste,
-                                                size: 14,
-                                                color: t.textPrimary,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              AppLocalizations.of(context)!.paste_button,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: t.textPrimary,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                  SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(t.accentForeground),
                                     ),
                                   ),
-
-                                  const SizedBox(width: 16),
-
-                                  Expanded(
-                                    child: SizedBox(
-                                      height: isMobile ? 48 : 56,
-                                      child: ElevatedButton(
-                                        onPressed: _scanQR,
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: t.surface,
-                                          foregroundColor: t.textPrimary,
-                                          elevation: 0,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(16),
-                                            side: BorderSide(
-                                              color: t.outline,
-                                              width: 1,
-                                            ),
-                                          ),
-                                          shadowColor: Colors.transparent,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 20,
-                                              height: 20,
-                                              decoration: BoxDecoration(
-                                                color: t.textPrimary.withValues(alpha: 0.2),
-                                                borderRadius: BorderRadius.circular(4),
-                                              ),
-                                              child: Icon(
-                                                Icons.qr_code_scanner,
-                                                size: 14,
-                                                color: t.textPrimary,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              AppLocalizations.of(context)!.scan_button,
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: t.textPrimary,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    AppLocalizations.of(context)!.processing_text.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: t.accentForeground,
                                     ),
                                   ),
                                 ],
-                              ),
-
-                              SizedBox(height: isMobile ? 16 : 24),
-
-                              SizedBox(
-                                width: double.infinity,
-                                height: isMobile ? 52 : 64,
-                                child: ElevatedButton(
-                                  onPressed: (_hasValidInput() && !_isProcessing) ? _processPayment : null,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: _hasValidInput()
-                                        ? t.accentSolid
-                                        : t.surface,
-                                    foregroundColor: t.accentForeground,
-                                    elevation: _hasValidInput() ? 8 : 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                      side: BorderSide(
-                                        color: _hasValidInput()
-                                            ? t.accentSolid
-                                            : t.outline,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    shadowColor: _hasValidInput()
-                                        ? t.accentSolid.withValues(alpha: 0.3)
-                                        : Colors.transparent,
-                                  ),
-                                  child: _isProcessing
-                                      ? Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: 20,
-                                              height: 20,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
-                                                valueColor: AlwaysStoppedAnimation<Color>(t.accentForeground),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 12),
-                                            Text(
-                                              AppLocalizations.of(context)!.processing_text.toUpperCase(),
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                color: t.accentForeground,
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : Text(
-                                          AppLocalizations.of(context)!.pay_button.toUpperCase(),
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700,
-                                            color: _hasValidInput()
-                                                ? t.accentForeground
-                                                : t.textPrimary.withValues(alpha: 0.4),
-                                          ),
-                                        ),
+                              )
+                                  : Text(
+                                AppLocalizations.of(context)!.pay_button.toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: _hasValidInput()
+                                      ? t.accentForeground
+                                      : t.textPrimary.withValues(alpha: 0.4),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
 
                           // Flexible spacer to push info to bottom
@@ -696,6 +766,152 @@ class _SendScreenState extends State<SendScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _NfcReadSheet extends StatefulWidget {
+  final NfcReadService nfcService;
+  final Function(NfcReadResult) onRead;
+  final Function(String) onError;
+
+  const _NfcReadSheet({
+    required this.nfcService,
+    required this.onRead,
+    required this.onError,
+  });
+
+  @override
+  State<_NfcReadSheet> createState() => _NfcReadSheetState();
+}
+
+class _NfcReadSheetState extends State<_NfcReadSheet> {
+  late String _status;
+  bool _reading = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _status = AppLocalizations.of(context)!.nfc_scanning_send;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startNfcRead();
+  }
+
+  Future<void> _startNfcRead() async {
+    try {
+      await widget.nfcService.startReadSession(
+        onResult: (result) {
+          if (mounted) {
+            final l = AppLocalizations.of(context)!;
+            setState(() {
+              _reading = false;
+              _status = l.nfc_card_detected;
+            });
+            widget.onRead(result);
+          }
+        },
+        onError: (error) {
+          if (mounted) {
+            final l = AppLocalizations.of(context)!;
+            setState(() {
+              _reading = false;
+              _status = l.nfc_read_error(error);
+            });
+            Future.delayed(const Duration(seconds: 2), () {
+              widget.onError(error);
+            });
+          }
+        },
+      );
+    } catch (e) {
+      if (mounted) {
+        widget.onError(e.toString());
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.nfcService.stopSession();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.tokens;
+    final l = AppLocalizations.of(context)!;
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: t.dialogBackground,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: t.textTertiary,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Icon(
+            _reading ? Icons.nfc_rounded : Icons.check_circle,
+            size: 64,
+            color: _reading ? t.accentSolid : Colors.green,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            _status,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: t.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _reading
+                ? l.nfc_scanning_message
+                : l.nfc_processing_card,
+            style: TextStyle(
+              fontSize: 14,
+              color: t.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 24),
+          if (_reading)
+            SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                onPressed: () {
+                  widget.nfcService.stopSession();
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: t.surface,
+                  foregroundColor: t.textPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: BorderSide(color: t.outline),
+                  ),
+                ),
+                child: Text(AppLocalizations.of(context)!.cancel_button),
+              ),
+            ),
+        ],
       ),
     );
   }

@@ -366,9 +366,11 @@
   "invoice_monitoring_timeout_message": "Surveillance arrêtée. Générez une nouvelle facture.",
   "nfc_action_label": "NFC",
   "nfc_unavailable_message": "NFC non disponible sur cet appareil",
-  "nfc_scanning_title": "Encaisser avec NFC",
+"nfc_scanning_title": "Encaisser avec NFC",
+  "nfc_scanning_send": "Paiement par NFC...",
   "nfc_scanning_message": "Approchez la Boltcard du téléphone",
   "nfc_hce_message": "Approchez l'appareil du payeur",
+  "nfc_card_detected": "Carte détectée !",
   "nfc_charging_message": "Encaissement en cours...",
   "nfc_invalid_tag_message": "Tag invalide ou pas de Boltcard",
   "nfc_charge_error_prefix": "Erreur d'encaissement NFC : ",
@@ -384,5 +386,12 @@
   "nfc_not_boltcard": "Pas une Boltcard",
   "nfc_incomplete_data": "Données incomplètes",
   "nfc_invalid_response": "Réponse invalide",
-  "nfc_network_error": "Erreur réseau"
+  "nfc_network_error": "Erreur réseau",
+  "nfc_read_error": "Erreur : {error}",
+  "@nfc_read_error": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "nfc_processing_card": "Traitement des données de la carte..."
 }
