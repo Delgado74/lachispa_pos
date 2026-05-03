@@ -373,5 +373,18 @@
   "nfc_charge_error_prefix": "NFC-Fehler beim Einziehen: ",
   "nfc_charge_unknown_error": "Unbekannter Fehler beim Einziehen",
   "share_ready_message": "Bereit zum Teilen",
-  "lnurl_copied_message": "LNURL in die Zwischenablage kopiert"
+  "lnurl_copied_message": "LNURL in die Zwischenablage kopiert",
+
+  "invoice_key_qr_title": "Rechnungsschlüssel QR",
+  "invoice_key_qr_description": "Verwenden Sie diesen QR-Code mit LaChispaPOS oder anderen Lightning-Apps, um Zahlungen zu empfangen, ohne Ihren Admin-Schlüssel preiszugeben.",
+  "invoice_key_qr_subtitle": "QR für andere Apps anzeigen",
+  "copy_invoice_key": "Schlüssel kopieren",
+  "invoice_key_copied": "Rechnungsschlüssel in die Zwischenablage kopiert",
+  "invoice_key_unavailable_title": "Keine Wallet gefunden",
+  "invoice_key_unavailable_subtitle": "Bitte erstellen Sie zuerst eine Wallet",
+  "invoice_key_security_warning": "Dieser Schlüssel ermöglicht Dritten, Rechnungen zu erstellen. Nur mit vertrauenswürdigen POS-Geräten teilen. Nie öffentlich posten oder teilen.",
+  "invoice_key_show": "Schlüssel anzeigen",
+  "invoice_key_hide": "Schlüssel verbergen",
+  "invoice_key_copy_failed": "Rechnungsschlüssel konnte nicht kopiert werden",
+  "invoice_key_empty": "Rechnungsschlüssel darf nicht leer sein"
 }
