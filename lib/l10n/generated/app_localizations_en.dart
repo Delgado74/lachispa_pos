@@ -904,6 +904,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about_title => 'About';
 
   @override
+  String currency_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count currencies',
+      one: '1 currency',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get currency_validation_info =>
       'When selecting a currency, it will be verified if it\'s available on this server';
 
@@ -985,60 +996,6 @@ String get nfc_scanning_title => 'Charge with NFC';
   String get lnurl_copied_message => 'LNURL copied to clipboard';
 
   @override
-  String get nfc_mode_title => 'NFC Mode';
-
-  @override
-  String get nfc_mode_boltcard => 'Charge BoltCard';
-
-  @override
-  String get nfc_mode_boltcard_subtitle => 'Read card and charge invoice';
-
-  @override
-  String get nfc_mode_hce => 'Emulate HCE';
-
-  @override
-  String get nfc_mode_hce_subtitle => 'Phone as card';
-
-  @override
-  String get nfc_tag_not_compatible => 'Tag not compatible';
-
-  @override
-  String get nfc_not_boltcard => 'Not a Boltcard';
-
-  @override
-  String get nfc_incomplete_data => 'Incomplete data';
-
-  @override
-  String get nfc_invalid_response => 'Invalid response';
-
-  @override
-  String get nfc_network_error => 'Network error';
-
-  @override
-  String nfc_read_error(String error) {
-    return 'Error: $error';
-  }
-
-  @override
-  String get nfc_processing_card => 'Processing card data...';
-  String get nfc_charging_message => 'Charging...';
-
-  @override
-  String get nfc_invalid_tag_message => 'Invalid tag or not a Boltcard';
-
-  @override
-  String get nfc_charge_error_prefix => 'NFC charge error: ';
-
-  @override
-  String get nfc_charge_unknown_error => 'Unknown error during charge';
-
-  @override
-  String get share_ready_message => 'Ready to share';
-
-  @override
-  String get lnurl_copied_message => 'LNURL copied to clipboard';
-
-  @override
 String get nfc_mode_title => 'NFC Mode';
 
   @override
@@ -1078,13 +1035,72 @@ String get nfc_mode_title => 'NFC Mode';
   String get nfc_scanning_message => 'Tap the Boltcard against the phone';
 
   @override
+  String get nfc_hce_message => 'Tap the payer\'s device';
+
+  @override
   String get nfc_card_detected => 'Card detected!';
 
   @override
-  String nfc_read_error(String error) {
+  String get nfc_charging_message => 'Charging...';
+
+  @override
+  String get nfc_invalid_tag_message => 'Invalid tag or not a Boltcard';
+
+  @override
+  String get nfc_charge_error_prefix => 'NFC charge error: ';
+
+  @override
+  String get nfc_charge_unknown_error => 'Unknown error during charge';
+
+  @override
+  String get share_ready_message => 'Ready to share';
+
+  @override
+  String get lnurl_copied_message => 'LNURL copied to clipboard';
+
+  @override
+  String get nfc_read_error(String error) {
     return 'Error: $error';
   }
 
   @override
   String get nfc_processing_card => 'Processing card data...';
+
+  @override
+  String get invoice_key_qr_title => 'Invoice Key QR';
+
+  @override
+  String get invoice_key_qr_description =>
+      'Use this QR code with LaChispaPOS or other Lightning apps to receive payments without exposing your admin key.';
+
+  @override
+  String get invoice_key_qr_subtitle => 'Show QR for other apps';
+
+  @override
+  String get copy_invoice_key => 'Copy Key';
+
+  @override
+  String get invoice_key_copied => 'Invoice key copied to clipboard';
+
+  @override
+  String get invoice_key_unavailable_title => 'No wallet found';
+
+  @override
+  String get invoice_key_unavailable_subtitle => 'Create a wallet first';
+
+  @override
+  String get invoice_key_security_warning =>
+      'This key allows third parties to create invoices. Only share with trusted POS devices. Never post publicly or share widely.';
+
+  @override
+  String get invoice_key_show => 'Show key';
+
+  @override
+  String get invoice_key_hide => 'Hide key';
+
+  @override
+  String get invoice_key_copy_failed => 'Failed to copy invoice key';
+
+  @override
+  String get invoice_key_empty => 'Invoice key cannot be empty';
 }

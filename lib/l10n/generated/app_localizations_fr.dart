@@ -934,6 +934,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get about_title => 'À propos';
 
   @override
+  String currency_count(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count monnaies',
+      one: '1 monnaie',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get currency_validation_info =>
       'Lors de la sélection d\'une devise, il sera vérifié si elle est disponible sur ce serveur';
 
@@ -1016,62 +1027,6 @@ String get nfc_scanning_title => 'Encaisser avec NFC';
   String get lnurl_copied_message => 'LNURL copié dans le presse-papiers';
 
   @override
-  String get nfc_mode_title => 'Mode NFC';
-
-  @override
-  String get nfc_mode_boltcard => 'Débiter BoltCard';
-
-  @override
-  String get nfc_mode_boltcard_subtitle =>
-      'Lire la carte et débiter la facture';
-
-  @override
-  String get nfc_mode_hce => 'Émuler HCE';
-
-  @override
-  String get nfc_mode_hce_subtitle => 'Téléphone comme carte';
-
-  @override
-  String get nfc_tag_not_compatible => 'Tag non compatible';
-
-  @override
-  String get nfc_not_boltcard => 'Pas une Boltcard';
-
-  @override
-  String get nfc_incomplete_data => 'Données incomplètes';
-
-  @override
-  String get nfc_invalid_response => 'Réponse invalide';
-
-  @override
-  String get nfc_network_error => 'Erreur réseau';
-
-  @override
-  String nfc_read_error(String error) {
-    return 'Erreur : $error';
-  }
-
-  @override
-  String get nfc_processing_card => 'Traitement des données de la carte...';
-  String get nfc_charging_message => 'Encaissement en cours...';
-
-  @override
-  String get nfc_invalid_tag_message => 'Tag invalide ou pas de Boltcard';
-
-  @override
-  String get nfc_charge_error_prefix => 'Erreur d\'encaissement NFC : ';
-
-  @override
-  String get nfc_charge_unknown_error =>
-      'Erreur inconnue lors de l\'encaissement';
-
-  @override
-  String get share_ready_message => 'Prêt à partager';
-
-  @override
-  String get lnurl_copied_message => 'LNURL copié dans le presse-papiers';
-
-  @override
 String get nfc_mode_title => 'Mode NFC';
 
   @override
@@ -1112,6 +1067,9 @@ String get nfc_mode_title => 'Mode NFC';
   String get nfc_scanning_message => 'Approchez la Boltcard du téléphone';
 
   @override
+  String get nfc_hce_message => 'Approchez l\'appareil du payeur';
+
+  @override
   String get nfc_card_detected => 'Carte détectée !';
 
   @override
@@ -1121,4 +1079,42 @@ String get nfc_mode_title => 'Mode NFC';
 
   @override
   String get nfc_processing_card => 'Traitement des données de la carte...';
+
+  @override
+  String get invoice_key_qr_title => 'QR de clé de facturation';
+
+  @override
+  String get invoice_key_qr_description =>
+      'Utilisez ce code QR avec LaChispaPOS ou d\'autres applications Lightning pour recevoir des paiements sans exposer votre clé administrateur.';
+
+  @override
+  String get invoice_key_qr_subtitle => 'Afficher le QR pour d\'autres applications';
+
+  @override
+  String get copy_invoice_key => 'Copier la clé';
+
+  @override
+  String get invoice_key_copied => 'Clé de facturation copiée dans le presse-papiers';
+
+  @override
+  String get invoice_key_unavailable_title => 'Aucun portefeuille trouvé';
+
+  @override
+  String get invoice_key_unavailable_subtitle => 'Créez d\'abord un portefeuille';
+
+  @override
+  String get invoice_key_security_warning =>
+      'Cette clé permet à des tiers de créer des factures. Ne la partagez qu\'avec des appareils POS de confiance. Ne la publiez jamais publiquement.';
+
+  @override
+  String get invoice_key_show => 'Afficher la clé';
+
+  @override
+  String get invoice_key_hide => 'Masquer la clé';
+
+  @override
+  String get invoice_key_copy_failed => 'Impossible de copier la clé de facturation';
+
+  @override
+  String get invoice_key_empty => 'La clé de facturation ne peut pas être vide';
 }

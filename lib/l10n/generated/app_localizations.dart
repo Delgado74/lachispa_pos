@@ -1782,6 +1782,12 @@ abstract class AppLocalizations {
   /// **'Acerca de'**
   String get about_title;
 
+  /// Number of currencies available
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =1{1 moneda} other{{count} monedas}}'**
+  String currency_count(int count);
+
   /// No description provided for @currency_validation_info.
   ///
   /// In es, this message translates to:
@@ -1920,77 +1926,101 @@ abstract class AppLocalizations {
   /// **'LNURL copiado al portapapeles'**
   String get lnurl_copied_message;
 
-  /// No description provided for @nfc_mode_title.
-  ///
-  /// In es, this message translates to:
-  /// **'Modo NFC'**
-  String get nfc_mode_title;
-
-  /// No description provided for @nfc_mode_boltcard.
-  ///
-  /// In es, this message translates to:
-  /// **'Cobrar BoltCard'**
-  String get nfc_mode_boltcard;
-
-  /// No description provided for @nfc_mode_boltcard_subtitle.
-  ///
-  /// In es, this message translates to:
-  /// **'Leer tarjeta y cobrar factura'**
-  String get nfc_mode_boltcard_subtitle;
-
-  /// No description provided for @nfc_mode_hce.
-  ///
-  /// In es, this message translates to:
-  /// **'Emular HCE'**
-  String get nfc_mode_hce;
-
-  /// No description provided for @nfc_mode_hce_subtitle.
-  ///
-  /// In es, this message translates to:
-  /// **'Teléfono como tarjeta'**
-  String get nfc_mode_hce_subtitle;
-
-  /// No description provided for @nfc_tag_not_compatible.
-  ///
-  /// In es, this message translates to:
-  /// **'Tag no compatible'**
-  String get nfc_tag_not_compatible;
-
-  /// No description provided for @nfc_not_boltcard.
-  ///
-  /// In es, this message translates to:
-  /// **'No es Boltcard'**
-  String get nfc_not_boltcard;
-
-  /// No description provided for @nfc_incomplete_data.
-  ///
-  /// In es, this message translates to:
-  /// **'Datos incompletos'**
-  String get nfc_incomplete_data;
-
-  /// No description provided for @nfc_invalid_response.
+/// No description provided for @nfc_invalid_response.
   ///
   /// In es, this message translates to:
   /// **'Respuesta inválida'**
   String get nfc_invalid_response;
-
+ 
   /// No description provided for @nfc_network_error.
   ///
   /// In es, this message translates to:
   /// **'Error de red'**
   String get nfc_network_error;
-
+ 
   /// No description provided for @nfc_read_error.
   ///
   /// In es, this message translates to:
   /// **'Error: {error}'**
   String nfc_read_error(String error);
-
+ 
   /// No description provided for @nfc_processing_card.
   ///
   /// In es, this message translates to:
   /// **'Procesando datos de la tarjeta...'**
   String get nfc_processing_card;
+ 
+  /// No description provided for @invoice_key_qr_title.
+  ///
+  /// In es, this message translates to:
+  /// **'QR de Clave de Facturación'**
+  String get invoice_key_qr_title;
+ 
+  /// No description provided for @invoice_key_qr_description.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa este código QR con LaChispaPOS u otras apps Lightning para recibir pagos sin exponer tu clave de administrador.'**
+  String get invoice_key_qr_description;
+ 
+  /// No description provided for @invoice_key_qr_subtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar QR para otras apps'**
+  String get invoice_key_qr_subtitle;
+ 
+  /// No description provided for @copy_invoice_key.
+  ///
+  /// In es, this message translates to:
+  /// **'Copiar Clave'**
+  String get copy_invoice_key;
+ 
+  /// No description provided for @invoice_key_copied.
+  ///
+  /// In es, this message translates to:
+  /// **'Clave de facturación copiada al portapapeles'**
+  String get invoice_key_copied;
+ 
+  /// No description provided for @invoice_key_unavailable_title.
+  ///
+  /// In es, this message translates to:
+  /// **'No se encontró billetera'**
+  String get invoice_key_unavailable_title;
+ 
+  /// No description provided for @invoice_key_unavailable_subtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Crea una billetera primero'**
+  String get invoice_key_unavailable_subtitle;
+ 
+  /// No description provided for @invoice_key_security_warning.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta clave permite a terceros crear facturas. Compártela solo con dispositivos POS de confianza. Nunca la publiques ni compartas públicamente.'**
+  String get invoice_key_security_warning;
+ 
+  /// No description provided for @invoice_key_show.
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar clave'**
+  String get invoice_key_show;
+ 
+  /// No description provided for @invoice_key_hide.
+  ///
+  /// In es, this message translates to:
+  /// **'Ocultar clave'**
+  String get invoice_key_hide;
+ 
+  /// No description provided for @invoice_key_copy_failed.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo copiar la clave de facturación'**
+  String get invoice_key_copy_failed;
+ 
+  /// No description provided for @invoice_key_empty.
+  ///
+  /// In es, this message translates to:
+  /// **'La clave de facturación no puede estar vacía'**
+  String get invoice_key_empty;
 }
 
 class _AppLocalizationsDelegate
