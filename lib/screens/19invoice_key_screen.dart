@@ -5,8 +5,43 @@ import 'package:qr_flutter/qr_flutter.dart';
 import '../providers/wallet_provider.dart';
 import '../l10n/generated/app_localizations.dart';
 
-class InvoiceKeyScreen extends StatelessWidget {
+class InvoiceKeyScreen extends StatefulWidget {
   const InvoiceKeyScreen({super.key});
+
+  @override
+  State<InvoiceKeyScreen> createState() => _InvoiceKeyScreenState();
+}
+
+class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
+  bool _isKeyVisible = false;
+
+  String _maskKey(String key) {
+    if (key.length <= 8) return '•' * key.length;
+    return '${key.substring(0, 4)}${'•' * (key.length - 8)}${key.substring(key.length - 4)}';
+  }
+
+  Future<void> _copyToClipboard(BuildContext context, String key) async {
+    try {
+      await Clipboard.setData(ClipboardData(text: key));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.invoice_key_copied),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.invoice_key_copy_failed),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,8 +144,7 @@ class InvoiceKeyScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    AppLocalizations.of(context)!
-                        .invoice_key_unavailable_subtitle,
+                    AppLocalizations.of(context)!.invoice_key_unavailable_subtitle,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
@@ -142,7 +176,7 @@ class InvoiceKeyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQRCode(String inKey) {
+  Widget _buildQRCode(String invoiceKey) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -157,7 +191,7 @@ class InvoiceKeyScreen extends StatelessWidget {
         ],
       ),
       child: QrImageView(
-        data: inKey,
+        data: invoiceKey,
         version: QrVersions.auto,
         size: 220.0,
         backgroundColor: Colors.white,
@@ -166,7 +200,7 @@ class InvoiceKeyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildKeyInfo(BuildContext context, String inKey) {
+  Widget _buildKeyInfo(BuildContext context, String invoiceKey) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -181,18 +215,35 @@ class InvoiceKeyScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context)!.invoice_key_label,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Colors.white.withValues(alpha: 0.6),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.invoice_key_qr_title,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white.withValues(alpha: 0.6),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isKeyVisible = !_isKeyVisible;
+                  });
+                },
+                child: Icon(
+                  _isKeyVisible ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.white70,
+                  size: 20,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           Text(
-            inKey,
+            _isKeyVisible ? invoiceKey : _maskKey(invoiceKey),
             style: const TextStyle(
               fontFamily: 'monospace',
               fontSize: 12,
@@ -206,11 +257,11 @@ class InvoiceKeyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCopyButton(BuildContext context, String inKey) {
+  Widget _buildCopyButton(BuildContext context, String invoiceKey) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: () => _copyToClipboard(context, inKey),
+        onPressed: () => _copyToClipboard(context, invoiceKey),
         icon: const Icon(Icons.copy, size: 20),
         label: Text(
           AppLocalizations.of(context)!.copy_invoice_key,
@@ -254,7 +305,7 @@ class InvoiceKeyScreen extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              AppLocalizations.of(context)!.invoice_key_qr_description,
+              AppLocalizations.of(context)!.invoice_key_security_warning,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
@@ -263,24 +314,6 @@ class InvoiceKeyScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  void _copyToClipboard(BuildContext context, String text) {
-    Clipboard.setData(ClipboardData(text: text));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          AppLocalizations.of(context)!.invoice_key_copied,
-          style: const TextStyle(fontFamily: 'Inter'),
-        ),
-        backgroundColor: const Color(0xFF4C63F7),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        duration: const Duration(seconds: 2),
       ),
     );
   }
