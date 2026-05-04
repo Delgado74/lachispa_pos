@@ -26,7 +26,7 @@ dependencies:
   package_info_plus: ^8.3.1
   app_links: ^6.3.2
   share_plus: ^10.1.4
-  nfc_manager: ^3.5.0
+  nfc_manager: ^3.5.1
 
 dev_dependencies:
   flutter_test:

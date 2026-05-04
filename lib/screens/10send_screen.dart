@@ -417,6 +417,8 @@ class _SendScreenState extends State<SendScreen> {
       _processLightningAddressPayment(result.value);
     } else if (result.type == NfcReadResultType.lnurl) {
       _processLNURLPayment(result.value);
+    } else if (result.type == NfcReadResultType.bolt11) {
+      _processBolt11Payment(result.value);
     }
   }
 

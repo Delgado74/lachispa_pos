@@ -11,6 +11,7 @@ void _debugLog(String message) {
 enum NfcReadResultType {
   lightningAddress,
   lnurl,
+  bolt11,
   unknown,
 }
 
@@ -117,30 +118,44 @@ class NfcReadService {
   }
 
   NfcReadResult? _classifyData(String raw) {
-    final lower = raw.toLowerCase().trim();
+    String original = raw.trim();
+    String lower = original.toLowerCase();
 
+    // Remove lightning: prefix for processing
+    String processed = original;
+    if (lower.startsWith('lightning:')) {
+      processed = original.substring(10);
+      lower = processed.toLowerCase();
+    }
+
+    // Check for BOLT11 invoice (lnbc, lntb, lnbcrt)
+    if (lower.startsWith('lnbc') ||
+        lower.startsWith('lntb') ||
+        lower.startsWith('lnbcrt')) {
+      return NfcReadResult(NfcReadResultType.bolt11, processed);
+    }
+
+    // Check for LNURL (bech32)
     if (lower.startsWith('lnurl1')) {
-      return NfcReadResult(NfcReadResultType.lnurl, raw);
+      return NfcReadResult(NfcReadResultType.lnurl, processed);
     }
 
+    // Check for LNURLP URI
     if (lower.startsWith('lnurlp://') || lower.startsWith('lnurlp:')) {
-      return NfcReadResult(NfcReadResultType.lnurl, raw);
+      return NfcReadResult(NfcReadResultType.lnurl, processed);
     }
 
-    if (raw.contains('@') && raw.split('@').length == 2) {
-      String clean = raw;
-      // Remove 'lightning:' prefix if present (10 chars: 'lightning:')
-      if (clean.toLowerCase().startsWith('lightning:')) {
-        clean = clean.substring(10);
-      }
-      final parts = clean.split('@');
+    // Check for Lightning Address
+    if (processed.contains('@') && processed.split('@').length == 2) {
+      final parts = processed.split('@');
       if (parts[0].isNotEmpty && parts[1].contains('.')) {
-        return NfcReadResult(NfcReadResultType.lightningAddress, clean);
+        return NfcReadResult(NfcReadResultType.lightningAddress, processed);
       }
     }
 
+    // Check for HTTP/HTTPS URLs
     if (lower.startsWith('https://') || lower.startsWith('http://')) {
-      return NfcReadResult(NfcReadResultType.lnurl, raw);
+      return NfcReadResult(NfcReadResultType.lnurl, processed);
     }
 
     return null;
