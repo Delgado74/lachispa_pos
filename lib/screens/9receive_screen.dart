@@ -982,13 +982,18 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
     final l10n = AppLocalizations.of(context)!;
 
-    // Sin factura → HCE directo (BoltCard requiere factura)
+    // Sin factura → HCE directo exponiendo Lightning Address (BoltCard requiere factura)
     if (_generatedInvoice == null) {
       final lnAddressProvider = context.read<LNAddressProvider>();
+      final lightningAddress = lnAddressProvider.defaultAddress?.fullAddress;
       final lnurl = lnAddressProvider.defaultAddress?.lnurl;
-      if (lnurl != null) {
-        _openNfcChargeSheet(lnurl, modo: ModoNfcRecibir.hceWallet);
+      debugPrint('[HCE_DEBUG] Sin monto - Lightning Address: $lightningAddress');
+      debugPrint('[HCE_DEBUG] Sin monto - LNURL (no usado): $lnurl');
+      if (lightningAddress != null) {
+        debugPrint('[HCE_DEBUG] Iniciando HCE con Lightning Address: $lightningAddress');
+        _openNfcChargeSheet(lightningAddress, modo: ModoNfcRecibir.hceWallet);
       } else {
+        debugPrint('[HCE_DEBUG] No hay Lightning Address, solicitando monto');
         _showRequestAmountModal(autoStartNfcAfterGenerate: true);
       }
       return;
@@ -1428,15 +1433,20 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                                 modo: ModoNfcRecibir.lectorBoltcard);
           }
         } else {
-          // HCE → usar LNURL o invoice según corresponda
-          final lnAddressProvider = context.read<LNAddressProvider>();
-          final lnurl = lnAddressProvider.defaultAddress?.lnurl;
-          
-          if (lnurl != null) {
-            _openNfcChargeSheet(lnurl, modo: ModoNfcRecibir.hceWallet);
-          } else if (_generatedInvoice != null) {
-            _openNfcChargeSheet(_generatedInvoice!.paymentRequest, 
+          // HCE → usar invoice generada (con monto) o Lightning Address (sin monto)
+          if (_generatedInvoice != null) {
+            final invoice = _generatedInvoice!.paymentRequest;
+            debugPrint('[HCE_DEBUG] Con monto - Exponiendo INVOICE: ${invoice.substring(0, 30)}...');
+            debugPrint('[HCE_DEBUG] Con monto - Invoice completa: $invoice');
+            _openNfcChargeSheet(invoice, 
                                   modo: ModoNfcRecibir.hceWallet);
+          } else {
+            final lnAddressProvider = context.read<LNAddressProvider>();
+            final lightningAddress = lnAddressProvider.defaultAddress?.fullAddress;
+            debugPrint('[HCE_DEBUG] Con monto pero sin invoice - Exponiendo Lightning Address: $lightningAddress');
+            if (lightningAddress != null) {
+              _openNfcChargeSheet(lightningAddress, modo: ModoNfcRecibir.hceWallet);
+            }
           }
         }
       }

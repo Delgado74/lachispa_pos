@@ -95,6 +95,12 @@ class NfcChargeService {
         case ModoNfcRecibir.hceWallet:
           // HCE Mode: Emitir para wallet (Phoenix)
           _debugLog('HCE: Emitiendo para wallet: $lnurlOrInvoice');
+          final isInvoice = lnurlOrInvoice.startsWith('lightning:lnbc') || lnurlOrInvoice.startsWith('lnbc');
+          _debugLog('HCE: Tipo de contenido: ${isInvoice ? 'INVOICE' : (lnurlOrInvoice.contains('@') ? 'LIGHTNING_ADDRESS' : 'LNURL')}');
+          _debugLog('HCE: Longitud del contenido: ${lnurlOrInvoice.length}');
+          if (isInvoice) {
+            _debugLog('HCE: INVOICE detectada - primeros 30 chars: ${lnurlOrInvoice.substring(0, lnurlOrInvoice.length > 30 ? 30 : lnurlOrInvoice.length)}');
+          }
           await _hce.startNfcHce(
             lnurlOrInvoice,
             mimeType: 'text/plain',
