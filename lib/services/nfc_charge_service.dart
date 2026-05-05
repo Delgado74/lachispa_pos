@@ -4,6 +4,8 @@ import 'dart:io' show Platform;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_manager/nfc_manager_android.dart';
+import 'package:ndef_record/ndef_record.dart';
 // import 'package:flutter_nfc_hce/flutter_nfc_hce.dart'; // Replaced with custom ElCaju-style implementation
 import 'nfc_hce_service.dart'; // Our custom HCE service (like ElCaju)
 import '../core/utils/proxy_config.dart';
@@ -132,8 +134,6 @@ class NfcChargeService {
           _debugLog('NFC: Iniciando lectura de tarjeta');
           await NfcManager.instance.startSession(
             pollingOptions: {NfcPollingOption.iso14443},
-            invalidateAfterFirstRead: false,
-            alertMessage: 'Acerca la tarjeta',
             onDiscovered: (NfcTag tag) async {
               if (_processingTag) return;
               _processingTag = true;
@@ -143,7 +143,7 @@ class NfcChargeService {
                 final url = _extractUriFromTag(tag);
                 if (url == null) {
                   onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                  await _safeStop(errorMessage: _l10n.nfc_tag_not_compatible);
+                  await _safeStop();
                   return;
                 }
                 _debugLog('Tag URL: $url');
@@ -152,12 +152,12 @@ class NfcChargeService {
                 final meta = metaResponse.data;
                 if (meta is! Map) {
                   onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                  await _safeStop(errorMessage: _l10n.nfc_invalid_response);
+                  await _safeStop();
                   return;
                 }
                 if (meta['tag'] != 'withdrawRequest') {
                   onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                  await _safeStop(errorMessage: _l10n.nfc_not_boltcard);
+                  await _safeStop();
                   return;
                 }
                 final callbackValue = meta['callback'];
@@ -167,7 +167,7 @@ class NfcChargeService {
                     k1Value is! String ||
                     k1Value.isEmpty) {
                   onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
-                  await _safeStop(errorMessage: _l10n.nfc_incomplete_data);
+                  await _safeStop();
                   return;
                 }
                 final callback = callbackValue;
@@ -183,7 +183,7 @@ class NfcChargeService {
                 final claimData = claim.data;
                 if (claimData is Map && claimData['status'] == 'OK') {
                   onStatus(const NfcChargeResult(NfcChargeStatus.success));
-                  await _safeStop(alertMessage: 'OK');
+                  await _safeStop();
                 } else {
                   final reason = claimData is Map
                       ? claimData['reason']?.toString()
@@ -192,7 +192,7 @@ class NfcChargeService {
                     NfcChargeStatus.callbackError,
                     message: reason,
                   ));
-                  await _safeStop(errorMessage: reason);
+                  await _safeStop();
                 }
                 } catch (e) {
                 _debugLog('Discovery handler error: $e');
@@ -200,7 +200,7 @@ class NfcChargeService {
                   NfcChargeStatus.networkError,
                   message: e.toString(),
                 ));
-                await _safeStop(errorMessage: _l10n.nfc_network_error);
+                await _safeStop();
               } finally {
                 _processingTag = false;
                 _sessionActive = false;
@@ -226,24 +226,21 @@ class NfcChargeService {
     _processingTag = false;
   }
 
-  Future<void> _safeStop({String? alertMessage, String? errorMessage}) async {
+  Future<void> _safeStop() async {
     try {
-      await NfcManager.instance.stopSession(
-        alertMessage: alertMessage,
-        errorMessage: errorMessage,
-      );
+      await NfcManager.instance.stopSession();
     } catch (_) {
       // ignore
     }
   }
 
   String? _extractUriFromTag(NfcTag tag) {
-    final ndef = Ndef.from(tag);
+    final ndef = NdefAndroid.from(tag);
     if (ndef == null) {
       _debugLog('Ndef es null - la tarjeta no soporta NDEF');
       return null;
     }
-    final message = ndef.cachedMessage;
+    final message = ndef.cachedNdefMessage;
     if (message == null || message.records.isEmpty) {
       _debugLog('No hay registros NDEF');
       return null;
@@ -252,14 +249,47 @@ class NfcChargeService {
     for (final record in message.records) {
       String? raw;
 
-      if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
+      if (record.typeNameFormat == TypeNameFormat.wellKnown &&
           record.type.length == 1 &&
           record.type[0] == 0x55 &&
           record.payload.isNotEmpty) {
+        // URI prefix list (standard NFC Forum)
+        const uriPrefixes = [
+          '', // 0x00
+          'http://www.', // 0x01
+          'https://www.', // 0x02
+          'http://', // 0x03
+          'https://', // 0x04
+          'tel:', // 0x05
+          'mailto:', // 0x06
+          'ftp://anonymous:anonymous@', // 0x07
+          'ftp://ftp.', // 0x08
+          'ftps://', // 0x09
+          'sftp://', // 0x0A
+          'smb://', // 0x0B
+          'nfs://', // 0x0C
+          'ftp://', // 0x0D
+          'dav://', // 0x0E
+          'news:', // 0x0F
+          'telnet://', // 0x10
+          'imap:', // 0x11
+          'rtsp://', // 0x12
+          'urn:', // 0x13
+          'pop:', // 0x14
+          'sip:', // 0x15
+          'sips:', // 0x16
+          'tftp:', // 0x17
+          'btspp://', // 0x18
+          'btl2cap://', // 0x19
+          'btgoep://', // 0x1A
+          'tcpobex://', // 0x1B
+          'irdaobex://', // 0x1C
+          'irdavcal://', // 0x1D
+          'irc://', // 0x1E
+          'mailto:', // 0x1F
+        ];
         final prefixIndex = record.payload[0];
-        final prefix = (prefixIndex < NdefRecord.URI_PREFIX_LIST.length)
-            ? NdefRecord.URI_PREFIX_LIST[prefixIndex]
-            : '';
+        final prefix = (prefixIndex < uriPrefixes.length) ? uriPrefixes[prefixIndex] : '';
         final urlBytes = record.payload.sublist(1);
         raw = prefix + utf8.decode(urlBytes, allowMalformed: true);
       } else {

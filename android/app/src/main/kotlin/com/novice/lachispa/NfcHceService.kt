@@ -13,7 +13,7 @@ class NfcHceService : HostApduService() {
     private val TAG = "NfcHceService"
     
     // APDU commands
-    private val APDU_SELECT = byteArrayOf(
+    private val APDU_SELECT_STANDARD = byteArrayOf(
         0x00.toByte(), // CLA
         0xA4.toByte(), // INS
         0x04.toByte(), // P1
@@ -21,6 +21,17 @@ class NfcHceService : HostApduService() {
         0x07.toByte(), // Lc
         0xD2.toByte(), 0x76.toByte(), 0x00.toByte(),
         0x00.toByte(), 0x85.toByte(), 0x01.toByte(), 0x01.toByte(), // NDEF Tag Application
+        0x00.toByte()  // Le
+    )
+    
+    private val APDU_SELECT_ELCAJU = byteArrayOf(
+        0x00.toByte(), // CLA
+        0xA4.toByte(), // INS
+        0x04.toByte(), // P1
+        0x00.toByte(), // P2
+        0x07.toByte(), // Lc
+        0xF0.toByte(), 0x45.toByte(), 0x43.toByte(), 0x41.toByte(),
+        0x4A.toByte(), 0x55.toByte(), 0x00.toByte(), // ElCaju AID
         0x00.toByte()  // Le
     )
     
@@ -96,9 +107,10 @@ class NfcHceService : HostApduService() {
     override fun processCommandApdu(commandApdu: ByteArray, extras: Bundle?): ByteArray {
         Log.i(TAG, "processCommandApdu() | incoming: ${commandApdu.toHex()}")
         
-        // SELECT NDEF Application
-        if (APDU_SELECT.contentEquals(commandApdu)) {
-            Log.i(TAG, "APDU_SELECT triggered")
+        // SELECT NDEF Application (either standard or ElCaju AID)
+        if (APDU_SELECT_STANDARD.contentEquals(commandApdu) ||
+            APDU_SELECT_ELCAJU.contentEquals(commandApdu)) {
+            Log.i(TAG, "SELECT AID triggered")
             return A_OKAY
         }
         

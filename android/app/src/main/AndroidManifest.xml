@@ -93,20 +93,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <!-- HCE Service for flutter_nfc_hce (legacy) -->
-        <service
-            android:name="com.novice.flutter_nfc_hce.KHostApduService"
-            android:exported="true"
-            android:permission="android.permission.BIND_NFC_SERVICE">
-            <intent-filter>
-                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.nfc.cardemulation.host_apdu_service"
-                android:resource="@xml/apduservice" />
-        </service>
-        
-        <!-- Custom HCE Service (ElCaju-style) -->
+         <!-- Custom HCE Service (ElCaju-style) -->
         <service
             android:name="com.novice.lachispa.NfcHceService"
             android:exported="true"

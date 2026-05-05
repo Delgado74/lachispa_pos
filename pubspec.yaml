@@ -26,7 +26,8 @@ dependencies:
   package_info_plus: ^8.3.1
   app_links: ^6.3.2
   share_plus: ^10.1.4
-  nfc_manager: ^3.5.1
+  nfc_manager: ^4.1.1
+  ndef_record: ^1.4.2
   # flutter_nfc_hce removed - using custom ElCaju-style implementation
   # flutter_nfc_hce: ^0.1.8
 

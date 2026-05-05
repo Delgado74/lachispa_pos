@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';  // Para Uint8List
 import 'package:nfc_manager/nfc_manager.dart';
-// Importar IsoDep desde la ubicación correcta
-import 'package:nfc_manager/src/platform_tags/iso_dep.dart';
+// Importar IsoDepAndroid para Android (como ElCaju)
+import 'package:nfc_manager/nfc_manager_android.dart';
+import 'package:ndef_record/ndef_record.dart';
 
 void _debugLog(String message) {
   if (identical(Zone.current, Zone.root)) {
@@ -29,6 +30,8 @@ class NfcReadService {
 
   static Future<bool> isAvailable() async {
     try {
+      // Using isAvailable - may show deprecation warning but works reliably
+      // ignore: deprecated_member_use
       return await NfcManager.instance.isAvailable();
     } catch (e) {
       _debugLog('isAvailable error: $e');
@@ -46,8 +49,6 @@ class NfcReadService {
     try {
       await NfcManager.instance.startSession(
         pollingOptions: NfcPollingOption.values.toSet(),
-        invalidateAfterFirstRead: true,
-        alertMessage: 'Acerca la tarjeta',
         onDiscovered: (NfcTag tag) async {
           try {
             final result = await _extractDataFromTag(tag);
@@ -82,7 +83,7 @@ class NfcReadService {
 
    Future<NfcReadResult?> _extractDataFromTag(NfcTag tag) async {
     // 1. INTENTAR ISODEP PRIMERO (HCE phone-to-phone - como ElCaju)
-    final isoDep = IsoDep.from(tag);
+    final isoDep = IsoDepAndroid.from(tag);
     if (isoDep != null) {
       _debugLog('Tag is IsoDep (HCE) - leyendo via APDU');
       final result = await _readViaIsoDep(isoDep);
@@ -91,12 +92,12 @@ class NfcReadService {
     }
 
     // 2. FALLBACK A NDEF (etiquetas físicas)
-    final ndef = Ndef.from(tag);
+    final ndef = NdefAndroid.from(tag);
     if (ndef == null) {
       _debugLog('Ndef es null');
       return null;
     }
-    final message = ndef.cachedMessage;
+    final message = ndef.cachedNdefMessage;
     if (message == null || message.records.isEmpty) {
       _debugLog('No hay registros NDEF');
       return null;
@@ -105,21 +106,55 @@ class NfcReadService {
     for (final record in message.records) {
       String? raw;
 
+
       // Handle URI records (NFC Well-known type for URIs)
-      if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
+      if (record.typeNameFormat == TypeNameFormat.wellKnown &&
           record.type.length == 1 &&
           record.type[0] == 0x55 &&  // 'U' for URI
           record.payload.isNotEmpty) {
+        // URI prefix list (standard NFC Forum)
+        const uriPrefixes = [
+          '', // 0x00
+          'http://www.', // 0x01
+          'https://www.', // 0x02
+          'http://', // 0x03
+          'https://', // 0x04
+          'tel:', // 0x05
+          'mailto:', // 0x06
+          'ftp://anonymous:anonymous@', // 0x07
+          'ftp://ftp.', // 0x08
+          'ftps://', // 0x09
+          'sftp://', // 0x0A
+          'smb://', // 0x0B
+          'nfs://', // 0x0C
+          'ftp://', // 0x0D
+          'dav://', // 0x0E
+          'news:', // 0x0F
+          'telnet://', // 0x10
+          'imap:', // 0x11
+          'rtsp://', // 0x12
+          'urn:', // 0x13
+          'pop:', // 0x14
+          'sip:', // 0x15
+          'sips:', // 0x16
+          'tftp:', // 0x17
+          'btspp://', // 0x18
+          'btl2cap://', // 0x19
+          'btgoep://', // 0x1A
+          'tcpobex://', // 0x1B
+          'irdaobex://', // 0x1C
+          'irdavcal://', // 0x1D
+          'irc://', // 0x1E
+          'mailto:', // 0x1F
+        ];
         final prefixIndex = record.payload[0];
-        final prefix = (prefixIndex < NdefRecord.URI_PREFIX_LIST.length)
-            ? NdefRecord.URI_PREFIX_LIST[prefixIndex]
-            : '';
+        final prefix = (prefixIndex < uriPrefixes.length) ? uriPrefixes[prefixIndex] : '';
         final urlBytes = record.payload.sublist(1);
         raw = prefix + utf8.decode(urlBytes, allowMalformed: true);
         _debugLog('URI record leído: $raw');
       }
       // Handle RTD_TEXT records (plain text with language code)
-      else if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
+      else if (record.typeNameFormat == TypeNameFormat.wellKnown &&
           record.type.length == 1 &&
           record.type[0] == 0x54 &&  // 'T' for Text
           record.payload.length > 1) {
@@ -133,7 +168,7 @@ class NfcReadService {
         }
       }
       // Handle Media records (MIME types like text/plain)
-      else if (record.typeNameFormat == NdefTypeNameFormat.media) {
+      else if (record.typeNameFormat == TypeNameFormat.media) {
         final payload = record.payload;
         if (payload.isNotEmpty) {
           raw = utf8.decode(payload, allowMalformed: true).trim();
@@ -219,7 +254,7 @@ class NfcReadService {
   /// Read NDEF from HCE via IsoDep APDU commands (like ElCaju).
   /// Bypasses manufacturer NFC services (Xiaomi, Samsung, etc).
   /// Returns NfcReadResult if successful.
-  Future<NfcReadResult?> _readViaIsoDep(IsoDep isoDep) async {
+  Future<NfcReadResult?> _readViaIsoDep(IsoDepAndroid isoDep) async {
     try {
       // Helper para verificar respuesta APDU OK (90 00)
       bool _isOk(Uint8List response) {
@@ -228,8 +263,8 @@ class NfcReadService {
                response[response.length - 1] == 0x00;
       }
 
-      // 1. SELECT ElCaju AID (evita conflictos con servicios de fabricante)
-      var response = await isoDep.transceive(data: Uint8List.fromList([
+       // 1. SELECT ElCaju AID (evita conflictos con servicios de fabricante)
+      var response = await isoDep.transceive(Uint8List.fromList([
         0x00, 0xA4, 0x04, 0x00, 0x07,
         0xF0, 0x45, 0x43, 0x41, 0x4A, 0x55, 0x00,
         0x00,
@@ -237,7 +272,7 @@ class NfcReadService {
 
       // 2. Si falla, SELECT NDEF Application estándar
       if (!_isOk(response)) {
-        response = await isoDep.transceive(data: Uint8List.fromList([
+        response = await isoDep.transceive(Uint8List.fromList([
           0x00, 0xA4, 0x04, 0x00, 0x07,
           0xD2, 0x76, 0x00, 0x00, 0x85, 0x01, 0x01,
           0x00,
@@ -249,7 +284,7 @@ class NfcReadService {
       }
 
       // 3. SELECT CC File (E103)
-      response = await isoDep.transceive(data: Uint8List.fromList([
+      response = await isoDep.transceive(Uint8List.fromList([
         0x00, 0xA4, 0x00, 0x0C, 0x02,
         0xE1, 0x03,
       ]));
@@ -259,12 +294,12 @@ class NfcReadService {
       }
 
       // 4. READ_BINARY (CC)
-      response = await isoDep.transceive(data: Uint8List.fromList([
+      response = await isoDep.transceive(Uint8List.fromList([
         0x00, 0xB0, 0x00, 0x00, 0x0F,
       ]));
 
       // 5. SELECT NDEF File (E104)
-      response = await isoDep.transceive(data: Uint8List.fromList([
+      response = await isoDep.transceive(Uint8List.fromList([
         0x00, 0xA4, 0x00, 0x0C, 0x02,
         0xE1, 0x04,
       ]));
@@ -274,7 +309,7 @@ class NfcReadService {
       }
 
       // 6. READ_BINARY (NLEN primero - 2 bytes)
-      response = await isoDep.transceive(data: Uint8List.fromList([
+      response = await isoDep.transceive(Uint8List.fromList([
         0x00, 0xB0, 0x00, 0x00, 0x02,
       ]));
       if (response.length < 4 || !_isOk(response)) {
@@ -295,7 +330,7 @@ class NfcReadService {
 
       while (remaining > 0) {
         final chunkSize = remaining > 255 ? 255 : remaining;
-        response = await isoDep.transceive(data: Uint8List.fromList([
+        response = await isoDep.transceive(Uint8List.fromList([
           0x00, 0xB0,
           (offset >> 8) & 0xFF, offset & 0xFF,
           chunkSize,
