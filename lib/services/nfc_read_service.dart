@@ -92,9 +92,10 @@ class NfcReadService {
     for (final record in message.records) {
       String? raw;
 
+      // Handle URI records (NFC Well-known type for URIs)
       if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
           record.type.length == 1 &&
-          record.type[0] == 0x55 &&
+          record.type[0] == 0x55 &&  // 'U' for URI
           record.payload.isNotEmpty) {
         final prefixIndex = record.payload[0];
         final prefix = (prefixIndex < NdefRecord.URI_PREFIX_LIST.length)
@@ -102,9 +103,48 @@ class NfcReadService {
             : '';
         final urlBytes = record.payload.sublist(1);
         raw = prefix + utf8.decode(urlBytes, allowMalformed: true);
-      } else {
-        if (record.payload.isNotEmpty) {
-          raw = utf8.decode(record.payload, allowMalformed: true).trim();
+        _debugLog('URI record leído: $raw');
+      }
+      // Handle RTD_TEXT records (plain text with language code)
+      else if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
+          record.type.length == 1 &&
+          record.type[0] == 0x54 &&  // 'T' for Text
+          record.payload.length > 1) {
+        final statusByte = record.payload[0];
+        final encoding = ((statusByte & 0x80) == 0 ? utf8 : Encoding.getByName('utf-16')) ?? utf8;
+        final langLength = statusByte & 0x3F;
+        if (record.payload.length > 1 + langLength) {
+          final contentBytes = record.payload.sublist(1 + langLength);
+          raw = encoding.decode(contentBytes).trim();
+          _debugLog('RTD_TEXT decodificado: $raw');
+        }
+      }
+      // Handle Media records (MIME types like text/plain)
+      else if (record.typeNameFormat == NdefTypeNameFormat.media) {
+        final payload = record.payload;
+        if (payload.isNotEmpty) {
+          raw = utf8.decode(payload, allowMalformed: true).trim();
+          _debugLog('Media record leído: $raw');
+        }
+      }
+      // Fallback for other record types
+      else {
+        final payload = record.payload;
+        if (payload.isNotEmpty) {
+          if (payload.length > 1) {
+            final statusByte = payload[0];
+            final encoding = ((statusByte & 0x80) == 0 ? utf8 : Encoding.getByName('utf-16')) ?? utf8;
+            final langLength = statusByte & 0x3F;
+            if (payload.length > 1 + langLength) {
+              final contentBytes = payload.sublist(1 + langLength);
+              raw = encoding.decode(contentBytes).trim();
+            } else {
+              raw = utf8.decode(payload, allowMalformed: true).trim();
+            }
+          } else {
+            raw = utf8.decode(payload, allowMalformed: true).trim();
+          }
+          _debugLog('Fallback decodificado: $raw');
         }
       }
 
