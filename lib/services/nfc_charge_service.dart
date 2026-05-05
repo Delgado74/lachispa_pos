@@ -4,7 +4,8 @@ import 'dart:io' show Platform;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nfc_manager/nfc_manager.dart';
-import 'package:flutter_nfc_hce/flutter_nfc_hce.dart';
+// import 'package:flutter_nfc_hce/flutter_nfc_hce.dart'; // Replaced with custom ElCaju-style implementation
+import 'nfc_hce_service.dart'; // Our custom HCE service (like ElCaju)
 import '../core/utils/proxy_config.dart';
 import 'app_info_service.dart';
 import '../l10n/generated/app_localizations.dart';
@@ -38,7 +39,6 @@ class NfcChargeResult {
 
 class NfcChargeService {
   final Dio _dio = Dio();
-  final FlutterNfcHce _hce = FlutterNfcHce();
   bool _sessionActive = false;
   bool _processingTag = false;
   final AppLocalizations _l10n;
@@ -84,7 +84,7 @@ class NfcChargeService {
 
     // CRÍTICO: asegurarse que HCE está detenido antes de activar lector
     if (modo == ModoNfcRecibir.lectorBoltcard) {
-      try { await _hce.stopNfcHce(); } catch (_) {}
+      try { await NfcHceService.stopEmulating(); } catch (_) {}
       await Future.delayed(const Duration(milliseconds: 300));
     }
 
@@ -108,7 +108,7 @@ class NfcChargeService {
             _debugLog('NfcManager detenido correctamente');
           } catch (_) {}
           try {
-            await _hce.stopNfcHce();
+            await NfcHceService.stopEmulating();
             _debugLog('HCE previo detenido');
           } catch (_) {}
           await Future.delayed(const Duration(milliseconds: 500));
@@ -120,12 +120,7 @@ class NfcChargeService {
             break;
           }
 
-          final result = await _hce.startNfcHce(
-            lnurlOrInvoice,
-            mimeType: 'text/plain',
-            persistMessage: true, // true para persistir el mensaje NDEF
-          );
-          _debugLog('Resultado startNfcHce: $result');
+          await NfcHceService.startEmulating(lnurlOrInvoice);
           _debugLog('Emulación NFC iniciada correctamente');
           onStatus(const NfcChargeResult(NfcChargeStatus.reading));
           // HCE queda activo esperando que un lector se conecte
@@ -226,7 +221,7 @@ class NfcChargeService {
 
   Future<void> stopSession() async {
     await _safeStop();
-    try { await _hce.stopNfcHce(); } catch (_) {}
+    try { await NfcHceService.stopEmulating(); } catch (_) {}
     _sessionActive = false;
     _processingTag = false;
   }
