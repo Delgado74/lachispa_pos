@@ -982,18 +982,16 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
     final l10n = AppLocalizations.of(context)!;
 
-    // Sin factura → HCE directo exponiendo Lightning Address (BoltCard requiere factura)
+    // Sin factura → HCE directo exponiendo LNURL bech32 (funcionaba antes)
     if (_generatedInvoice == null) {
       final lnAddressProvider = context.read<LNAddressProvider>();
-      final lightningAddress = lnAddressProvider.defaultAddress?.fullAddress;
-      final lnurl = lnAddressProvider.defaultAddress?.lnurl;
-      debugPrint('[HCE_DEBUG] Sin monto - Lightning Address: $lightningAddress');
-      debugPrint('[HCE_DEBUG] Sin monto - LNURL (no usado): $lnurl');
-      if (lightningAddress != null) {
-        debugPrint('[HCE_DEBUG] Iniciando HCE con Lightning Address: $lightningAddress');
-        _openNfcChargeSheet(lightningAddress, modo: ModoNfcRecibir.hceWallet);
+      final lnurl = lnAddressProvider.defaultAddress?.lnurl; // LNURL1... bech32
+      debugPrint('[HCE_DEBUG] Sin monto - LNURL bech32: $lnurl');
+      if (lnurl != null && lnurl.isNotEmpty) {
+        debugPrint('[HCE_DEBUG] Iniciando HCE con LNURL: $lnurl');
+        _openNfcChargeSheet(lnurl, modo: ModoNfcRecibir.hceWallet);
       } else {
-        debugPrint('[HCE_DEBUG] No hay Lightning Address, solicitando monto');
+        debugPrint('[HCE_DEBUG] No hay LNURL, solicitando monto');
         _showRequestAmountModal(autoStartNfcAfterGenerate: true);
       }
       return;
@@ -1651,6 +1649,8 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> with SingleTickerProvi
     if (!_serviceInitialized) {
       _service = NfcChargeService(AppLocalizations.of(context)!);
       _serviceInitialized = true;
+      debugPrint('[HCE_SHEET] Modo: ${widget.modo}');
+      debugPrint('[HCE_SHEET] Contenido: ${widget.invoice}');
       _start();
     }
   }

@@ -11,7 +11,7 @@ import '../l10n/generated/app_localizations.dart';
 
 void _debugLog(String message) {
   if (kDebugMode) {
-    print('[NFC_CHARGE] $message');
+    print('[HCE_WALLET] $message');
   }
 }
 
@@ -94,19 +94,39 @@ class NfcChargeService {
       switch (modo) {
         case ModoNfcRecibir.hceWallet:
           // HCE Mode: Emitir para wallet (Phoenix)
-          _debugLog('HCE: Emitiendo para wallet: $lnurlOrInvoice');
+          _debugLog('Emitiendo para wallet: $lnurlOrInvoice');
           final isInvoice = lnurlOrInvoice.startsWith('lightning:lnbc') || lnurlOrInvoice.startsWith('lnbc');
-          _debugLog('HCE: Tipo de contenido: ${isInvoice ? 'INVOICE' : (lnurlOrInvoice.contains('@') ? 'LIGHTNING_ADDRESS' : 'LNURL')}');
-          _debugLog('HCE: Longitud del contenido: ${lnurlOrInvoice.length}');
+          _debugLog('Tipo de contenido: ${isInvoice ? 'INVOICE' : 'LNURL'}');
+          _debugLog('Longitud del contenido: ${lnurlOrInvoice.length}');
           if (isInvoice) {
-            _debugLog('HCE: INVOICE detectada - primeros 30 chars: ${lnurlOrInvoice.substring(0, lnurlOrInvoice.length > 30 ? 30 : lnurlOrInvoice.length)}');
+            _debugLog('INVOICE detectada - primeros 30 chars: ${lnurlOrInvoice.substring(0, lnurlOrInvoice.length > 30 ? 30 : lnurlOrInvoice.length)}');
           }
-          await _hce.startNfcHce(
+
+          // CRÍTICO: Detener NfcManager y HCE previo antes de iniciar HCE
+          try {
+            await NfcManager.instance.stopSession();
+            _debugLog('NfcManager detenido correctamente');
+          } catch (_) {}
+          try {
+            await _hce.stopNfcHce();
+            _debugLog('HCE previo detenido');
+          } catch (_) {}
+          await Future.delayed(const Duration(milliseconds: 500));
+
+          // Verificar contenido no vacío
+          if (lnurlOrInvoice.isEmpty) {
+            _debugLog('ERROR: Contenido vacío');
+            onStatus(const NfcChargeResult(NfcChargeStatus.invalidTag));
+            break;
+          }
+
+          final result = await _hce.startNfcHce(
             lnurlOrInvoice,
             mimeType: 'text/plain',
-            persistMessage: false,
+            persistMessage: true, // true para persistir el mensaje NDEF
           );
-          _debugLog('HCE: Emulación NFC iniciada correctamente');
+          _debugLog('Resultado startNfcHce: $result');
+          _debugLog('Emulación NFC iniciada correctamente');
           onStatus(const NfcChargeResult(NfcChargeStatus.reading));
           // HCE queda activo esperando que un lector se conecte
           // El usuario debe detener la sesión manualmente
