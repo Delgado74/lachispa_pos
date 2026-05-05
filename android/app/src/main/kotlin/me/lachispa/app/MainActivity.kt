@@ -2,8 +2,7 @@ package me.lachispa.app
 
 import android.nfc.NfcAdapter
 import android.nfc.cardemulation.CardEmulation
-import android.content.ComponentName
-import android.content.Intent
+import android.util.Log
 import com.novice.lachispa.NfcHceService
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -19,35 +18,27 @@ class MainActivity : FlutterActivity() {
             when (call.method) {
                 "setPayload" -> {
                     val payload = call.argument<ByteArray>("payload")
-                    if (payload != null) {
-                        // Start service with payload via Intent
-                        val intent = Intent(this, NfcHceService::class.java)
-                        intent.putExtra("payload", payload)
-                        startService(intent)
-                        
-                        // Force Android to route NFC requests to our service
-                        try {
-                            val adapter = NfcAdapter.getDefaultAdapter(this)
-                            if (adapter != null) {
-                                val cardEmulation = CardEmulation.getInstance(adapter)
-                                cardEmulation?.setPreferredService(
-                                    this,
-                                    ComponentName(this, NfcHceService::class.java)
-                                )
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+                    NfcHceService.ndefPayload = payload
+                    Log.d("MainActivity", "Payload set: ${payload?.size} bytes")
+                    
+                    // Force Android to route NFC requests to our service
+                    // instead of manufacturer services (Xiaomi Mi Share, etc.)
+                    try {
+                        val adapter = NfcAdapter.getDefaultAdapter(this)
+                        if (adapter != null) {
+                            val cardEmulation = CardEmulation.getInstance(adapter)
+                            cardEmulation?.setPreferredService(
+                                this,
+                                android.content.ComponentName(this, NfcHceService::class.java)
+                            )
                         }
-                        result.success(true)
-                    } else {
-                        result.error("NULL_PAYLOAD", "Payload es null", null)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
+                    result.success(true)
                 }
                 "clearPayload" -> {
-                    // Clear payload via Intent
-                    val intent = Intent(this, NfcHceService::class.java)
-                    intent.putExtra("payload", byteArrayOf())
-                    startService(intent)
+                    NfcHceService.ndefPayload = null
                     
                     // Release preferred service routing
                     try {

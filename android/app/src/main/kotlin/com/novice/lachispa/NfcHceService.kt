@@ -1,193 +1,140 @@
 package com.novice.lachispa
 
-import android.nfc.NdefMessage
-import android.nfc.NdefRecord
 import android.nfc.cardemulation.HostApduService
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import java.io.*
 
+/**
+ * Host Card Emulation service that makes the phone act as an NFC Forum Type 4 tag.
+ * Another phone in reader mode can tap and read the NDEF message we serve.
+ *
+ * The payload is set from Flutter via MainActivity's MethodChannel.
+ */
 class NfcHceService : HostApduService() {
 
-    private val TAG = "NfcHceService"
-    
-    // APDU commands
-    private val APDU_SELECT_STANDARD = byteArrayOf(
-        0x00.toByte(), // CLA
-        0xA4.toByte(), // INS
-        0x04.toByte(), // P1
-        0x00.toByte(), // P2
-        0x07.toByte(), // Lc
-        0xD2.toByte(), 0x76.toByte(), 0x00.toByte(),
-        0x00.toByte(), 0x85.toByte(), 0x01.toByte(), 0x01.toByte(), // NDEF Tag Application
-        0x00.toByte()  // Le
-    )
-    
-    private val APDU_SELECT_ELCAJU = byteArrayOf(
-        0x00.toByte(), // CLA
-        0xA4.toByte(), // INS
-        0x04.toByte(), // P1
-        0x00.toByte(), // P2
-        0x07.toByte(), // Lc
-        0xF0.toByte(), 0x45.toByte(), 0x43.toByte(), 0x41.toByte(),
-        0x4A.toByte(), 0x55.toByte(), 0x00.toByte(), // ElCaju AID
-        0x00.toByte()  // Le
-    )
-    
-    private val CAPABILITY_CONTAINER_OK = byteArrayOf(
-        0x00.toByte(), 0xA4.toByte(), 0x00.toByte(), 0x0C.toByte(),
-        0x02.toByte(), 0xE1.toByte(), 0x03.toByte()
-    )
-    
-    private val READ_CAPABILITY_CONTAINER = byteArrayOf(
-        0x00.toByte(), 0xB0.toByte(), 0x00.toByte(), 0x00.toByte(),
-        0x0F.toByte()
-    )
-    
-    private var READ_CAPABILITY_CONTAINER_CHECK = false
-    
-    private val READ_CAPABILITY_CONTAINER_RESPONSE = byteArrayOf(
-        0x00.toByte(), 0x0F.toByte(), // CCLEN
-        0x20.toByte(), // Mapping Version 2.0
-        0x00.toByte(), 0x3B.toByte(), // MLe
-        0x00.toByte(), 0x34.toByte(), // MLc
-        0x04.toByte(), // T
-        0x06.toByte(), // L
-        0xE1.toByte(), 0x04.toByte(), // File ID
-        0x00.toByte(), 0xFF.toByte(), // Max NDEF file size
-        0x00.toByte(), 0xFF.toByte(),
-        0x00.toByte(), // Read access
-        0xFF.toByte(), // Write access
-        0x90.toByte(), 0x00.toByte()
-    )
-    
-    private val NDEF_SELECT_OK = byteArrayOf(
-        0x00.toByte(), 0xA4.toByte(), 0x00.toByte(), 0x0C.toByte(),
-        0x02.toByte(), 0xE1.toByte(), 0x04.toByte()
-    )
-    
-    private val NDEF_READ_BINARY = byteArrayOf(
-        0x00.toByte(), 0xB0.toByte()
-    )
-    
-    private val NDEF_READ_BINARY_NLEN = byteArrayOf(
-        0x00.toByte(), 0xB0.toByte(),
-        0x00.toByte(), 0x00.toByte(),
-        0x02.toByte()
-    )
-    
-    private val A_OKAY = byteArrayOf(
-        0x90.toByte(), 0x00.toByte()
-    )
-    
-    private val A_ERROR = byteArrayOf(
-        0x6A.toByte(), 0x82.toByte()
-    )
-    
-    private val NDEF_ID = byteArrayOf(0xE1.toByte(), 0x04.toByte())
-    
-    // NDEF payload (set from Flutter)
-    private var ndefPayload: ByteArray? = null
-    
-    override fun onCreate() {
-        super.onCreate()
-        Log.i(TAG, "NfcHceService created")
+    companion object {
+        private const val TAG = "NfcHceService"
+
+        // Shared payload - set by Flutter via MethodChannel
+        @Volatile
+        var ndefPayload: ByteArray? = null
+
+        private val OK = byteArrayOf(0x90.toByte(), 0x00.toByte())
+        private val NOT_FOUND = byteArrayOf(0x6A.toByte(), 0x82.toByte())
+
+        // Capability Container (CC) file - fixed structure
+        // MLe=0xFF (255), MLc=0xFF (255), max NDEF=0x70FF (28671)
+        // Compatible with Numo
+        private val CC_FILE = byteArrayOf(
+            0x00, 0x0F,                         // CC length (15)
+            0x20,                                // Mapping version 2.0
+            0x00, 0xFF.toByte(),                 // MLe: max read 255 bytes
+            0x00, 0xFF.toByte(),                 // MLc: max write 255 bytes
+            0x04, 0x06,                          // NDEF File Control TLV
+            0xE1.toByte(), 0x04,                 // NDEF file ID
+            0x70, 0xFF.toByte(),                 // Max NDEF size: 28671 bytes
+            0x00,                                // Read access: open
+            0xFF.toByte()                        // Write access: denied
+        )
     }
-    
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.hasExtra("payload") == true) {
-            val payload = intent.getByteArrayExtra("payload")
-            ndefPayload = payload
-            Log.i(TAG, "Payload set: ${payload?.size} bytes")
-        }
-        return START_REDELIVER_INTENT
-    }
-    
+
+    private var selectedFile: String = "none"
+    private var ndefFileCache: ByteArray? = null
+
     override fun processCommandApdu(commandApdu: ByteArray, extras: Bundle?): ByteArray {
-        Log.i(TAG, "processCommandApdu() | incoming: ${commandApdu.toHex()}")
-        
-        // SELECT NDEF Application (either standard or ElCaju AID)
-        if (APDU_SELECT_STANDARD.contentEquals(commandApdu) ||
-            APDU_SELECT_ELCAJU.contentEquals(commandApdu)) {
-            Log.i(TAG, "SELECT AID triggered")
-            return A_OKAY
+        if (commandApdu.size < 4) return NOT_FOUND
+
+        val ins = commandApdu[1]
+
+        // SELECT command
+        if (ins == 0xA4.toByte()) {
+            return handleSelect(commandApdu)
         }
-        
-        // SELECT Capability Container
-        if (CAPABILITY_CONTAINER_OK.contentEquals(commandApdu)) {
-            Log.i(TAG, "CAPABILITY_CONTAINER_OK triggered")
-            READ_CAPABILITY_CONTAINER_CHECK = false
-            return A_OKAY
+
+        // READ BINARY command
+        if (ins == 0xB0.toByte()) {
+            return handleRead(commandApdu)
         }
-        
-        // READ BINARY (CC)
-        if (READ_CAPABILITY_CONTAINER.contentEquals(commandApdu) && 
-            !READ_CAPABILITY_CONTAINER_CHECK) {
-            Log.i(TAG, "READ_CAPABILITY_CONTAINER triggered")
-            READ_CAPABILITY_CONTAINER_CHECK = true
-            return READ_CAPABILITY_CONTAINER_RESPONSE
-        }
-        
-        // SELECT NDEF File
-        if (NDEF_SELECT_OK.contentEquals(commandApdu)) {
-            Log.i(TAG, "NDEF_SELECT_OK triggered")
-            return A_OKAY
-        }
-        
-        // READ BINARY NLEN (first 2 bytes)
-        if (NDEF_READ_BINARY_NLEN.contentEquals(commandApdu)) {
-            val response = ByteArray(2 + A_OKAY.size)
-            val ndefBytes = ndefPayload ?: byteArrayOf()
-            
-            // NLEN = length of NDEF message
-            val nlen = ndefBytes.size
-            response[0] = (nlen shr 8).toByte()
-            response[1] = nlen.toByte()
-            System.arraycopy(A_OKAY, 0, response, 2, A_OKAY.size)
-            
-            Log.i(TAG, "NDEF_READ_BINARY_NLEN triggered, NLEN=$nlen")
-            READ_CAPABILITY_CONTAINER_CHECK = false
-            return response
-        }
-        
-        // READ BINARY (NDEF Message)
-        if (commandApdu.size >= 4 && 
-            NDEF_READ_BINARY.contentEquals(commandApdu.sliceArray(0..1))) {
-            val offset = (commandApdu[2].toInt() shl 8) or commandApdu[3].toInt()
-            val length = if (commandApdu.size >= 5) commandApdu[4].toInt() else (ndefPayload?.size ?: 0) - offset
-            
-            val ndefBytes = ndefPayload ?: byteArrayOf()
-            val realLength = if (offset + length <= ndefBytes.size) length else ndefBytes.size - offset
-            
-            if (realLength < 0) return A_ERROR
-            
-            val response = ByteArray(realLength + A_OKAY.size)
-            System.arraycopy(ndefBytes, offset, response, 0, realLength)
-            System.arraycopy(A_OKAY, 0, response, realLength, A_OKAY.size)
-            
-            Log.i(TAG, "NDEF_READ_BINARY triggered, offset=$offset, len=$realLength")
-            return response
-        }
-        
-        Log.w(TAG, "Unknown APDU: ${commandApdu.toHex()}")
-        return A_ERROR
+
+        return NOT_FOUND
     }
-    
+
+    private fun handleSelect(apdu: ByteArray): ByteArray {
+        // Select ElCaju proprietary AID (F04543414A5500)
+        // Avoids conflicts with Xiaomi Mi Share / Samsung Beam
+        if (apdu.size >= 12 && apdu[5] == 0xF0.toByte() && apdu[6] == 0x45.toByte()) {
+            selectedFile = "app"
+            Log.d(TAG, "Selected ElCaju Application (proprietary AID)")
+            return OK
+        }
+
+        // Select NDEF Application (AID: D2760000850101)
+        if (apdu.size >= 12 && apdu[5] == 0xD2.toByte() && apdu[6] == 0x76.toByte()) {
+            selectedFile = "app"
+            Log.d(TAG, "Selected NDEF Application")
+            return OK
+        }
+
+        // Select by file ID
+        if (apdu.size >= 7) {
+            val fileId = ((apdu[5].toInt() and 0xFF) shl 8) or (apdu[6].toInt() and 0xFF)
+            when (fileId) {
+                0xE103 -> {
+                    selectedFile = "cc"
+                    Log.d(TAG, "Selected CC file")
+                    return OK
+                }
+                0xE104 -> {
+                    selectedFile = "ndef"
+                    // Cache the NDEF file when selected
+                    val payload = ndefPayload
+                    if (payload != null) {
+                        val file = ByteArray(2 + payload.size)
+                        file[0] = (payload.size shr 8).toByte()
+                        file[1] = (payload.size and 0xFF).toByte()
+                        System.arraycopy(payload, 0, file, 2, payload.size)
+                        ndefFileCache = file
+                        Log.d(TAG, "Selected NDEF file (${payload.size} bytes payload)")
+                    } else {
+                        ndefFileCache = null
+                        Log.w(TAG, "Selected NDEF file but no payload set")
+                    }
+                    return OK
+                }
+            }
+        }
+
+        return NOT_FOUND
+    }
+
+    private fun handleRead(apdu: ByteArray): ByteArray {
+        if (apdu.size < 5) return NOT_FOUND
+
+        val offset = ((apdu[2].toInt() and 0xFF) shl 8) or (apdu[3].toInt() and 0xFF)
+        // Le=0x00 means 256 bytes in short APDU encoding
+        var length = apdu[4].toInt() and 0xFF
+        if (length == 0) length = 256
+
+        val data = when (selectedFile) {
+            "cc" -> CC_FILE
+            "ndef" -> ndefFileCache ?: return NOT_FOUND
+            else -> return NOT_FOUND
+        }
+
+        if (offset >= data.size) {
+            Log.w(TAG, "Read offset $offset beyond data size ${data.size}")
+            return NOT_FOUND
+        }
+
+        val end = minOf(offset + length, data.size)
+        val response = data.copyOfRange(offset, end)
+        Log.d(TAG, "Read $selectedFile: offset=$offset len=$length returned=${response.size} bytes")
+        return response + OK
+    }
+
     override fun onDeactivated(reason: Int) {
-        Log.i(TAG, "onDeactivated() fired! Reason: $reason")
-    }
-    
-    // Helper to convert byte array to hex string
-    private fun ByteArray.toHex(): String {
-        val result = StringBuffer()
-        forEach {
-            val octet = it.toInt()
-            val firstIndex = (octet and 0xF0) ushr 4
-            val secondIndex = octet and 0x0F
-            result.append("0123456789ABCDEF"[firstIndex])
-            result.append("0123456789ABCDEF"[secondIndex])
-        }
-        return result.toString()
+        Log.d(TAG, "Deactivated (reason=$reason)")
+        selectedFile = "none"
+        ndefFileCache = null
     }
 }
