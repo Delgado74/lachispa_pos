@@ -48,7 +48,7 @@ class NfcReadService {
 
     try {
       await NfcManager.instance.startSession(
-        pollingOptions: NfcPollingOption.values.toSet(),
+        pollingOptions: {NfcPollingOption.iso14443},
         onDiscovered: (NfcTag tag) async {
           try {
             final result = await _extractDataFromTag(tag);
@@ -263,24 +263,15 @@ class NfcReadService {
                response[response.length - 1] == 0x00;
       }
 
-       // 1. SELECT ElCaju AID (evita conflictos con servicios de fabricante)
+       // 1. SELECT NDEF Application estándar (D2760000850101)
       var response = await isoDep.transceive(Uint8List.fromList([
         0x00, 0xA4, 0x04, 0x00, 0x07,
-        0xF0, 0x45, 0x43, 0x41, 0x4A, 0x55, 0x00,
+        0xD2, 0x76, 0x00, 0x00, 0x85, 0x01, 0x01,
         0x00,
       ]));
-
-      // 2. Si falla, SELECT NDEF Application estándar
       if (!_isOk(response)) {
-        response = await isoDep.transceive(Uint8List.fromList([
-          0x00, 0xA4, 0x04, 0x00, 0x07,
-          0xD2, 0x76, 0x00, 0x00, 0x85, 0x01, 0x01,
-          0x00,
-        ]));
-        if (!_isOk(response)) {
-          _debugLog('IsoDep: SELECT APP falló');
-          return null;
-        }
+        _debugLog('IsoDep: SELECT NDEF App falló — no es HCE compatible');
+        return null;
       }
 
       // 3. SELECT CC File (E103)
@@ -438,6 +429,26 @@ class NfcReadService {
             'ftps://', // 0x09
             'sftp://', // 0x0A
             'smb://', // 0x0B
+            'nfs://', // 0x0C
+            'ftp://', // 0x0D
+            'dav://', // 0x0E
+            'news:', // 0x0F
+            'telnet://', // 0x10
+            'imap:', // 0x11
+            'rtsp://', // 0x12
+            'urn:', // 0x13
+            'pop:', // 0x14
+            'sip:', // 0x15
+            'sips:', // 0x16
+            'tftp:', // 0x17
+            'btspp://', // 0x18
+            'btl2cap://', // 0x19
+            'btgoep://', // 0x1A
+            'tcpobex://', // 0x1B
+            'irdaobex://', // 0x1C
+            'irdavcal://', // 0x1D
+            'irc://', // 0x1E
+            'mailto:', // 0x1F
           ];
           final prefixIdx = payload[0];
           final prefix =

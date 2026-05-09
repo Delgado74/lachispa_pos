@@ -39,7 +39,6 @@ class NfcHceService : HostApduService() {
     }
 
     private var selectedFile: String = "none"
-    private var ndefFileCache: ByteArray? = null
 
     override fun processCommandApdu(commandApdu: ByteArray, extras: Bundle?): ByteArray {
         if (commandApdu.size < 4) return NOT_FOUND
@@ -86,19 +85,7 @@ class NfcHceService : HostApduService() {
                 }
                 0xE104 -> {
                     selectedFile = "ndef"
-                    // Cache the NDEF file when selected
-                    val payload = ndefPayload
-                    if (payload != null) {
-                        val file = ByteArray(2 + payload.size)
-                        file[0] = (payload.size shr 8).toByte()
-                        file[1] = (payload.size and 0xFF).toByte()
-                        System.arraycopy(payload, 0, file, 2, payload.size)
-                        ndefFileCache = file
-                        Log.d(TAG, "Selected NDEF file (${payload.size} bytes payload)")
-                    } else {
-                        ndefFileCache = null
-                        Log.w(TAG, "Selected NDEF file but no payload set")
-                    }
+                    Log.d(TAG, "Selected NDEF file")
                     return OK
                 }
             }
@@ -117,7 +104,18 @@ class NfcHceService : HostApduService() {
 
         val data = when (selectedFile) {
             "cc" -> CC_FILE
-            "ndef" -> ndefFileCache ?: return NOT_FOUND
+            "ndef" -> {
+                val payload = ndefPayload
+                if (payload == null || payload.isEmpty()) {
+                    Log.w(TAG, "READ NDEF: payload vacío")
+                    return byteArrayOf(0x00, 0x00, 0x90.toByte(), 0x00)
+                }
+                val file = ByteArray(2 + payload.size)
+                file[0] = (payload.size shr 8).toByte()
+                file[1] = (payload.size and 0xFF).toByte()
+                System.arraycopy(payload, 0, file, 2, payload.size)
+                file
+            }
             else -> return NOT_FOUND
         }
 
@@ -133,8 +131,11 @@ class NfcHceService : HostApduService() {
     }
 
     override fun onDeactivated(reason: Int) {
-        Log.d(TAG, "Deactivated (reason=$reason)")
-        selectedFile = "none"
-        ndefFileCache = null
+        val reasonStr = when (reason) {
+            DEACTIVATION_LINK_LOSS -> "LINK_LOSS"
+            DEACTIVATION_DESELECTED -> "DESELECTED"
+            else -> "UNKNOWN($reason)"
+        }
+        Log.d(TAG, "Deactivated: $reasonStr — manteniendo estado")
     }
 }
