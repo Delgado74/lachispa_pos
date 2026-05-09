@@ -176,7 +176,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               animation: _glowAnimation,
               builder: (context, child) {
                 return Text(
-                  AppLocalizations.of(context)!.settings_title,
+                  AppLocalizations.of(context).settings_title,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -278,7 +278,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      AppLocalizations.of(context)!.login_title,
+                      AppLocalizations.of(context).login_title,
                       style: TextStyle(
                         fontSize: 14,
                         color: t.textPrimary.withValues(alpha: 0.7),
@@ -317,7 +317,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(width: 12),
               Text(
-                AppLocalizations.of(context)!.server_settings_title,
+                AppLocalizations.of(context).server_settings_title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -337,7 +337,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.server_settings_title,
+                  AppLocalizations.of(context).server_settings_title,
                   style: TextStyle(
                     fontSize: 12,
                     color: t.textPrimary.withValues(alpha: 0.7),
@@ -376,7 +376,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
               child: Text(
-                AppLocalizations.of(context)!.server_settings_title,
+                AppLocalizations.of(context).server_settings_title,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -412,7 +412,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(width: 12),
               Text(
-                AppLocalizations.of(context)!.wallet_title,
+                AppLocalizations.of(context).wallet_title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -433,7 +433,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.wallet_title,
+                    AppLocalizations.of(context).wallet_title,
                     style: TextStyle(
                       fontSize: 12,
                       color: t.textPrimary.withValues(alpha: 0.7),
@@ -480,7 +480,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      AppLocalizations.of(context)!.wallet_title,
+                      AppLocalizations.of(context).wallet_title,
                       style: TextStyle(
                         fontSize: 14,
                         color: t.statusWarning,
@@ -520,7 +520,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    AppLocalizations.of(context)!.language_selector_title,
+                    AppLocalizations.of(context).language_selector_title,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -575,7 +575,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                         ),
                       ),
                       Text(
-                        AppLocalizations.of(context)!.language_selector_description,
+                        AppLocalizations.of(context).language_selector_description,
                         style: TextStyle(
                           fontSize: 14,
                           color: t.textPrimary.withValues(alpha: 0.7),
@@ -629,7 +629,7 @@ class _SettingsScreenState extends State<SettingsScreen>
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                AppLocalizations.of(context)!.select_language,
+                AppLocalizations.of(context).select_language,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -713,7 +713,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(width: 12),
               Text(
-                AppLocalizations.of(context)!.settings_title,
+                AppLocalizations.of(context).settings_title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -728,8 +728,8 @@ class _SettingsScreenState extends State<SettingsScreen>
           _buildSettingItem(
             t: t,
             icon: Icons.info_outline,
-            title: AppLocalizations.of(context)!.settings_title,
-            subtitle: AppLocalizations.of(context)!.settings_title,
+            title: AppLocalizations.of(context).settings_title,
+            subtitle: AppLocalizations.of(context).settings_title,
             onTap: () {
               _showAboutDialog();
             },
@@ -741,12 +741,12 @@ class _SettingsScreenState extends State<SettingsScreen>
           _buildSettingItem(
             t: t,
             icon: Icons.help_outline,
-            title: AppLocalizations.of(context)!.settings_title,
-            subtitle: AppLocalizations.of(context)!.settings_title,
+            title: AppLocalizations.of(context).settings_title,
+            subtitle: AppLocalizations.of(context).settings_title,
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppLocalizations.of(context)!.settings_title),
+                  content: Text(AppLocalizations.of(context).settings_title),
                 ),
               );
             },

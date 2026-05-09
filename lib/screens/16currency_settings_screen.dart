@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/currency_settings_provider.dart';
-import '../providers/wallet_provider.dart';
 import '../models/currency_info.dart';
 import '../l10n/generated/app_localizations.dart';
-import '../providers/auth_provider.dart';
 import '../theme/app_tokens.dart';
 
 class CurrencySettingsScreen extends StatefulWidget {
@@ -134,7 +132,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
             const SizedBox(width: 16),
             Expanded(
               child: Text(
-                AppLocalizations.of(context)!.checking_currency_availability(currency),
+                AppLocalizations.of(context).checking_currency_availability(currency),
                 style: TextStyle(color: context.tokens.textPrimary),
               ),
             ),
@@ -163,7 +161,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
                 children: [
                   const Icon(Icons.check_circle, color: Colors.green),
                   const SizedBox(width: 8),
-                  Text(AppLocalizations.of(context)!.currency_added_successfully(currency)),
+                  Text(AppLocalizations.of(context).currency_added_successfully(currency)),
                 ],
               ),
               backgroundColor: Colors.green.withValues(alpha: 0.9),
@@ -184,7 +182,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
                   const Icon(Icons.error, color: Colors.red),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(AppLocalizations.of(context)!.currency_not_available_on_server(currencyName, currency)),
+                    child: Text(AppLocalizations.of(context).currency_not_available_on_server(currencyName, currency)),
                   ),
                 ],
               ),
@@ -206,7 +204,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
                 const Icon(Icons.error, color: Colors.red),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(AppLocalizations.of(context)!.error_checking_currency(currency, e.toString())),
+                  child: Text(AppLocalizations.of(context).error_checking_currency(currency, e.toString())),
                 ),
               ],
             ),
@@ -308,7 +306,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.currency_settings_title ?? 'Currency Settings',
+                  AppLocalizations.of(context).currency_settings_title,
                   style: TextStyle(
         fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -317,7 +315,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  AppLocalizations.of(context)!.currency_settings_subtitle ?? 'Select your preferred currencies',
+                  AppLocalizations.of(context).currency_settings_subtitle,
                   style: TextStyle(
         fontSize: 14,
                     color: context.tokens.textPrimary.withValues(alpha: 0.7),
@@ -376,7 +374,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
               ),
               const SizedBox(width: 8),
               Text(
-                AppLocalizations.of(context)!.available_currencies ?? 'Add Currency',
+                AppLocalizations.of(context).available_currencies,
                 style: TextStyle(
     fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -525,7 +523,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    AppLocalizations.of(context)!.currency_validation_info,
+                    AppLocalizations.of(context).currency_validation_info,
                     style: const TextStyle(color: Colors.blue, fontSize: 14),
                   ),
                 ),
@@ -563,7 +561,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
               ),
               const SizedBox(width: 8),
               Text(
-                AppLocalizations.of(context)!.selected_currencies ?? 'Selected Currencies',
+                AppLocalizations.of(context).selected_currencies,
                 style: TextStyle(
     fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -594,6 +592,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
           
           // User selected currencies
           ...selectedCurrencies.asMap().entries.map((entry) {
+            // ignore: unused_local_variable
             final index = entry.key;
             final currency = entry.value;
             final currencyInfo = currencyProvider.getCurrencyInfo(currency);
@@ -620,7 +619,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      AppLocalizations.of(context)!.select_currencies_hint ?? 'Select currencies from the list above',
+                      AppLocalizations.of(context).select_currencies_hint,
                       style: const TextStyle(color: Colors.blue, fontSize: 14),
                     ),
                   ),
@@ -739,6 +738,7 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen>
     );
   }
 
+  // ignore: unused_element
   Widget _buildCurrencyListItem({
     required String currency,
     required CurrencyInfo? currencyInfo,

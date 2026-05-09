@@ -43,6 +43,7 @@ class NfcChargeService {
   final Dio _dio = Dio();
   bool _sessionActive = false;
   bool _processingTag = false;
+  // ignore: unused_field
   final AppLocalizations _l10n;
 
   NfcChargeService(this._l10n) {

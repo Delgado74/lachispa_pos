@@ -26,7 +26,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.invoice_key_copied),
+            content: Text(AppLocalizations.of(context).invoice_key_copied),
             backgroundColor: Colors.green,
           ),
         );
@@ -35,7 +35,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.invoice_key_copy_failed),
+            content: Text(AppLocalizations.of(context).invoice_key_copy_failed),
             backgroundColor: Colors.red,
           ),
         );
@@ -98,7 +98,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: Text(
-              AppLocalizations.of(context)!.invoice_key_qr_title,
+              AppLocalizations.of(context).invoice_key_qr_title,
               style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 20,
@@ -134,7 +134,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    AppLocalizations.of(context)!.invoice_key_unavailable_title,
+                    AppLocalizations.of(context).invoice_key_unavailable_title,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 18,
@@ -144,7 +144,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    AppLocalizations.of(context)!.invoice_key_unavailable_subtitle,
+                    AppLocalizations.of(context).invoice_key_unavailable_subtitle,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
@@ -219,7 +219,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppLocalizations.of(context)!.invoice_key_qr_title,
+                AppLocalizations.of(context).invoice_key_qr_title,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 14,
@@ -264,7 +264,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
         onPressed: () => _copyToClipboard(context, invoiceKey),
         icon: const Icon(Icons.copy, size: 20),
         label: Text(
-          AppLocalizations.of(context)!.copy_invoice_key,
+          AppLocalizations.of(context).copy_invoice_key,
           style: const TextStyle(
             fontFamily: 'Inter',
             fontSize: 16,
@@ -305,7 +305,7 @@ class _InvoiceKeyScreenState extends State<InvoiceKeyScreen> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              AppLocalizations.of(context)!.invoice_key_security_warning,
+              AppLocalizations.of(context).invoice_key_security_warning,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,

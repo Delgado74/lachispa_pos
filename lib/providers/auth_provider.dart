@@ -107,7 +107,7 @@ class AuthProvider with ChangeNotifier {
         return true;
       } else {
         _errorMessage = result.error ?? 'Unknown error';
-        print('[AUTH_PROVIDER] Login failed: ${_errorMessage}');
+        print('[AUTH_PROVIDER] Login failed: $_errorMessage');
         notifyListeners();
         return false;
       }
@@ -194,7 +194,7 @@ class AuthProvider with ChangeNotifier {
         return true;
       } else {
         _errorMessage = result.error ?? 'Unknown error';
-        print('[AUTH_PROVIDER] Signup failed: ${_errorMessage}');
+        print('[AUTH_PROVIDER] Signup failed: $_errorMessage');
         notifyListeners();
         return false;
       }

@@ -257,7 +257,7 @@ class NfcReadService {
   Future<NfcReadResult?> _readViaIsoDep(IsoDepAndroid isoDep) async {
     try {
       // Helper para verificar respuesta APDU OK (90 00)
-      bool _isOk(Uint8List response) {
+      bool isOk(Uint8List response) {
         return response.length >= 2 &&
                response[response.length - 2] == 0x90 &&
                response[response.length - 1] == 0x00;
@@ -269,7 +269,7 @@ class NfcReadService {
         0xD2, 0x76, 0x00, 0x00, 0x85, 0x01, 0x01,
         0x00,
       ]));
-      if (!_isOk(response)) {
+      if (!isOk(response)) {
         _debugLog('IsoDep: SELECT NDEF App falló — no es HCE compatible');
         return null;
       }
@@ -279,7 +279,7 @@ class NfcReadService {
         0x00, 0xA4, 0x00, 0x0C, 0x02,
         0xE1, 0x03,
       ]));
-      if (!_isOk(response)) {
+      if (!isOk(response)) {
         _debugLog('IsoDep: SELECT CC falló');
         return null;
       }
@@ -294,7 +294,7 @@ class NfcReadService {
         0x00, 0xA4, 0x00, 0x0C, 0x02,
         0xE1, 0x04,
       ]));
-      if (!_isOk(response)) {
+      if (!isOk(response)) {
         _debugLog('IsoDep: SELECT NDEF File falló');
         return null;
       }
@@ -303,7 +303,7 @@ class NfcReadService {
       response = await isoDep.transceive(Uint8List.fromList([
         0x00, 0xB0, 0x00, 0x00, 0x02,
       ]));
-      if (response.length < 4 || !_isOk(response)) {
+      if (response.length < 4 || !isOk(response)) {
         _debugLog('IsoDep: READ NLEN falló');
         return null;
       }
@@ -327,7 +327,7 @@ class NfcReadService {
           chunkSize,
         ]));
 
-        if (response.length <= 2 || !_isOk(response)) break;
+        if (response.length <= 2 || !isOk(response)) break;
 
         // Remover SW1 SW2 (últimos 2 bytes)
         ndefBytes.addAll(response.sublist(0, response.length - 2));

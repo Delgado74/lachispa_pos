@@ -168,7 +168,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    AppLocalizations.of(context)!.fixed_float_loading,
+                    AppLocalizations.of(context).fixed_float_loading,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -224,7 +224,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
 
           // Description
           Text(
-            AppLocalizations.of(context)!.fixed_float_description,
+            AppLocalizations.of(context).fixed_float_description,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
@@ -246,7 +246,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
                 ),
               ),
               child: Text(
-                AppLocalizations.of(context)!.fixed_float_webview_error,
+                AppLocalizations.of(context).fixed_float_webview_error,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
@@ -270,7 +270,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(AppLocalizations.of(context)!.fixed_float_error_opening(e.toString())),
+                        content: Text(AppLocalizations.of(context).fixed_float_error_opening(e.toString())),
                         backgroundColor: t.statusUnhealthy,
                       ),
                     );
@@ -290,7 +290,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.fixed_float_open_button,
+                    AppLocalizations.of(context).fixed_float_open_button,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -311,8 +311,8 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
           // Info text
           Text(
             kIsWeb || !(Platform.isAndroid || Platform.isIOS)
-                ? AppLocalizations.of(context)!.fixed_float_external_browser
-                : AppLocalizations.of(context)!.fixed_float_within_app,
+                ? AppLocalizations.of(context).fixed_float_external_browser
+                : AppLocalizations.of(context).fixed_float_within_app,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12,

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
 import '../providers/language_provider.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/app_tokens.dart';
-import '../widgets/spark_effect.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
   const LanguageSelectionScreen({super.key});
@@ -21,6 +19,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
   late AnimationController _sparkController;
   late Animation<double> _headerAnimation;
   late Animation<double> _contentAnimation;
+  // ignore: unused_field
   late Animation<double> _footerAnimation;
   
   @override
@@ -90,7 +89,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
   Widget build(BuildContext context) {
     final t = context.tokens;
     final languageProvider = Provider.of<LanguageProvider>(context);
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final availableLanguages = languageProvider.getAvailableLanguages();
     final currentLanguageCode = languageProvider.currentLocale.languageCode;
 
@@ -198,6 +197,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen>
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: availableLanguages.asMap().entries.map((entry) {
+                                        // ignore: unused_local_variable
                                         final index = entry.key;
                                         final language = entry.value;
                                         final isSelected = language['code'] == currentLanguageCode;

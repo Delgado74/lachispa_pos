@@ -171,7 +171,6 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
       case TransactionFilter.outgoing:
         return _transactions.where((tx) => tx.isOutgoing).toList();
       case TransactionFilter.all:
-      default:
         return _transactions;
     }
   }
@@ -286,7 +285,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
                     ],
                   ),
                   child: Text(
-                    AppLocalizations.of(context)!.history_title,
+                    AppLocalizations.of(context).history_title,
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
@@ -424,11 +423,11 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
   String _getFilterLabel(TransactionFilter filter) {
     switch (filter) {
       case TransactionFilter.all:
-        return AppLocalizations.of(context)!.history_title;
+        return AppLocalizations.of(context).history_title;
       case TransactionFilter.incoming:
-        return AppLocalizations.of(context)!.received_label;
+        return AppLocalizations.of(context).received_label;
       case TransactionFilter.outgoing:
-        return AppLocalizations.of(context)!.sent_label;
+        return AppLocalizations.of(context).sent_label;
     }
   }
 
@@ -455,30 +454,30 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
   /// Get transaction status label based on status and type
   String _getTransactionStatusLabel(TransactionInfo transaction) {
     if (transaction.isPending) {
-      return AppLocalizations.of(context)!.pending_label;
+      return AppLocalizations.of(context).pending_label;
     }
     
     if (transaction.isFailed) {
-      return AppLocalizations.of(context)!.failed_label;
+      return AppLocalizations.of(context).failed_label;
     }
     
     // For completed transactions, show direction
     return transaction.isIncoming 
-        ? AppLocalizations.of(context)!.received_label 
-        : AppLocalizations.of(context)!.sent_label;
+        ? AppLocalizations.of(context).received_label 
+        : AppLocalizations.of(context).sent_label;
   }
 
   /// Get transaction status for details modal
   String _getTransactionStatus(TransactionInfo transaction) {
     if (transaction.isPending) {
-      return AppLocalizations.of(context)!.pending_label;
+      return AppLocalizations.of(context).pending_label;
     }
     
     if (transaction.isFailed) {
-      return AppLocalizations.of(context)!.failed_label;
+      return AppLocalizations.of(context).failed_label;
     }
     
-    return AppLocalizations.of(context)!.valid_status;
+    return AppLocalizations.of(context).valid_status;
   }
 
   /// Determine appropriate color for transaction based on status and type
@@ -512,7 +511,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context)!.loading_transactions_text,
+              AppLocalizations.of(context).loading_transactions_text,
               style: TextStyle(
                 color: t.textPrimary,
                 fontSize: 16,
@@ -535,7 +534,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context)!.loading_transactions_error_prefix,
+              AppLocalizations.of(context).loading_transactions_error_prefix,
               style: TextStyle(
                 color: t.textPrimary,
                 fontSize: 18,
@@ -558,7 +557,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
                 backgroundColor: t.accentSolid,
                 foregroundColor: t.accentForeground,
               ),
-              child: Text(AppLocalizations.of(context)!.connect_button),
+              child: Text(AppLocalizations.of(context).connect_button),
             ),
           ],
         ),
@@ -579,7 +578,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context)!.no_transactions_text,
+              AppLocalizations.of(context).no_transactions_text,
               style: TextStyle(
                 color: t.textPrimary,
                 fontSize: 18,
@@ -588,7 +587,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
             ),
             const SizedBox(height: 8),
             Text(
-              AppLocalizations.of(context)!.no_transactions_description,
+              AppLocalizations.of(context).no_transactions_description,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: t.textPrimary.withValues(alpha: 0.7),
@@ -656,7 +655,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      transaction.memo.isEmpty ? AppLocalizations.of(context)!.no_description_text : transaction.memo,
+                      transaction.memo.isEmpty ? AppLocalizations.of(context).no_description_text : transaction.memo,
                       style: TextStyle(
                         color: t.textPrimary,
                         fontSize: 16,
@@ -686,7 +685,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            AppLocalizations.of(context)!.pending_label,
+                            AppLocalizations.of(context).pending_label,
                             style: TextStyle(
                               color: t.statusWarning,
                               fontSize: 12,
@@ -839,7 +838,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
             ],
 
             _buildDetailRow(t, 'Date', transaction.formattedDate),
-            _buildDetailRow(t, 'Description', transaction.memo.isEmpty ? AppLocalizations.of(context)!.no_description_text : transaction.memo),
+            _buildDetailRow(t, 'Description', transaction.memo.isEmpty ? AppLocalizations.of(context).no_description_text : transaction.memo),
             if (transaction.originalFiatAmount != null && transaction.originalFiatCurrency != null) ...[
               _buildDetailRow(t, 'Original Amount', '${transaction.originalFiatAmount!.toStringAsFixed(2)} ${transaction.originalFiatCurrency}'),
               if (transaction.originalFiatRate != null)
@@ -854,7 +853,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
               _buildDetailRow(t, 'Hash', transaction.paymentHash!, copyable: true),
             if (transaction.fee != null)
               _buildDetailRow(t, 'Fee', '${(transaction.fee! / 1000).toStringAsFixed(3)} sats'),
-            _buildDetailRow(t, AppLocalizations.of(context)!.invoice_status_label, _getTransactionStatus(transaction)),
+            _buildDetailRow(t, AppLocalizations.of(context).invoice_status_label, _getTransactionStatus(transaction)),
                 ],
               ),
             ),
@@ -866,7 +865,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
 
   Widget _buildInvoiceQRSection(TransactionInfo transaction, AppTokens t) {
     final invoice = transaction.invoice!;
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
     return Column(
       children: [
         Center(
@@ -932,7 +931,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(AppLocalizations.of(context)!.invoice_copied_message),
+        content: Text(AppLocalizations.of(context).invoice_copied_message),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -959,7 +958,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
               onTap: copyable ? () {
                 // TODO: Implement clipboard copy
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(AppLocalizations.of(context)!.address_copied_message)),
+                  SnackBar(content: Text(AppLocalizations.of(context).address_copied_message)),
                 );
               } : null,
               child: Text(

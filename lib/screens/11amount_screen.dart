@@ -38,7 +38,6 @@ class _AmountScreenState extends State<AmountScreen> {
   final TextEditingController _commentController = TextEditingController();
   final FocusNode _commentFocusNode = FocusNode();
   
-  Map<String, double>? _exchangeRates;
   bool _isLoadingRates = false;
   bool _isProcessingPayment = false;
   
@@ -109,12 +108,10 @@ class _AmountScreenState extends State<AmountScreen> {
     });
 
     try {
-      final rates = await _yadioService.getExchangeRates();
-      setState(() {
-        _exchangeRates = rates;
-      });
+      await _yadioService.getExchangeRates();
+      
     } catch (e) {
-      _showErrorSnackBar(AppLocalizations.of(context)!.conversion_rate_error);
+      _showErrorSnackBar(AppLocalizations.of(context).conversion_rate_error);
     } finally {
       setState(() {
         _isLoadingRates = false;
@@ -311,7 +308,7 @@ class _AmountScreenState extends State<AmountScreen> {
     }
     
     if (_isConverting) {
-      return ' / ${AppLocalizations.of(context)!.calculating_text}...';
+      return ' / ${AppLocalizations.of(context).calculating_text}...';
     }
     
     if (_cachedSatsAmount > 0) {
@@ -336,7 +333,7 @@ class _AmountScreenState extends State<AmountScreen> {
     
     if (satsAmount <= 0) {
       print('[AMOUNT_SCREEN] Invalid sats amount: $satsAmount');
-      _showErrorSnackBar(AppLocalizations.of(context)!.invalid_amount_error);
+      _showErrorSnackBar(AppLocalizations.of(context).invalid_amount_error);
       return;
     }
 
@@ -356,7 +353,7 @@ class _AmountScreenState extends State<AmountScreen> {
         await _processLightningAddressPayment(satsAmount);
       }
     } catch (e) {
-      _showErrorSnackBar('${AppLocalizations.of(context)!.send_error_prefix}$e');
+      _showErrorSnackBar('${AppLocalizations.of(context).send_error_prefix}$e');
     } finally {
       setState(() {
         _isProcessingPayment = false;
@@ -392,17 +389,17 @@ class _AmountScreenState extends State<AmountScreen> {
       final walletProvider = context.read<WalletProvider>();
       
       if (authProvider.sessionData == null) {
-        throw Exception(AppLocalizations.of(context)!.invalid_session_error);
+        throw Exception(AppLocalizations.of(context).invalid_session_error);
       }
       
       if (walletProvider.primaryWallet == null) {
-        throw Exception(AppLocalizations.of(context)!.no_wallet_error);
+        throw Exception(AppLocalizations.of(context).no_wallet_error);
       }
       
       final session = authProvider.sessionData!;
       final wallet = walletProvider.primaryWallet!;
       
-      _showSuccessSnackBar(AppLocalizations.of(context)!.send_title);
+      _showSuccessSnackBar(AppLocalizations.of(context).send_title);
       
       // Send payment directly to LNURL using LNBits
       final paymentResult = await _invoiceService.sendPaymentToLNURL(
@@ -416,14 +413,14 @@ class _AmountScreenState extends State<AmountScreen> {
       print('[AMOUNT_SCREEN] LNURL payment sent successfully: $paymentResult');
       
       // Check payment status from response to provide appropriate user feedback
-      final paymentStatus = paymentResult['status']?.toString()?.toLowerCase() ?? 'unknown';
+      final paymentStatus = paymentResult['status']?.toString().toLowerCase() ?? 'unknown';
       final isPending = paymentStatus == 'pending';
       final isSuccess = paymentStatus == 'complete' || paymentStatus == 'settled' || paymentStatus == 'paid';
 
       if (isPending) {
-        _showPendingSnackBar(AppLocalizations.of(context)!.pending_label);
+        _showPendingSnackBar(AppLocalizations.of(context).pending_label);
       } else if (isSuccess) {
-        _showSuccessSnackBar(AppLocalizations.of(context)!.payment_success);
+        _showSuccessSnackBar(AppLocalizations.of(context).payment_success);
       } else {
         _showSuccessSnackBar('Pago LNURL enviado! Estado: $paymentStatus');
       }
@@ -470,17 +467,17 @@ class _AmountScreenState extends State<AmountScreen> {
       final walletProvider = context.read<WalletProvider>();
       
       if (authProvider.sessionData == null) {
-        throw Exception(AppLocalizations.of(context)!.invalid_session_error);
+        throw Exception(AppLocalizations.of(context).invalid_session_error);
       }
       
       if (walletProvider.primaryWallet == null) {
-        throw Exception(AppLocalizations.of(context)!.no_wallet_error);
+        throw Exception(AppLocalizations.of(context).no_wallet_error);
       }
       
       final session = authProvider.sessionData!;
       final wallet = walletProvider.primaryWallet!;
       
-      _showSuccessSnackBar(AppLocalizations.of(context)!.send_title);
+      _showSuccessSnackBar(AppLocalizations.of(context).send_title);
       
       // Send payment directly to Lightning Address using LNBits
       final paymentResult = await _invoiceService.sendPaymentToLightningAddress(
@@ -494,14 +491,14 @@ class _AmountScreenState extends State<AmountScreen> {
       print('[AMOUNT_SCREEN] Payment sent successfully: $paymentResult');
       
       // Check payment status from response to provide appropriate user feedback
-      final paymentStatus = paymentResult['status']?.toString()?.toLowerCase() ?? 'unknown';
+      final paymentStatus = paymentResult['status']?.toString().toLowerCase() ?? 'unknown';
       final isPending = paymentStatus == 'pending';
       final isSuccess = paymentStatus == 'complete' || paymentStatus == 'settled' || paymentStatus == 'paid';
 
       if (isPending) {
-        _showPendingSnackBar(AppLocalizations.of(context)!.pending_label);
+        _showPendingSnackBar(AppLocalizations.of(context).pending_label);
       } else if (isSuccess) {
-        _showSuccessSnackBar(AppLocalizations.of(context)!.payment_success);
+        _showSuccessSnackBar(AppLocalizations.of(context).payment_success);
       } else {
         _showSuccessSnackBar('Pago Lightning Address enviado! Estado: $paymentStatus');
       }
@@ -733,7 +730,7 @@ class _AmountScreenState extends State<AmountScreen> {
                         Column(
                           children: [
                             Text(
-                              AppLocalizations.of(context)!.send_to_title,
+                              AppLocalizations.of(context).send_to_title,
                               style: TextStyle(
                                 fontSize: isMobile ? 40 : 48,
                                 fontWeight: FontWeight.w700,
@@ -809,7 +806,7 @@ class _AmountScreenState extends State<AmountScreen> {
                                       const SizedBox(width: 12),
                                       Text(
                                         _isConverting
-                                            ? '(${AppLocalizations.of(context)!.calculating_text}...)'
+                                            ? '(${AppLocalizations.of(context).calculating_text}...)'
                                             : '(≈ $_cachedSatsAmount sats)',
                                         style: TextStyle(
                                           fontSize: isMobile ? 18 : 22,
@@ -932,7 +929,7 @@ class _AmountScreenState extends State<AmountScreen> {
                                 fontSize: 16,
                               ),
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.add_note_optional,
+                                hintText: AppLocalizations.of(context).add_note_optional,
                                 hintStyle: TextStyle(
                                   color: t.textPrimary.withValues(alpha: 0.6),
                                   fontSize: 16,
@@ -989,7 +986,7 @@ class _AmountScreenState extends State<AmountScreen> {
                                         ),
                                         const SizedBox(width: 12),
                                         Text(
-                                          AppLocalizations.of(context)!.processing_text.toUpperCase(),
+                                          AppLocalizations.of(context).processing_text.toUpperCase(),
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700,
@@ -1000,8 +997,8 @@ class _AmountScreenState extends State<AmountScreen> {
                                     )
                                   : Text(
                                       _selectedCurrency != 'sats'
-                                          ? '${AppLocalizations.of(context)!.send_button_prefix}${_formatDisplayAmount()}${_getConversionText()}'
-                                          : '${AppLocalizations.of(context)!.send_button_prefix}${_formatDisplayAmount()}',
+                                          ? '${AppLocalizations.of(context).send_button_prefix}${_formatDisplayAmount()}${_getConversionText()}'
+                                          : '${AppLocalizations.of(context).send_button_prefix}${_formatDisplayAmount()}',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,
@@ -1033,7 +1030,7 @@ class _AmountScreenState extends State<AmountScreen> {
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  AppLocalizations.of(context)!.loading_text,
+                                  AppLocalizations.of(context).loading_text,
                                   style: TextStyle(
                                     color: t.textPrimary.withValues(alpha: 0.6),
                                     fontSize: 12,

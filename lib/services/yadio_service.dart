@@ -121,6 +121,7 @@ class YadioService {
 
   /// Converts a BTC string to satoshis using integer arithmetic
   /// to avoid precision loss with doubles
+  // ignore: unused_element
   int _convertBtcStringToSats(String btcString) {
     try {
       // Handle scientific notation if present

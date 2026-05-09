@@ -43,7 +43,9 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   Timer? _invoicePaymentTimeoutTimer;
 
   bool _nfcAvailable = false;
+  // ignore: unused_field
   bool _nfcChecked = false;
+  // ignore: unused_field
   bool _isHceActive = false;
 
   @override
@@ -197,7 +199,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
           ),
           SizedBox(height: isMobile ? 0 : 4),
           Text(
-            AppLocalizations.of(context)!.receive_title,
+            AppLocalizations.of(context).receive_title,
             style: TextStyle(
               fontSize: isMobile ? 36 : 44,
               fontWeight: FontWeight.w700,
@@ -433,7 +435,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
           ),
           icon: const Icon(Icons.close, size: 20),
           label: Text(
-            AppLocalizations.of(context)!.clear_invoice_button,
+            AppLocalizations.of(context).clear_invoice_button,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ),
@@ -470,7 +472,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
           ),
           icon: Icon(Icons.request_quote, color: context.tokens.textPrimary),
           label: Text(
-            AppLocalizations.of(context)!.amount_sats_label,
+            AppLocalizations.of(context).amount_sats_label,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -508,17 +510,17 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
         children: [
           _buildBarAction(
             icon: Icons.content_copy_rounded,
-            label: AppLocalizations.of(context)!.copy_button,
+            label: AppLocalizations.of(context).copy_button,
             onTap: () => _showCopySheet(defaultAddress),
           ),
           _buildBarAction(
             icon: Icons.ios_share_rounded,
-            label: AppLocalizations.of(context)!.share_button,
+            label: AppLocalizations.of(context).share_button,
             onTap: () => _shareContent(defaultAddress),
           ),
           _buildBarAction(
             icon: Icons.nfc_rounded,
-            label: AppLocalizations.of(context)!.nfc_action_label,
+            label: AppLocalizations.of(context).nfc_action_label,
             enabled: _nfcAvailable,
             onTap: _nfcAvailable ? _activateNfc : _showNfcUnavailable,
           ),
@@ -580,7 +582,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
           ),
           const SizedBox(height: 24),
           Text(
-            AppLocalizations.of(context)!.loading_address_text,
+            AppLocalizations.of(context).loading_address_text,
             style: TextStyle(
               color: context.tokens.textPrimary.withValues(alpha: 0.8),
               fontSize: 16,
@@ -611,7 +613,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context)!.loading_address_error_prefix,
+              AppLocalizations.of(context).loading_address_error_prefix,
               style: TextStyle(
                 color: context.tokens.textPrimary,
                 fontSize: 18,
@@ -642,7 +644,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                   elevation: 0,
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.connect_button,
+                  AppLocalizations.of(context).connect_button,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -676,7 +678,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              AppLocalizations.of(context)!.not_available_text,
+              AppLocalizations.of(context).not_available_text,
               style: TextStyle(
                 color: context.tokens.textPrimary,
                 fontSize: 20,
@@ -685,7 +687,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              AppLocalizations.of(context)!.lightning_address_description,
+              AppLocalizations.of(context).lightning_address_description,
               style: TextStyle(
                 color: context.tokens.textPrimary.withValues(alpha: 0.8),
                 fontSize: 16,
@@ -723,7 +725,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                   ),
                   icon: Icon(Icons.request_quote, color: context.tokens.textPrimary),
                   label: Text(
-                    AppLocalizations.of(context)!.amount_sats_label,
+                    AppLocalizations.of(context).amount_sats_label,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -735,7 +737,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context)!.create_lnaddress_label,
+              AppLocalizations.of(context).create_lnaddress_label,
               style: TextStyle(
                 color: context.tokens.textPrimary.withValues(alpha: 0.6),
                 fontSize: 14,
@@ -766,7 +768,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                 ),
                 icon: const Icon(Icons.add, size: 20),
                 label: Text(
-                  AppLocalizations.of(context)!.lightning_address_title,
+                  AppLocalizations.of(context).lightning_address_title,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -788,7 +790,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     });
     _showAccentSnackBar(
       icon: Icons.check_circle,
-      message: AppLocalizations.of(context)!.invoice_cleared_message,
+      message: AppLocalizations.of(context).invoice_cleared_message,
     );
   }
 
@@ -830,7 +832,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                       color: context.tokens.accentSolid, size: 22),
                   const SizedBox(width: 12),
                   Text(
-                    AppLocalizations.of(context)!.copy_button,
+                    AppLocalizations.of(context).copy_button,
                     style: TextStyle(
                       color: context.tokens.textPrimary,
                       fontSize: 18,
@@ -844,13 +846,13 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
             if (defaultAddress != null)
               _buildSheetItem(
                 icon: Icons.alternate_email,
-                title: AppLocalizations.of(context)!.lightning_address_title,
+                title: AppLocalizations.of(context).lightning_address_title,
                 subtitle: defaultAddress.fullAddress,
                 onTap: () {
                   Navigator.pop(sheetContext);
                   _copyToClipboard(
                     defaultAddress.fullAddress,
-                    AppLocalizations.of(context)!.address_copied_message,
+                    AppLocalizations.of(context).address_copied_message,
                   );
                 },
               ),
@@ -863,20 +865,20 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                   Navigator.pop(sheetContext);
                   _copyToClipboard(
                     lnurl,
-                    AppLocalizations.of(context)!.lnurl_copied_message,
+                    AppLocalizations.of(context).lnurl_copied_message,
                   );
                 },
               ),
             if (hasInvoice)
               _buildSheetItem(
                 icon: Icons.receipt_long_rounded,
-                title: AppLocalizations.of(context)!.copy_invoice_button,
+                title: AppLocalizations.of(context).copy_invoice_button,
                 subtitle: _truncate(_generatedInvoice!.paymentRequest),
                 onTap: () {
                   Navigator.pop(sheetContext);
                   _copyToClipboard(
                     _generatedInvoice!.paymentRequest,
-                    AppLocalizations.of(context)!.invoice_copied_message,
+                    AppLocalizations.of(context).invoice_copied_message,
                   );
                 },
               ),
@@ -964,14 +966,14 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     final box = context.findRenderObject() as RenderBox?;
     await Share.share(
       text,
-      subject: AppLocalizations.of(context)!.receive_title,
+      subject: AppLocalizations.of(context).receive_title,
       sharePositionOrigin:
           box != null ? box.localToGlobal(Offset.zero) & box.size : null,
     );
   }
 
   void _showNfcUnavailable() {
-    _showInfoSnackBar(AppLocalizations.of(context)!.nfc_unavailable_message);
+    _showInfoSnackBar(AppLocalizations.of(context).nfc_unavailable_message);
   }
 
   Future<void> _activateNfc() async {
@@ -980,7 +982,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       return;
     }
 
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     // Sin factura → HCE directo exponiendo LNURL bech32 (funcionaba antes)
     if (_generatedInvoice == null) {
@@ -1113,7 +1115,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            AppLocalizations.of(context)!.amount_sats_label,
+                            AppLocalizations.of(context).amount_sats_label,
                             style: TextStyle(
                               color: context.tokens.textPrimary,
                               fontSize: 20,
@@ -1145,7 +1147,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!.amount_label,
+                                    AppLocalizations.of(context).amount_label,
                                     style: TextStyle(
                                       color: context.tokens.textPrimary.withValues(alpha: 0.8),
                                       fontSize: 14,
@@ -1193,7 +1195,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  AppLocalizations.of(context)!.currency_label,
+                                  AppLocalizations.of(context).currency_label,
                                   style: TextStyle(
                                     color: context.tokens.textPrimary.withValues(alpha: 0.8),
                                     fontSize: 14,
@@ -1241,7 +1243,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          AppLocalizations.of(context)!.optional_description_label,
+                          AppLocalizations.of(context).optional_description_label,
                           style: TextStyle(
                             color: context.tokens.textPrimary.withValues(alpha: 0.8),
                             fontSize: 14,
@@ -1256,7 +1258,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                             fontSize: 16,
                           ),
                           decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!.payment_description_example,
+                            hintText: AppLocalizations.of(context).payment_description_example,
                             hintStyle: TextStyle(
                               color: context.tokens.textSecondary,
                             ),
@@ -1298,7 +1300,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                                     ),
                                   ),
                                   child: Text(
-                                    AppLocalizations.of(context)!.cancel_button,
+                                    AppLocalizations.of(context).cancel_button,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -1324,7 +1326,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                                     elevation: 0,
                                   ),
                                   child: Text(
-                                    AppLocalizations.of(context)!.confirm_button,
+                                    AppLocalizations.of(context).confirm_button,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -1353,13 +1355,13 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     bool modoLector = false,
   }) async {
     if (_amountController.text.trim().isEmpty) {
-      _showErrorSnackBar(AppLocalizations.of(context)!.invalid_amount_error);
+      _showErrorSnackBar(AppLocalizations.of(context).invalid_amount_error);
       return;
     }
 
     final amount = double.tryParse(_amountController.text.trim());
     if (amount == null || amount <= 0) {
-      _showErrorSnackBar(AppLocalizations.of(context)!.invalid_amount_error);
+      _showErrorSnackBar(AppLocalizations.of(context).invalid_amount_error);
       return;
     }
 
@@ -1377,7 +1379,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       final serverUrl = authProvider.sessionData?.serverUrl;
 
       if (wallet == null || serverUrl == null) {
-        throw Exception(AppLocalizations.of(context)!.no_wallet_error);
+        throw Exception(AppLocalizations.of(context).no_wallet_error);
       }
 
       final amountInSats = await _getAmountInSats(amount, _selectedCurrency);
@@ -1416,7 +1418,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
       _showAccentSnackBar(
         icon: Icons.check_circle,
-        message: AppLocalizations.of(context)!.invoice_generated_message,
+        message: AppLocalizations.of(context).invoice_generated_message,
         backgroundColor: context.tokens.statusHealthy,
       );
 
@@ -1489,7 +1491,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
                         Icon(Icons.check_circle, color: context.tokens.textPrimary, size: 20),
                         const SizedBox(width: 12),
                         Text(
-                          '${AppLocalizations.of(context)!.received_label}! ${invoice.formattedAmount}',
+                          '${AppLocalizations.of(context).received_label}! ${invoice.formattedAmount}',
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -1518,7 +1520,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
         _generatedInvoice = null;
       });
       _showInfoSnackBar(
-        AppLocalizations.of(context)!.invoice_monitoring_timeout_message,
+        AppLocalizations.of(context).invoice_monitoring_timeout_message,
       );
     });
   }
@@ -1647,7 +1649,7 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> with SingleTickerProvi
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!_serviceInitialized) {
-      _service = NfcChargeService(AppLocalizations.of(context)!);
+      _service = NfcChargeService(AppLocalizations.of(context));
       _serviceInitialized = true;
       debugPrint('[HCE_SHEET] Modo: ${widget.modo}');
       debugPrint('[HCE_SHEET] Contenido: ${widget.invoice}');
@@ -1715,7 +1717,7 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> with SingleTickerProvi
   }
 
   String _statusText(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     switch (_status) {
       case NfcChargeStatus.scanning:
       case NfcChargeStatus.reading:
@@ -1745,7 +1747,7 @@ class _NfcChargeSheetState extends State<_NfcChargeSheet> with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final accent = _statusColor(context);
 
     return Container(

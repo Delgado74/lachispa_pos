@@ -72,8 +72,8 @@ class LNAddressService {
     _dio.options.headers['X-Api-Key'] = _adminKey;
     
     _debugLog('[LN_ADDRESS_SERVICE] 🔐 Setting up write headers:');
-    _debugLog('[LN_ADDRESS_SERVICE]   Admin Key: ${_adminKey.isNotEmpty ? _adminKey.substring(0, 8) + "..." : "EMPTY"}');
-    _debugLog('[LN_ADDRESS_SERVICE]   Invoice Key: ${_invoiceKey.isNotEmpty ? _invoiceKey.substring(0, 8) + "..." : "EMPTY"}');
+    _debugLog('[LN_ADDRESS_SERVICE]   Admin Key: ${_adminKey.isNotEmpty ? "${_adminKey.substring(0, 8)}..." : "EMPTY"}');
+    _debugLog('[LN_ADDRESS_SERVICE]   Invoice Key: ${_invoiceKey.isNotEmpty ? "${_invoiceKey.substring(0, 8)}..." : "EMPTY"}');
     
     if (_adminKey.isEmpty) {
       _debugLog('[LN_ADDRESS_SERVICE] ⚠️ EMPTY ADMIN KEY - this will cause authentication error');
@@ -410,11 +410,7 @@ class LNAddressService {
             final isLaChispa = _baseUrl.toLowerCase().contains('lachispa.me');
             
             if (isLaChispa) {
-              throw Exception('🌐 CORS Blocked - LaChispa.me\n\n' +
-                  '⚠️ CONFIRMED PROBLEM:\n' +
-                  'The correct endpoint (/lnurlp/api/v1/links) exists on lachispa.me\n' +
-                  'but the web browser blocks POST requests due to CORS policies.\n\n' +
-                  '✅ AVAILABLE SOLUTIONS:\n' +
+              throw Exception('🌐 CORS Blocked - LaChispa.me\n\n' '⚠️ CONFIRMED PROBLEM:\n' 'The correct endpoint (/lnurlp/api/v1/links) exists on lachispa.me\n' 'but the web browser blocks POST requests due to CORS policies.\n\n' '✅ AVAILABLE SOLUTIONS:\n' +
                   '1. 📱 Use mobile application (recommended)\n' +
                   '2. 📧 Contact @lachispa_me to enable CORS\n' +
                   '3. 🛠️ Create manually with curl:\n\n' +
@@ -427,11 +423,7 @@ class LNAddressService {
                   '• Extension installed: LNURLP ✅\n' +
                   '• Problem: Only CORS in browser 🚫');
             } else {
-              throw Exception('🌐 CORS Error - Web Server\n\n' +
-                  '⚠️ IDENTIFIED PROBLEM:\n' +
-                  'The LNBits server does not allow POST requests from web browsers ' +
-                  'for the LNURLP extension due to CORS policies.\n\n' +
-                  '✅ RECOMMENDED SOLUTIONS:\n' +
+              throw Exception('🌐 CORS Error - Web Server\n\n' '⚠️ IDENTIFIED PROBLEM:\n' 'The LNBits server does not allow POST requests from web browsers ' 'for the LNURLP extension due to CORS policies.\n\n' '✅ RECOMMENDED SOLUTIONS:\n' +
                   '1. Contact server administrator to enable CORS\n' +
                   '2. Use mobile application instead of browser\n' +
                   '3. Create Lightning Address manually with curl\n\n' +
@@ -448,27 +440,19 @@ class LNAddressService {
           if (errorData is Map && errorData.containsKey('detail')) {
             final detail = errorData['detail'].toString();
             if (detail.contains('Wallet not found')) {
-              throw Exception('🚫 Wallet not found\n\n' +
-                  'Wallet with ID "$walletId" was not found on the server.\n\n' +
-                  'Possible causes:\n' +
-                  '• Wallet does not belong to your user\n' +
-                  '• There is a session synchronization problem\n' +
+              throw Exception('🚫 Wallet not found\n\n' 'Wallet with ID "$walletId" was not found on the server.\n\n' 'Possible causes:\n' '• Wallet does not belong to your user\n' '• There is a session synchronization problem\n' +
                   '• Wallet was deleted\n\n' +
                   'Try logout/login or select another wallet.');
             } else {
               throw Exception('🚫 Resource not found: $detail');
             }
           } else {
-            throw Exception('🚫 LNURLP extension not found\n\n' +
-                'LNURLP extension is not installed on this LNBits server.\n' +
-                'Contact administrator to install it.');
+            throw Exception('🚫 LNURLP extension not found\n\n' 'LNURLP extension is not installed on this LNBits server.\n' 'Contact administrator to install it.');
           }
         }
         
         if (e.response?.statusCode == 401 || e.response?.statusCode == 403) {
-          throw Exception('🔐 Permission error\n\n' +
-              'You do not have permissions to create Lightning Addresses.\n' +
-              'Verify that you have the correct admin key.');
+          throw Exception('🔐 Permission error\n\n' 'You do not have permissions to create Lightning Addresses.\n' 'Verify that you have the correct admin key.');
         }
         
         if (e.type == DioExceptionType.connectionTimeout) {
@@ -668,6 +652,7 @@ class LNAddressService {
   }
   
   // Encode URL in LNURL format (bech32)
+  // ignore: unused_element
   String _encodeLNURL(String url) {
     try {
       _debugLog('[LN_ADDRESS_SERVICE] Encoding URL to LNURL: $url');
@@ -707,7 +692,7 @@ class LNAddressService {
     
     // Build final result
     final combined = data + checksum;
-    final result = hrp + '1' + combined.map((i) => charset[i]).join('');
+    final result = '${hrp}1${combined.map((i) => charset[i]).join('')}';
     
     return result;
   }

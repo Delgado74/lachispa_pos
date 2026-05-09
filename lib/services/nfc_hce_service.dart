@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:flutter/services.dart';
 
 /// Servicio HCE para emulación de etiquetas NFC.

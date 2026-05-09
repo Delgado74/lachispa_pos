@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'dart:convert';
 
 class CurrencyRatesService {
   final Dio _dio = Dio();
@@ -146,7 +145,7 @@ class CurrencyRatesService {
         } else {
           // If it's a map with currency-like keys (3 letter codes)
           final potentialCurrencies = data.keys.where((key) => 
-            key is String && key.length == 3 && key.toUpperCase() == key
+            key.length == 3 && key.toUpperCase() == key
           ).cast<String>().toList();
           
           if (potentialCurrencies.isNotEmpty) {
@@ -311,6 +310,7 @@ class CurrencyRatesService {
   }
 
   /// Get rates from external API (ExchangeRate-API)
+  // ignore: unused_element
   Future<Map<String, double>> _getFallbackRates(List<String>? currencies) async {
     print('[CURRENCY_RATES_SERVICE] Using external API for rates');
     
@@ -345,6 +345,7 @@ class CurrencyRatesService {
   }
 
   /// Get all rates from external API (for currency discovery)
+  // ignore: unused_element
   Future<Map<String, double>> _getFallbackRatesFromExternal() async {
     print('[CURRENCY_RATES_SERVICE] Getting all rates from external API for currency discovery');
     
@@ -509,7 +510,7 @@ class CurrencyRatesService {
               final usdAmount = (data['USD'] as num).toDouble();
               // Approximate USD to CUP rate (1 USD ≈ 120 CUP as of 2024)
               // This is a rough estimate - in production you'd want to get this from a reliable source
-              final usdToCupRate = 120.0; 
+              const usdToCupRate = 120.0; 
               final cupAmount = usdAmount * usdToCupRate;
               
               print('[CURRENCY_RATES_SERVICE] Calculated: ${usdAmount.toStringAsFixed(2)} USD × $usdToCupRate = ${cupAmount.toStringAsFixed(0)} CUP');
@@ -520,7 +521,7 @@ class CurrencyRatesService {
         } else {
           print('[CURRENCY_RATES_SERVICE] Invalid response: status=${response.statusCode}, data=${response.data}');
         }
-      } catch (e, stackTrace) {
+      } catch (e) {
         print('[CURRENCY_RATES_SERVICE] Conversion endpoint failed: ${e.toString()}');
         print('[CURRENCY_RATES_SERVICE] Error type: ${e.runtimeType}');
         if (e is DioException) {

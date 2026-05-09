@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 /// Lightning transaction information
 class TransactionInfo {

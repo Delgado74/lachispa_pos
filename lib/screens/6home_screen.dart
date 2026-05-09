@@ -11,12 +11,10 @@ import '../services/app_info_service.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/app_tokens.dart';
 import '7history_screen.dart';
-import '7ln_address_screen.dart';
 import '9receive_screen.dart';
 import '10send_screen.dart';
 import '14fixed_float_screen.dart';
 import '15boltz_screen.dart';
-import '16currency_settings_screen.dart';
 import '17settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -331,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                   // White content on saturated status background; not a themable surface.
                   const Icon(Icons.check_circle, color: Colors.white),
                   const SizedBox(width: 8),
-                  Text('${AppLocalizations.of(context)!.received_label}! +$difference sats'),
+                  Text('${AppLocalizations.of(context).received_label}! +$difference sats'),
                 ],
               ),
               backgroundColor: context.tokens.statusHealthy.withValues(alpha: 0.9),
@@ -389,6 +387,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   }
 
   // Format main balance according to selected currency using new system
+  // ignore: unused_element
   String _formatMainBalanceSync(int balanceSats, CurrencySettingsProvider currencyProvider) {
     final displaySequence = currencyProvider.displaySequence;
     
@@ -409,7 +408,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
     
     // For fiat currencies, we'll use FutureBuilder in the UI
     // This function is just for the loading state
-    return AppLocalizations.of(context)!.calculating_text ?? 'Loading...';
+    return AppLocalizations.of(context).calculating_text;
   }
 
   // Format secondary balance (sats) to show below when not in sats using new system
@@ -1009,9 +1008,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                         valueColor: AlwaysStoppedAnimation<Color>(context.tokens.textPrimary.withValues(alpha: 0.7)),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
-                      AppLocalizations.of(context)!.loading_text,
+                      AppLocalizations.of(context).loading_text,
                       style: TextStyle(
                                                 fontSize: 12,
                         color: context.tokens.textPrimary.withValues(alpha: 0.7),
@@ -1069,7 +1068,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                 child: Column(
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.balance_label,
+                      AppLocalizations.of(context).balance_label,
                       style: TextStyle(
                                                 fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -1098,7 +1097,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                                         // Show balance with new system
                                         if (walletProvider.primaryWallet == null) {
                                           final mainBalance = walletProvider.isLoading
-                                              ? (AppLocalizations.of(context)!.loading_text ?? 'Loading...')
+                                              ? (AppLocalizations.of(context).loading_text)
                                               : '0 sats';
                                           return _buildBalanceDisplay(mainBalance, null, isMobile, currencyProvider);
                                         }
@@ -1127,7 +1126,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                                               mainBalance = '••• $currency';
                                             } else if (snapshot.connectionState == ConnectionState.waiting) {
                                               // Still loading
-                                              mainBalance = AppLocalizations.of(context)!.calculating_text ?? 'Calculando...';
+                                              mainBalance = AppLocalizations.of(context).calculating_text;
                                             } else if (snapshot.hasError) {
                                               // Show error message instead of resetting
                                               print('[HOME_SCREEN] Currency conversion error for $currency: ${snapshot.error}');
@@ -1242,14 +1241,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.send_button,
+                          AppLocalizations.of(context).send_button,
                           style: TextStyle(
                                                         fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: context.tokens.accentForeground,
                           ),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Icon(
                           Icons.north_east,
                           color: context.tokens.accentForeground,
@@ -1305,9 +1304,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                           color: context.tokens.textPrimary,
                           size: 20,
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Text(
-                          AppLocalizations.of(context)!.receive_button,
+                          AppLocalizations.of(context).receive_button,
                           style: TextStyle(
                                                         fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -1352,7 +1351,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      AppLocalizations.of(context)!.wallet_title,
+                      AppLocalizations.of(context).wallet_title,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -1441,7 +1440,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                           // Show feedback
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('${AppLocalizations.of(context)!.wallet_title} "${wallet.name}" seleccionada'),
+                              content: Text('${AppLocalizations.of(context).wallet_title} "${wallet.name}" seleccionada'),
                               backgroundColor: context.tokens.accentSolid,
                               duration: const Duration(seconds: 2),
                             ),
@@ -1476,7 +1475,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          AppLocalizations.of(context)!.create_new_wallet_title,
+                          AppLocalizations.of(context).create_new_wallet_title,
                           style: TextStyle(
                             color: context.tokens.textPrimary,
                             fontSize: 14,
@@ -1487,7 +1486,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      AppLocalizations.of(context)!.create_wallet_short_description,
+                      AppLocalizations.of(context).create_wallet_short_description,
                       style: TextStyle(
                         color: context.tokens.textPrimary.withValues(alpha: 0.7),
                         fontSize: 12,
@@ -1510,8 +1509,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                           padding: const EdgeInsets.symmetric(vertical: 8),
                         ),
                         child: Text(
-                          AppLocalizations.of(context)!.server_settings_title,
-                          style: TextStyle(fontSize: 12),
+                          AppLocalizations.of(context).server_settings_title,
+                          style: const TextStyle(fontSize: 12),
                         ),
                       ),
                     ),
@@ -1536,15 +1535,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
               Icons.add_circle_outline,
               color: context.tokens.accentBright,
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
-              AppLocalizations.of(context)!.create_new_wallet_title,
+              AppLocalizations.of(context).create_new_wallet_title,
               style: TextStyle(color: context.tokens.textPrimary),
             ),
           ],
         ),
         content: Text(
-          AppLocalizations.of(context)!.create_wallet_detailed_instructions,
+          AppLocalizations.of(context).create_wallet_detailed_instructions,
           style: TextStyle(
             color: context.tokens.textPrimary.withValues(alpha: 0.7),
             fontSize: 14,
@@ -1554,7 +1553,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              AppLocalizations.of(context)!.cancel_button,
+              AppLocalizations.of(context).cancel_button,
               style: TextStyle(color: context.tokens.textAccent),
             ),
           ),
@@ -1599,7 +1598,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  AppLocalizations.of(context)!.history_title,
+                  AppLocalizations.of(context).history_title,
                   style: TextStyle(
                                         fontSize: 16,
                     fontWeight: FontWeight.w500, // Weight for secondary buttons
@@ -1731,7 +1730,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                     
                     _buildDrawerItem(
                       icon: Icons.settings,
-                      title: AppLocalizations.of(context)!.settings_button,
+                      title: AppLocalizations.of(context).settings_button,
                       onTap: () {
                         Navigator.pop(context);
                         Navigator.push(
@@ -1773,7 +1772,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                     
                     _buildDrawerItem(
                       icon: Icons.info_outline,
-                      title: AppLocalizations.of(context)!.about_title,
+                      title: AppLocalizations.of(context).about_title,
                       onTap: () {
                         Navigator.pop(context);
                         _showAboutDialog();
@@ -1811,8 +1810,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                         ),
                         icon: const Icon(Icons.logout, size: 18),
                         label: Text(
-                          AppLocalizations.of(context)!.logout_option,
-                          style: TextStyle(
+                          AppLocalizations.of(context).logout_option,
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -1997,7 +1996,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              AppLocalizations.of(context)!.cancel_button,
+              AppLocalizations.of(context).cancel_button,
               style: TextStyle(color: context.tokens.textAccent),
             ),
           ),
@@ -2012,18 +2011,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
       builder: (context) => AlertDialog(
         backgroundColor: context.tokens.dialogBackground,
         title: Text(
-          AppLocalizations.of(context)!.logout_option,
+          AppLocalizations.of(context).logout_option,
           style: TextStyle(color: context.tokens.textPrimary),
         ),
         content: Text(
-          AppLocalizations.of(context)!.confirm_logout_message,
+          AppLocalizations.of(context).confirm_logout_message,
           style: TextStyle(color: context.tokens.textPrimary.withValues(alpha: 0.7)),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              AppLocalizations.of(context)!.cancel_button,
+              AppLocalizations.of(context).cancel_button,
               style: TextStyle(color: context.tokens.textTertiary),
             ),
           ),
@@ -2043,7 +2042,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
               }
             },
             child: Text(
-              AppLocalizations.of(context)!.logout_option,
+              AppLocalizations.of(context).logout_option,
               style: TextStyle(color: context.tokens.statusUnhealthy),
             ),
           ),
@@ -2052,6 +2051,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
     );
   }
 
+  // ignore: unused_element
   void _showLanguageSelector(LanguageProvider languageProvider) {
     showModalBottomSheet(
       context: context,
@@ -2090,7 +2090,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                AppLocalizations.of(context)!.select_language,
+                AppLocalizations.of(context).select_language,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

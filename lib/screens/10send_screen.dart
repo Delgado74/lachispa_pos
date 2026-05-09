@@ -170,7 +170,7 @@ class _SendScreenState extends State<SendScreen> {
       if (e is PaymentError) {
         _showErrorSnackBar(_localizePaymentError(e));
       } else {
-        _showErrorSnackBar('${AppLocalizations.of(context)!.send_error_prefix}$e');
+        _showErrorSnackBar('${AppLocalizations.of(context).send_error_prefix}$e');
       }
     } finally {
       setState(() {
@@ -189,11 +189,11 @@ class _SendScreenState extends State<SendScreen> {
       final walletProvider = context.read<WalletProvider>();
 
       if (authProvider.sessionData == null) {
-        throw Exception(AppLocalizations.of(context)!.invalid_session_error);
+        throw Exception(AppLocalizations.of(context).invalid_session_error);
       }
 
       if (walletProvider.primaryWallet == null) {
-        throw Exception(AppLocalizations.of(context)!.no_wallet_error);
+        throw Exception(AppLocalizations.of(context).no_wallet_error);
       }
 
       final session = authProvider.sessionData!;
@@ -242,7 +242,7 @@ class _SendScreenState extends State<SendScreen> {
       }
     } catch (e) {
       print('[SEND_SCREEN] Error decoding invoice: $e');
-      _showErrorSnackBar('${AppLocalizations.of(context)!.decode_invoice_error_prefix}$e');
+      _showErrorSnackBar('${AppLocalizations.of(context).decode_invoice_error_prefix}$e');
     } finally {
       if (mounted) {
         setState(() {
@@ -327,17 +327,17 @@ class _SendScreenState extends State<SendScreen> {
         children: [
           _buildBarAction(
             icon: Icons.content_paste_rounded,
-            label: AppLocalizations.of(context)!.paste_button,
+            label: AppLocalizations.of(context).paste_button,
             onTap: _pasteFromClipboard,
           ),
           _buildBarAction(
             icon: Icons.qr_code_scanner,
-            label: AppLocalizations.of(context)!.scan_button,
+            label: AppLocalizations.of(context).scan_button,
             onTap: _scanQR,
           ),
           _buildBarAction(
             icon: Icons.nfc_rounded,
-            label: AppLocalizations.of(context)!.nfc_action_label,
+            label: AppLocalizations.of(context).nfc_action_label,
             enabled: _nfcAvailable,
             onTap: _nfcAvailable ? _activateNfcRead : _showNfcUnavailable,
           ),
@@ -380,12 +380,12 @@ class _SendScreenState extends State<SendScreen> {
   }
 
   void _showNfcUnavailable() {
-    _showInfoSnackBar(AppLocalizations.of(context)!.nfc_unavailable_message);
+    _showInfoSnackBar(AppLocalizations.of(context).nfc_unavailable_message);
   }
 
   void _activateNfcRead() {
     if (!_nfcAvailable) {
-      _showInfoSnackBar(AppLocalizations.of(context)!.nfc_unavailable_message);
+      _showInfoSnackBar(AppLocalizations.of(context).nfc_unavailable_message);
       return;
     }
 
@@ -448,7 +448,7 @@ class _SendScreenState extends State<SendScreen> {
   }
 
   String _localizePaymentError(PaymentError e) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
     switch (e.kind) {
       case PaymentErrorKind.insufficientBalance:
         return l.insufficient_balance_error;
@@ -595,7 +595,7 @@ class _SendScreenState extends State<SendScreen> {
                         SizedBox(height: isMobile ? 0 : 4),
 
                         Text(
-                          AppLocalizations.of(context)!.send_title,
+                          AppLocalizations.of(context).send_title,
                           style: TextStyle(
                             fontSize: isMobile ? 40 : 48,
                             fontWeight: FontWeight.w700,
@@ -651,7 +651,7 @@ class _SendScreenState extends State<SendScreen> {
                                     fontWeight: FontWeight.w400,
                                   ),
                                   decoration: InputDecoration(
-                                    hintText: AppLocalizations.of(context)!.paste_input_hint,
+                                    hintText: AppLocalizations.of(context).paste_input_hint,
                                     hintStyle: TextStyle(
                                       color: t.textPrimary.withValues(alpha: 0.6),
                                       fontSize: isMobile ? 14 : 16,
@@ -714,7 +714,7 @@ class _SendScreenState extends State<SendScreen> {
                                   ),
                                   const SizedBox(width: 12),
                                   Text(
-                                    AppLocalizations.of(context)!.processing_text.toUpperCase(),
+                                    AppLocalizations.of(context).processing_text.toUpperCase(),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -724,7 +724,7 @@ class _SendScreenState extends State<SendScreen> {
                                 ],
                               )
                                   : Text(
-                                AppLocalizations.of(context)!.pay_button.toUpperCase(),
+                                AppLocalizations.of(context).pay_button.toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
@@ -747,7 +747,7 @@ class _SendScreenState extends State<SendScreen> {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 8),
                               child: Text(
-                                AppLocalizations.of(context)!.paste_input_hint,
+                                AppLocalizations.of(context).paste_input_hint,
                                 style: TextStyle(
                                   color: t.textPrimary.withValues(alpha: 0.6),
                                   fontSize: 12,
@@ -795,7 +795,7 @@ class _NfcReadSheetState extends State<_NfcReadSheet> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _status = AppLocalizations.of(context)!.nfc_scanning_send;
+    _status = AppLocalizations.of(context).nfc_scanning_send;
   }
 
   @override
@@ -809,7 +809,7 @@ class _NfcReadSheetState extends State<_NfcReadSheet> {
       await widget.nfcService.startReadSession(
         onResult: (result) {
           if (mounted) {
-            final l = AppLocalizations.of(context)!;
+            final l = AppLocalizations.of(context);
             setState(() {
               _reading = false;
               _status = l.nfc_card_detected;
@@ -819,7 +819,7 @@ class _NfcReadSheetState extends State<_NfcReadSheet> {
         },
         onError: (error) {
           if (mounted) {
-            final l = AppLocalizations.of(context)!;
+            final l = AppLocalizations.of(context);
             setState(() {
               _reading = false;
               _status = l.nfc_read_error(error);
@@ -846,7 +846,7 @@ class _NfcReadSheetState extends State<_NfcReadSheet> {
   @override
   Widget build(BuildContext context) {
     final t = context.tokens;
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -910,7 +910,7 @@ class _NfcReadSheetState extends State<_NfcReadSheet> {
                     side: BorderSide(color: t.outline),
                   ),
                 ),
-                child: Text(AppLocalizations.of(context)!.cancel_button),
+                child: Text(AppLocalizations.of(context).cancel_button),
               ),
             ),
         ],

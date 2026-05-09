@@ -51,7 +51,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       icon: Icons.alternate_email,
                       iconColor: const Color(0xFF4C63F7),
                       title:
-                          AppLocalizations.of(context)!.lightning_address_title,
+                          AppLocalizations.of(context).lightning_address_title,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -68,9 +68,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _buildSettingsItem(
                       icon: Icons.qr_code,
                       iconColor: const Color(0xFF4C63F7),
-                      title: AppLocalizations.of(context)!.invoice_key_qr_title,
+                      title: AppLocalizations.of(context).invoice_key_qr_title,
                       subtitle:
-                          AppLocalizations.of(context)!.invoice_key_qr_subtitle,
+                          AppLocalizations.of(context).invoice_key_qr_subtitle,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -89,9 +89,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         return _buildSettingsItem(
                           icon: Icons.attach_money,
                           iconColor: const Color(0xFF4C63F7),
-                          title: AppLocalizations.of(context)!
+                          title: AppLocalizations.of(context)
                               .currency_settings_title,
-                          subtitle: AppLocalizations.of(context)!
+                          subtitle: AppLocalizations.of(context)
                               .currency_count(
                                   currencyProvider.availableCurrencies.length),
                           onTap: () {
@@ -115,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         return _buildSettingsItem(
                           icon: Icons.language,
                           iconColor: const Color(0xFF4C63F7),
-                          title: AppLocalizations.of(context)!
+                          title: AppLocalizations.of(context)
                               .language_selector_title,
                           subtitle: languageProvider.getCurrentLanguageName(),
                           onTap: () => Navigator.push(
@@ -161,8 +161,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: Text(
-              AppLocalizations.of(context)!.settings_screen_title,
-              style: TextStyle(
+              AppLocalizations.of(context).settings_screen_title,
+              style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 20,
                 fontWeight: FontWeight.w600,

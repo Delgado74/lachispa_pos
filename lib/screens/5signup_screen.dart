@@ -190,7 +190,7 @@ class _SignupScreenState extends State<SignupScreen>
                 ],
               ),
               child: Text(
-                AppLocalizations.of(context)!.create_account_title,
+                AppLocalizations.of(context).create_account_title,
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
@@ -269,8 +269,8 @@ class _SignupScreenState extends State<SignupScreen>
         return null;
       },
       decoration: InputDecoration(
-        labelText: AppLocalizations.of(context)!.signup_username_label,
-        hintText: AppLocalizations.of(context)!.signup_username_placeholder,
+        labelText: AppLocalizations.of(context).signup_username_label,
+        hintText: AppLocalizations.of(context).signup_username_placeholder,
         labelStyle: TextStyle(color: t.textPrimary.withValues(alpha: 0.7)),
         hintStyle: TextStyle(color: t.textSecondary),
         prefixIcon: Icon(Icons.person, color: t.textPrimary.withValues(alpha: 0.7)),
@@ -319,8 +319,8 @@ class _SignupScreenState extends State<SignupScreen>
       },
       obscureText: !_isPasswordVisible,
       decoration: InputDecoration(
-        labelText: AppLocalizations.of(context)!.signup_password_label,
-        hintText: AppLocalizations.of(context)!.signup_password_placeholder,
+        labelText: AppLocalizations.of(context).signup_password_label,
+        hintText: AppLocalizations.of(context).signup_password_placeholder,
         labelStyle: TextStyle(color: t.textPrimary.withValues(alpha: 0.7)),
         hintStyle: TextStyle(color: t.textSecondary),
         prefixIcon: Icon(Icons.lock, color: t.textPrimary.withValues(alpha: 0.7)),
@@ -363,14 +363,14 @@ class _SignupScreenState extends State<SignupScreen>
           return 'Confirma tu contraseña';
         }
         if (value != _passwordController.text) {
-          return AppLocalizations.of(context)!.passwords_mismatch_error;
+          return AppLocalizations.of(context).passwords_mismatch_error;
         }
         return null;
       },
       obscureText: !_isConfirmPasswordVisible,
       decoration: InputDecoration(
-        labelText: AppLocalizations.of(context)!.confirm_password_label,
-        hintText: AppLocalizations.of(context)!.confirm_password_placeholder,
+        labelText: AppLocalizations.of(context).confirm_password_label,
+        hintText: AppLocalizations.of(context).confirm_password_placeholder,
         labelStyle: TextStyle(color: t.textPrimary.withValues(alpha: 0.7)),
         hintStyle: TextStyle(color: t.textSecondary),
         prefixIcon: Icon(Icons.lock_outline, color: t.textPrimary.withValues(alpha: 0.7)),
@@ -434,7 +434,7 @@ class _SignupScreenState extends State<SignupScreen>
                     ),
                   )
                 : Text(
-                    AppLocalizations.of(context)!.create_account_button,
+                    AppLocalizations.of(context).create_account_button,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

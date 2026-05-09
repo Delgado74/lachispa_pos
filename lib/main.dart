@@ -101,7 +101,7 @@ class _LaChispaAppState extends State<LaChispaApp> {
   }
   
   void _showLoginRequiredDialog(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
+    final localizations = AppLocalizations.of(context);
 
     showDialog(
       context: context,
@@ -228,6 +228,7 @@ class _LaChispaAppState extends State<LaChispaApp> {
         serverProvider.initialize(),
       ]).catchError((error) {
         print('[MAIN] Error initializing providers: $error');
+        return <void>[];
       });
     } catch (e) {
       print('[MAIN] Error accessing providers: $e');

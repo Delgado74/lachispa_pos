@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +33,7 @@ class UserCredentialsService {
   }
   
   // Get or generate master key for encryption
+  // ignore: unused_element
   Future<String> _getMasterKey() async {
     print('[UserCredentialsService] Getting master key...');
     
@@ -90,7 +90,7 @@ class UserCredentialsService {
     final salt = _generateSalt();
     
     print('[UserCredentialsService] Generated salt: ${_safeSubstring(salt, 0, 8)}');
-    print('[UserCredentialsService] ServerUrl: ${serverUrl != null && serverUrl.length > 20 ? serverUrl.substring(0, 20) + '...' : serverUrl}');
+    print('[UserCredentialsService] ServerUrl: ${serverUrl != null && serverUrl.length > 20 ? '${serverUrl.substring(0, 20)}...' : serverUrl}');
     print('[UserCredentialsService] Username: $username');
     
     // Create encryption key using serverUrl + username + salt
@@ -101,7 +101,7 @@ class UserCredentialsService {
     
     // Simple encryption: password + verification hash
     final verificationHash = sha256.convert(utf8.encode(password + salt)).toString().substring(0, 16);
-    final passwordToEncrypt = password + '||' + verificationHash;
+    final passwordToEncrypt = '$password||$verificationHash';
     final encryptedPassword = base64Encode(utf8.encode(passwordToEncrypt));
     
     print('[UserCredentialsService] Encrypted password: ${_safeSubstring(encryptedPassword, 0, 8)}');

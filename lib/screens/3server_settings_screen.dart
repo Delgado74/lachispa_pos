@@ -113,7 +113,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
         : _selectedServer;
 
     if (serverToSave.isEmpty) {
-      _showMessage(AppLocalizations.of(context)!.server_url_label, isError: true);
+      _showMessage(AppLocalizations.of(context).server_url_label, isError: true);
       setState(() {
         _isSaving = false;
       });
@@ -124,7 +124,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
       await serverProvider.selectServer(serverToSave);
 
       if (mounted) {
-        _showMessage('${AppLocalizations.of(context)!.server_settings_title}: ${serverProvider.serverDisplayName}', isError: false);
+        _showMessage('${AppLocalizations.of(context).server_settings_title}: ${serverProvider.serverDisplayName}', isError: false);
 
         // Wait a moment for the user to see the message
         await Future.delayed(const Duration(seconds: 1));
@@ -135,7 +135,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
         }
       }
     } catch (e) {
-      _showMessage('${AppLocalizations.of(context)!.connection_error_prefix}${e.toString()}', isError: true);
+      _showMessage('${AppLocalizations.of(context).connection_error_prefix}${e.toString()}', isError: true);
     } finally {
       if (mounted) {
         setState(() {
@@ -205,7 +205,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
 
                           // Title
                           Text(
-                            AppLocalizations.of(context)!.server_settings_title,
+                            AppLocalizations.of(context).server_settings_title,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -215,7 +215,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
                           const SizedBox(height: 8),
 
                           Text(
-                            AppLocalizations.of(context)!.server_url_label,
+                            AppLocalizations.of(context).server_url_label,
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -279,7 +279,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
           ),
           const SizedBox(width: 16),
           Text(
-            AppLocalizations.of(context)!.server_settings_title,
+            AppLocalizations.of(context).server_settings_title,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
@@ -398,7 +398,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
                 ),
                 const SizedBox(width: 16),
                 Text(
-                  AppLocalizations.of(context)!.server_url_label,
+                  AppLocalizations.of(context).server_url_label,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -420,7 +420,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
               color: t.textPrimary,
             ),
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.server_url_placeholder,
+              hintText: AppLocalizations.of(context).server_url_placeholder,
               hintStyle: TextStyle(
                 fontSize: 16,
                 color: t.textSecondary,
@@ -450,7 +450,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
           ),
           const SizedBox(height: 8),
           Text(
-            AppLocalizations.of(context)!.server_url_label,
+            AppLocalizations.of(context).server_url_label,
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,
@@ -496,7 +496,7 @@ class _ServerSettingsScreenState extends State<ServerSettingsScreen>
                 ),
               )
             : Text(
-                AppLocalizations.of(context)!.connect_button,
+                AppLocalizations.of(context).connect_button,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -564,7 +564,7 @@ class SparkPainter extends CustomPainter {
     });
 
     // Get devicePixelRatio for high density screens
-    final devicePixelRatio = 1.0; // Can be obtained from context if needed
+    const devicePixelRatio = 1.0; // Can be obtained from context if needed
 
     // Draw particles
     for (final particle in particles) {

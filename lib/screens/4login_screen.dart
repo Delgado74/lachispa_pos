@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/server_provider.dart';
 import '../services/user_credentials_service.dart';
-import '../models/saved_user.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/app_tokens.dart';
 import '5signup_screen.dart';
@@ -199,6 +198,7 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
   
+  // ignore: unused_element
   void _showSuggestionsOverlay() {
     _hideSuggestions();
     
@@ -379,7 +379,7 @@ class _LoginScreenState extends State<LoginScreen>
             // Show feedback to user
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(AppLocalizations.of(context)!.credentials_found_message),
+                content: Text(AppLocalizations.of(context).credentials_found_message),
                 backgroundColor: context.tokens.statusHealthy,
                 duration: const Duration(seconds: 2),
               ),
@@ -424,7 +424,7 @@ class _LoginScreenState extends State<LoginScreen>
     if (newValue) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.password_will_be_remembered),
+          content: Text(AppLocalizations.of(context).password_will_be_remembered),
           backgroundColor: context.tokens.statusHealthy,
           duration: const Duration(seconds: 2),
         ),
@@ -444,27 +444,27 @@ class _LoginScreenState extends State<LoginScreen>
             Icon(Icons.warning, color: t.statusWarning),
             const SizedBox(width: 8),
             Text(
-              AppLocalizations.of(context)!.delete_credentials_title,
+              AppLocalizations.of(context).delete_credentials_title,
               style: TextStyle(color: t.textPrimary),
             ),
           ],
         ),
         content: Text(
-          AppLocalizations.of(context)!.delete_credentials_message,
+          AppLocalizations.of(context).delete_credentials_message,
           style: TextStyle(color: t.textPrimary.withValues(alpha: 0.7)),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(
-              AppLocalizations.of(context)!.delete_credentials_cancel,
+              AppLocalizations.of(context).delete_credentials_cancel,
               style: TextStyle(color: t.textTertiary),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(
-              AppLocalizations.of(context)!.delete_credentials_confirm,
+              AppLocalizations.of(context).delete_credentials_confirm,
               style: TextStyle(color: t.statusUnhealthy),
             ),
           ),
@@ -476,6 +476,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   // Method to save credentials in background
+  // ignore: unused_element
   void _saveCredentialsInBackground(String serverUrl, String username, String password) {
     _credentialsService.saveUserCredentials(
       serverUrl: serverUrl,
@@ -540,8 +541,8 @@ class _LoginScreenState extends State<LoginScreen>
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(result
-                    ? AppLocalizations.of(context)!.password_saved_successfully
-                    : AppLocalizations.of(context)!.password_save_failed),
+                    ? AppLocalizations.of(context).password_saved_successfully
+                    : AppLocalizations.of(context).password_save_failed),
                   backgroundColor: context.tokens.accentSolid,
                   duration: const Duration(seconds: 2),
                 ),
@@ -582,7 +583,7 @@ class _LoginScreenState extends State<LoginScreen>
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         if (authProvider.errorMessage != null) {
           print('[LoginScreen] Mostrando error: ${authProvider.errorMessage}');
-          final errorMessage = AppLocalizations.of(context)!.login_error_prefix + authProvider.errorMessage!;
+          final errorMessage = AppLocalizations.of(context).login_error_prefix + authProvider.errorMessage!;
           _showErrorDialog(context, errorMessage);
         }
       } else if (_hasNavigated) {
@@ -645,7 +646,7 @@ class _LoginScreenState extends State<LoginScreen>
                 ],
               ),
               child: Text(
-                AppLocalizations.of(context)!.login_title,
+                AppLocalizations.of(context).login_title,
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
@@ -664,7 +665,7 @@ class _LoginScreenState extends State<LoginScreen>
         ),
         const SizedBox(height: 12),
         Text(
-          AppLocalizations.of(context)!.login_subtitle,
+          AppLocalizations.of(context).login_subtitle,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
@@ -712,16 +713,16 @@ class _LoginScreenState extends State<LoginScreen>
           focusNode: _usernameFocusNode,
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
-              return AppLocalizations.of(context)!.username_required_error;
+              return AppLocalizations.of(context).username_required_error;
             }
             if (value.trim().length < 3) {
-              return AppLocalizations.of(context)!.username_length_error;
+              return AppLocalizations.of(context).username_length_error;
             }
             return null;
           },
           decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.username_label,
-            hintText: AppLocalizations.of(context)!.username_placeholder,
+            labelText: AppLocalizations.of(context).username_label,
+            hintText: AppLocalizations.of(context).username_placeholder,
             labelStyle: TextStyle(color: t.textPrimary.withValues(alpha: 0.7)),
             hintStyle: TextStyle(color: t.textSecondary),
             prefixIcon: Icon(Icons.person, color: t.textPrimary.withValues(alpha: 0.7)),
@@ -795,7 +796,7 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        AppLocalizations.of(context)!.saved_users_header,
+                        AppLocalizations.of(context).saved_users_header,
                         style: TextStyle(
                           color: t.textPrimary.withValues(alpha: 0.8),
                           fontSize: 14,
@@ -865,7 +866,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.tap_to_autocomplete_hint,
+                                    AppLocalizations.of(context).tap_to_autocomplete_hint,
                                     style: TextStyle(
                                       color: t.textSecondary,
                                       fontSize: 12,
@@ -897,17 +898,17 @@ class _LoginScreenState extends State<LoginScreen>
       controller: _passwordController,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return AppLocalizations.of(context)!.password_required_error;
+          return AppLocalizations.of(context).password_required_error;
         }
         if (value.length < 6) {
-          return AppLocalizations.of(context)!.password_length_error;
+          return AppLocalizations.of(context).password_length_error;
         }
         return null;
       },
       obscureText: !_isPasswordVisible,
       decoration: InputDecoration(
-        labelText: AppLocalizations.of(context)!.password_label,
-        hintText: AppLocalizations.of(context)!.password_placeholder,
+        labelText: AppLocalizations.of(context).password_label,
+        hintText: AppLocalizations.of(context).password_placeholder,
         labelStyle: TextStyle(color: t.textPrimary.withValues(alpha: 0.7)),
         hintStyle: TextStyle(color: t.textSecondary),
         prefixIcon: Icon(Icons.lock, color: t.textPrimary.withValues(alpha: 0.7)),
@@ -964,7 +965,7 @@ class _LoginScreenState extends State<LoginScreen>
             _handleRememberPasswordChange(!_rememberPassword);
           },
           child: Text(
-            AppLocalizations.of(context)!.remember_password_label,
+            AppLocalizations.of(context).remember_password_label,
             style: TextStyle(
               color: t.textPrimary.withValues(alpha: 0.8),
               fontSize: 16,
@@ -1007,7 +1008,7 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        AppLocalizations.of(context)!.logging_in_button,
+                        AppLocalizations.of(context).logging_in_button,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -1017,7 +1018,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ],
                   )
                 : Text(
-                    AppLocalizations.of(context)!.login_button,
+                    AppLocalizations.of(context).login_button,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -1063,7 +1064,7 @@ class _LoginScreenState extends State<LoginScreen>
               ),
               const SizedBox(width: 8),
               Text(
-                AppLocalizations.of(context)!.server_prefix,
+                AppLocalizations.of(context).server_prefix,
                 style: TextStyle(
                   fontSize: 14,
                   color: t.textPrimary.withValues(alpha: 0.7),
@@ -1100,7 +1101,7 @@ class _LoginScreenState extends State<LoginScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            AppLocalizations.of(context)!.no_account_question,
+            AppLocalizations.of(context).no_account_question,
             style: TextStyle(
               fontSize: 16,
               color: t.textPrimary.withValues(alpha: 0.7),
@@ -1114,7 +1115,7 @@ class _LoginScreenState extends State<LoginScreen>
               );
             },
             child: Text(
-              AppLocalizations.of(context)!.register_link,
+              AppLocalizations.of(context).register_link,
               style: TextStyle(
                 fontSize: 16,
                 color: t.textPrimary,
@@ -1170,7 +1171,7 @@ void _showErrorDialog(BuildContext context, String error) {
     builder: (context) => AlertDialog(
       backgroundColor: t.dialogBackground,
       title: Text(
-        AppLocalizations.of(context)!.login_error_prefix.replaceAll(': ', ''),
+        AppLocalizations.of(context).login_error_prefix.replaceAll(': ', ''),
         style: TextStyle(color: t.textPrimary),
       ),
       content: Text(
@@ -1181,7 +1182,7 @@ void _showErrorDialog(BuildContext context, String error) {
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
-            AppLocalizations.of(context)!.close_dialog,
+            AppLocalizations.of(context).close_dialog,
             style: TextStyle(color: t.accentSolid),
           ),
         ),

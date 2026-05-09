@@ -44,7 +44,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
 
     // Check if invoice is expired before processing payment
     if (widget.decodedInvoice.isExpired) {
-      _showErrorSnackBar(AppLocalizations.of(context)!.invoice_expired_error);
+      _showErrorSnackBar(AppLocalizations.of(context).invoice_expired_error);
       return;
     }
 
@@ -57,14 +57,14 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
       final walletProvider = context.read<WalletProvider>();
 
       if (authProvider.sessionData == null) {
-        throw Exception(AppLocalizations.of(context)!.invalid_session_error);
+        throw Exception(AppLocalizations.of(context).invalid_session_error);
       }
 
       final session = authProvider.sessionData!;
 
       // Verify that a primary wallet is available
       if (walletProvider.primaryWallet == null) {
-        throw Exception(AppLocalizations.of(context)!.no_wallet_error);
+        throw Exception(AppLocalizations.of(context).no_wallet_error);
       }
 
       final wallet = walletProvider.primaryWallet!;
@@ -85,16 +85,16 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
       );
 
       // Check payment status from response to provide appropriate feedback
-      final paymentStatus = paymentResult['status']?.toString()?.toLowerCase() ?? 'unknown';
+      final paymentStatus = paymentResult['status']?.toString().toLowerCase() ?? 'unknown';
       final isPending = paymentStatus == 'pending';
       final isSuccess = paymentStatus == 'complete' || paymentStatus == 'settled' || paymentStatus == 'paid';
 
       if (isPending) {
-        _showPendingSnackBar(AppLocalizations.of(context)!.pending_label);
+        _showPendingSnackBar(AppLocalizations.of(context).pending_label);
       } else if (isSuccess) {
-        _showSuccessSnackBar(AppLocalizations.of(context)!.payment_success);
+        _showSuccessSnackBar(AppLocalizations.of(context).payment_success);
       } else {
-        _showSuccessSnackBar(AppLocalizations.of(context)!.payment_sent_status(paymentStatus));
+        _showSuccessSnackBar(AppLocalizations.of(context).payment_sent_status(paymentStatus));
       }
 
       // Return to previous screen after brief delay for user feedback
@@ -109,7 +109,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
       if (e is PaymentError) {
         _showErrorSnackBar(_localizePaymentError(e));
       } else {
-        _showErrorSnackBar('${AppLocalizations.of(context)!.send_error_prefix}$e');
+        _showErrorSnackBar('${AppLocalizations.of(context).send_error_prefix}$e');
       }
     } finally {
       if (mounted) {
@@ -157,7 +157,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
   }
 
   String _localizePaymentError(PaymentError e) {
-    final l = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context);
     switch (e.kind) {
       case PaymentErrorKind.insufficientBalance:
         return l.insufficient_balance_error;
@@ -270,7 +270,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
                         SizedBox(height: isMobile ? 0 : 4),
 
                         Text(
-                          AppLocalizations.of(context)!.pay_button_confirm,
+                          AppLocalizations.of(context).pay_button_confirm,
                           style: TextStyle(
                             fontSize: isMobile ? 40 : 48,
                             fontWeight: FontWeight.w700,
@@ -335,9 +335,9 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
 
                                   _buildDescriptionRow(
                                     t,
-                                    AppLocalizations.of(context)!.invoice_description_label,
+                                    AppLocalizations.of(context).invoice_description_label,
                                     widget.decodedInvoice.description.isEmpty
-                                        ? AppLocalizations.of(context)!.no_description_text
+                                        ? AppLocalizations.of(context).no_description_text
                                         : widget.decodedInvoice.description,
                                     icon: Icons.description_outlined,
                                   ),
@@ -346,8 +346,8 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
 
                                   _buildInfoRow(
                                     t,
-                                    AppLocalizations.of(context)!.invoice_status_label,
-                                    widget.decodedInvoice.isExpired ? AppLocalizations.of(context)!.expired_status : AppLocalizations.of(context)!.valid_status,
+                                    AppLocalizations.of(context).invoice_status_label,
+                                    widget.decodedInvoice.isExpired ? AppLocalizations.of(context).expired_status : AppLocalizations.of(context).valid_status,
                                     icon: widget.decodedInvoice.isExpired ? Icons.error_outline : Icons.check_circle_outline,
                                     valueColor: widget.decodedInvoice.isExpired ? t.statusUnhealthy : t.statusHealthy,
                                   ),
@@ -356,7 +356,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
 
                                   _buildInfoRow(
                                     t,
-                                    AppLocalizations.of(context)!.expiry_label,
+                                    AppLocalizations.of(context).expiry_label,
                                     widget.decodedInvoice.formattedExpiry,
                                     icon: Icons.schedule_outlined,
                                     valueColor: widget.decodedInvoice.isExpired ? t.statusUnhealthy : null,
@@ -366,7 +366,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
                                     const SizedBox(height: 16),
                                     _buildInfoRow(
                                       t,
-                                      AppLocalizations.of(context)!.payment_hash_label,
+                                      AppLocalizations.of(context).payment_hash_label,
                                       widget.decodedInvoice.shortPaymentHash,
                                       icon: Icons.fingerprint_outlined,
                                     ),
@@ -376,7 +376,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
                                     const SizedBox(height: 16),
                                     _buildInfoRow(
                                       t,
-                                      AppLocalizations.of(context)!.recipient_label,
+                                      AppLocalizations.of(context).recipient_label,
                                       widget.decodedInvoice.destination.length > 20
                                           ? '${widget.decodedInvoice.destination.substring(0, 20)}...'
                                           : widget.decodedInvoice.destination,
@@ -414,7 +414,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
                                       shadowColor: Colors.transparent,
                                     ),
                                     child: Text(
-                                      AppLocalizations.of(context)!.cancel_button,
+                                      AppLocalizations.of(context).cancel_button,
                                       style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,
@@ -470,7 +470,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                AppLocalizations.of(context)!.processing_text,
+                                                AppLocalizations.of(context).processing_text,
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w600,
@@ -480,7 +480,7 @@ class _InvoiceConfirmScreenState extends State<InvoiceConfirmScreen> {
                                             ],
                                           )
                                         : Text(
-                                            widget.decodedInvoice.isExpired ? AppLocalizations.of(context)!.expired_status : AppLocalizations.of(context)!.pay_button,
+                                            widget.decodedInvoice.isExpired ? AppLocalizations.of(context).expired_status : AppLocalizations.of(context).pay_button,
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,

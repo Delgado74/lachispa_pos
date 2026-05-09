@@ -25,7 +25,7 @@ class InvoiceService {
 
   void _configureDio() {
     final isAndroid = !kIsWeb && Platform.isAndroid;
-    final isWeb = kIsWeb;
+    const isWeb = kIsWeb;
     
     _dio.options.headers['Content-Type'] = 'application/json';
     _dio.options.headers['User-Agent'] = isAndroid 
@@ -1083,7 +1083,7 @@ class InvoiceService {
       final domain = parts[1];
       
       final isAndroid = !kIsWeb && Platform.isAndroid;
-      final isWeb = kIsWeb;
+      const isWeb = kIsWeb;
       
       // Check if it's external domain on web - exit immediately to avoid CORS
       if (isWeb && currentServerUrl != null) {
@@ -1107,12 +1107,11 @@ class InvoiceService {
         // Specific endpoints for known servers
         if (domain.contains('cubabitcoin.org')) 'https://$domain/lnurlp/$username',
         if (domain.contains('btclake.com')) 'https://$domain/.well-known/lnurl/$username',
-      ].where((url) => url != null).cast<String>().toList();
+      ];
       
       _debugLog('[INVOICE_SERVICE] 🌍 Resolving ${isWeb ? "WEB" : "MOBILE"}: $lightningAddress ($domain)');
       
       Map<String, dynamic>? metadata;
-      String? workingUrl;
       
       for (final url in urls) {
         try {
@@ -1144,7 +1143,7 @@ class InvoiceService {
             final data = response.data as Map<String, dynamic>;
             if (data.containsKey('callback') && data['tag'] == 'payRequest') {
               metadata = data;
-              workingUrl = url;
+              // workingUrl = url; (unused)
               _debugLog('[INVOICE_SERVICE] ✅ Resolution successful with: $url');
               externalDio.close();
               break;
@@ -1402,6 +1401,7 @@ class InvoiceService {
   /// [bolt11] - Lightning invoice to analyze
   /// 
   /// Returns true if it's likely a hold invoice
+  // ignore: unused_element
   bool _isHoldInvoice(String bolt11) {
     try {
       // Hold invoices often have specific characteristics:
@@ -1452,12 +1452,13 @@ class InvoiceService {
   /// [decodedData] - Decoded invoice data
   /// 
   /// Returns true if it's a hold invoice
+  // ignore: unused_element
   bool _isHoldInvoiceFromDecoded(Map<String, dynamic> decodedData) {
     try {
       // Check specific fields of hold invoices
       if (decodedData.containsKey('payment_hash')) {
-        final description = decodedData['description']?.toString()?.toLowerCase() ?? '';
-        final memo = decodedData['memo']?.toString()?.toLowerCase() ?? '';
+        final description = decodedData['description']?.toString().toLowerCase() ?? '';
+        final memo = decodedData['memo']?.toString().toLowerCase() ?? '';
         
         // Expanded patterns for hold invoice detection
         final holdPatterns = [
@@ -1505,11 +1506,13 @@ class InvoiceService {
     return true;
   }
   
+  // ignore: unused_element
   bool _isValidLightningAddress(String address) {
     return InvoiceService.isValidLightningAddress(address);
   }
 
   /// Checks if Lightning Address is from the same domain as the server
+  // ignore: unused_element
   bool _isSameDomain(String lightningAddress, String serverUrl) {
     try {
       final addressDomain = lightningAddress.split('@')[1];
@@ -1680,7 +1683,7 @@ class InvoiceService {
     // Check for DioException with response data
     if (error is DioException) {
       final statusCode = error.response?.statusCode;
-      final responseData = error.response?.data?.toString()?.toLowerCase() ?? '';
+      final responseData = error.response?.data?.toString().toLowerCase() ?? '';
       
       _debugLog('[INVOICE_SERVICE] Analyzing error - Status: $statusCode, Data: $responseData');
       

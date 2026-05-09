@@ -168,7 +168,7 @@ class _BoltzScreenState extends State<BoltzScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    AppLocalizations.of(context)!.boltz_loading,
+                    AppLocalizations.of(context).boltz_loading,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -224,7 +224,7 @@ class _BoltzScreenState extends State<BoltzScreen> {
 
           // Description
           Text(
-            AppLocalizations.of(context)!.boltz_description,
+            AppLocalizations.of(context).boltz_description,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
@@ -246,7 +246,7 @@ class _BoltzScreenState extends State<BoltzScreen> {
                 ),
               ),
               child: Text(
-                AppLocalizations.of(context)!.boltz_webview_error,
+                AppLocalizations.of(context).boltz_webview_error,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
@@ -270,7 +270,7 @@ class _BoltzScreenState extends State<BoltzScreen> {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(AppLocalizations.of(context)!.boltz_error_opening(e.toString())),
+                        content: Text(AppLocalizations.of(context).boltz_error_opening(e.toString())),
                         backgroundColor: t.statusUnhealthy,
                       ),
                     );
@@ -290,7 +290,7 @@ class _BoltzScreenState extends State<BoltzScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.boltz_open_button,
+                    AppLocalizations.of(context).boltz_open_button,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -311,8 +311,8 @@ class _BoltzScreenState extends State<BoltzScreen> {
           // Info text
           Text(
             kIsWeb || !(Platform.isAndroid || Platform.isIOS)
-                ? AppLocalizations.of(context)!.boltz_external_browser
-                : AppLocalizations.of(context)!.boltz_within_app,
+                ? AppLocalizations.of(context).boltz_external_browser
+                : AppLocalizations.of(context).boltz_within_app,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 12,

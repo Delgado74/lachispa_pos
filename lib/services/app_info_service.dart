@@ -30,7 +30,7 @@ class AppInfoService {
   
   /// Get full version string with build number
   static String get fullVersion {
-    return '${version}+${buildNumber}';
+    return '$version+$buildNumber';
   }
   
   /// Get formatted version for UI display

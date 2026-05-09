@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import '../providers/auth_provider.dart';
 import '../providers/wallet_provider.dart';
 import '../services/invoice_service.dart';
-import '../models/wallet_info.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/universal_screen_wrapper.dart';
@@ -40,48 +38,48 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
     switch (errorType) {
       case 'already_claimed':
         return {
-          'title': AppLocalizations.of(context)!.voucher_already_claimed,
-          'description': AppLocalizations.of(context)!.voucher_already_claimed_desc,
+          'title': AppLocalizations.of(context).voucher_already_claimed,
+          'description': AppLocalizations.of(context).voucher_already_claimed_desc,
         };
       case 'expired':
         return {
-          'title': AppLocalizations.of(context)!.voucher_expired,
-          'description': AppLocalizations.of(context)!.voucher_expired_desc,
+          'title': AppLocalizations.of(context).voucher_expired,
+          'description': AppLocalizations.of(context).voucher_expired_desc,
         };
       case 'not_found':
         return {
-          'title': AppLocalizations.of(context)!.voucher_not_found,
-          'description': AppLocalizations.of(context)!.voucher_not_found_desc,
+          'title': AppLocalizations.of(context).voucher_not_found,
+          'description': AppLocalizations.of(context).voucher_not_found_desc,
         };
       case 'server_error':
         return {
-          'title': AppLocalizations.of(context)!.voucher_server_error,
-          'description': AppLocalizations.of(context)!.voucher_server_error_desc,
+          'title': AppLocalizations.of(context).voucher_server_error,
+          'description': AppLocalizations.of(context).voucher_server_error_desc,
         };
       case 'connection_error':
         return {
-          'title': AppLocalizations.of(context)!.voucher_connection_error,
-          'description': AppLocalizations.of(context)!.voucher_connection_error_desc,
+          'title': AppLocalizations.of(context).voucher_connection_error,
+          'description': AppLocalizations.of(context).voucher_connection_error_desc,
         };
       case 'invalid_amount':
         return {
-          'title': AppLocalizations.of(context)!.voucher_invalid_amount,
-          'description': AppLocalizations.of(context)!.voucher_invalid_amount_desc,
+          'title': AppLocalizations.of(context).voucher_invalid_amount,
+          'description': AppLocalizations.of(context).voucher_invalid_amount_desc,
         };
       case 'insufficient_funds':
         return {
-          'title': AppLocalizations.of(context)!.voucher_insufficient_funds,
-          'description': AppLocalizations.of(context)!.voucher_insufficient_funds_desc,
+          'title': AppLocalizations.of(context).voucher_insufficient_funds,
+          'description': AppLocalizations.of(context).voucher_insufficient_funds_desc,
         };
       case 'invalid_code':
         return {
-          'title': AppLocalizations.of(context)!.voucher_invalid_code,
-          'description': AppLocalizations.of(context)!.voucher_not_valid_lnurl,
+          'title': AppLocalizations.of(context).voucher_invalid_code,
+          'description': AppLocalizations.of(context).voucher_not_valid_lnurl,
         };
       default:
         return {
-          'title': AppLocalizations.of(context)!.voucher_generic_error,
-          'description': AppLocalizations.of(context)!.voucher_generic_error_desc,
+          'title': AppLocalizations.of(context).voucher_generic_error,
+          'description': AppLocalizations.of(context).voucher_generic_error_desc,
         };
     }
   }
@@ -186,7 +184,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
           
           // Centered title
           Text(
-            AppLocalizations.of(context)!.voucher_scan_title,
+            AppLocalizations.of(context).voucher_scan_title,
             style: TextStyle(
                             fontSize: isMobile ? 32 : 40,
               fontWeight: FontWeight.w700,
@@ -219,7 +217,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            AppLocalizations.of(context)!.voucher_scan_instructions,
+            AppLocalizations.of(context).voucher_scan_instructions,
             style: TextStyle(
               color: context.tokens.textPrimary,
               fontSize: 16,
@@ -229,7 +227,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            AppLocalizations.of(context)!.voucher_scan_subtitle,
+            AppLocalizations.of(context).voucher_scan_subtitle,
             style: TextStyle(
               color: context.tokens.textPrimary.withValues(alpha: 0.7),
               fontSize: 14,
@@ -289,7 +287,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                AppLocalizations.of(context)!.voucher_processing,
+                                AppLocalizations.of(context).voucher_processing,
                                 style: TextStyle(
                                   color: context.tokens.textPrimary,
                                   fontSize: 14,
@@ -308,7 +306,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
                               ),
                               const SizedBox(height: 12),
                               Text(
-                                AppLocalizations.of(context)!.voucher_scan_button,
+                                AppLocalizations.of(context).voucher_scan_button,
                                 style: TextStyle(
                                   color: context.tokens.textPrimary,
                                   fontSize: 18,
@@ -327,7 +325,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
           
           // Subtitle
           Text(
-            AppLocalizations.of(context)!.voucher_tap_to_scan,
+            AppLocalizations.of(context).voucher_tap_to_scan,
             style: TextStyle(
               color: context.tokens.textPrimary.withValues(alpha: 0.7),
               fontSize: 16,
@@ -359,8 +357,8 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
             ),
             icon: const Icon(Icons.edit, size: 20),
             label: Text(
-              AppLocalizations.of(context)!.voucher_manual_input,
-              style: TextStyle(
+              AppLocalizations.of(context).voucher_manual_input,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                               ),
@@ -449,21 +447,22 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
       if (extractedCode.toLowerCase().startsWith('lnurl1')) {
         await _processVoucher(extractedCode);
       } else {
-        _showErrorDialog(AppLocalizations.of(context)!.voucher_invalid_code, AppLocalizations.of(context)!.voucher_not_valid_lnurl);
+        _showErrorDialog(AppLocalizations.of(context).voucher_invalid_code, AppLocalizations.of(context).voucher_not_valid_lnurl);
       }
     } catch (e) {
       // Handle VoucherException with specific error types
       if (e.toString().startsWith('VoucherException:')) {
         final parts = e.toString().split(' - ');
         if (parts.length >= 2) {
-          final errorType = parts[0].split(': ')[1];
+          // ignore: unused_local_variable
+                  final errorType = parts[0].split(': ')[1];
           final errorMessage = _getVoucherErrorMessage(errorType);
           _showErrorDialog(errorMessage['title']!, errorMessage['description']!);
         } else {
-          _showErrorDialog(AppLocalizations.of(context)!.voucher_processing_error, 'Error procesando el código: $e');
+          _showErrorDialog(AppLocalizations.of(context).voucher_processing_error, 'Error procesando el código: $e');
         }
       } else {
-        _showErrorDialog(AppLocalizations.of(context)!.voucher_processing_error, 'Error procesando el código: $e');
+        _showErrorDialog(AppLocalizations.of(context).voucher_processing_error, 'Error procesando el código: $e');
       }
     } finally {
       setState(() {
@@ -486,7 +485,8 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
       if (e.toString().startsWith('VoucherException:')) {
         final parts = e.toString().split(' - ');
         if (parts.length >= 2) {
-          final errorType = parts[0].split(': ')[1];
+          // ignore: unused_local_variable
+                  final errorType = parts[0].split(': ')[1];
           rethrow; // Re-throw the VoucherException to be handled by _processScannedCode
         }
       }
@@ -505,7 +505,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
           borderRadius: BorderRadius.circular(16),
         ),
         title: Text(
-          AppLocalizations.of(context)!.voucher_manual_input,
+          AppLocalizations.of(context).voucher_manual_input,
           style: TextStyle(
             color: context.tokens.textPrimary,
                         fontWeight: FontWeight.w600,
@@ -515,7 +515,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              AppLocalizations.of(context)!.voucher_manual_input_hint,
+              AppLocalizations.of(context).voucher_manual_input_hint,
               style: TextStyle(
                 color: context.tokens.textPrimary.withValues(alpha: 0.8),
                               ),
@@ -527,7 +527,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
                 color: context.tokens.textPrimary,
                               ),
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.voucher_manual_input_placeholder,
+                hintText: AppLocalizations.of(context).voucher_manual_input_placeholder,
                 hintStyle: TextStyle(
                   color: context.tokens.textSecondary,
                 ),
@@ -560,7 +560,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              AppLocalizations.of(context)!.cancel_button,
+              AppLocalizations.of(context).cancel_button,
               style: TextStyle(
                 color: context.tokens.textPrimary.withValues(alpha: 0.7),
                               ),
@@ -581,7 +581,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
               ),
             ),
             child: Text(
-              AppLocalizations.of(context)!.process_button,
+              AppLocalizations.of(context).process_button,
               style: TextStyle(
                 color: context.tokens.textPrimary,
                                 fontWeight: FontWeight.w600,
@@ -667,7 +667,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                AppLocalizations.of(context)!.voucher_detected_title,
+                AppLocalizations.of(context).voucher_detected_title,
                 style: TextStyle(
                   color: context.tokens.textPrimary,
                                     fontWeight: FontWeight.w600,
@@ -729,7 +729,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
                         Icon(Icons.monetization_on, color: context.tokens.accentSolid, size: 20),
                         const SizedBox(width: 8),
                         Text(
-                          isFixedAmount ? AppLocalizations.of(context)!.voucher_fixed_amount : AppLocalizations.of(context)!.voucher_amount_range,
+                          isFixedAmount ? AppLocalizations.of(context).voucher_fixed_amount : AppLocalizations.of(context).voucher_amount_range,
                           style: TextStyle(
                             color: context.tokens.textPrimary,
                                                         fontWeight: FontWeight.w600,
@@ -757,7 +757,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
               if (!isFixedAmount) ...[
                 const SizedBox(height: 16),
                 Text(
-                  AppLocalizations.of(context)!.voucher_amount_to_claim,
+                  AppLocalizations.of(context).voucher_amount_to_claim,
                   style: TextStyle(
                     color: context.tokens.textPrimary.withValues(alpha: 0.8),
                     fontSize: 14,
@@ -773,7 +773,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
                     fontSize: 16,
                                       ),
                   decoration: InputDecoration(
-                    hintText: 'Ej: ${maxSats}',
+                    hintText: 'Ej: $maxSats',
                     hintStyle: TextStyle(
                       color: context.tokens.textSecondary,
                     ),
@@ -809,7 +809,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  AppLocalizations.of(context)!.voucher_min_max_hint(minSats, maxSats),
+                  AppLocalizations.of(context).voucher_min_max_hint(minSats, maxSats),
                   style: TextStyle(
                     color: context.tokens.textSecondary,
                     fontSize: 12,
@@ -829,7 +829,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
               });
             },
             child: Text(
-              AppLocalizations.of(context)!.cancel_button,
+              AppLocalizations.of(context).cancel_button,
               style: TextStyle(
                 color: context.tokens.textPrimary.withValues(alpha: 0.7),
                               ),
@@ -844,7 +844,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
                 // Show error
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(AppLocalizations.of(context)!.voucher_amount_invalid(minSats, maxSats)),
+                    content: Text(AppLocalizations.of(context).voucher_amount_invalid(minSats, maxSats)),
                     backgroundColor: context.tokens.statusUnhealthy,
                   ),
                 );
@@ -861,7 +861,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
               ),
             ),
             child: Text(
-              AppLocalizations.of(context)!.voucher_claim_button,
+              AppLocalizations.of(context).voucher_claim_button,
               style: TextStyle(
                 color: context.tokens.textPrimary,
                                 fontWeight: FontWeight.w600,
@@ -905,14 +905,15 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
       if (e.toString().startsWith('VoucherException:')) {
         final parts = e.toString().split(' - ');
         if (parts.length >= 2) {
-          final errorType = parts[0].split(': ')[1];
+          // ignore: unused_local_variable
+                  final errorType = parts[0].split(': ')[1];
           final errorMessage = _getVoucherErrorMessage(errorType);
           _showErrorDialog(errorMessage['title']!, errorMessage['description']!);
         } else {
-          _showErrorDialog(AppLocalizations.of(context)!.voucher_processing_error, e.toString());
+          _showErrorDialog(AppLocalizations.of(context).voucher_processing_error, e.toString());
         }
       } else {
-        _showErrorDialog(AppLocalizations.of(context)!.voucher_processing_error, e.toString());
+        _showErrorDialog(AppLocalizations.of(context).voucher_processing_error, e.toString());
       }
     } finally {
       setState(() {
@@ -938,7 +939,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
             Icon(Icons.check_circle, color: context.tokens.statusHealthy, size: 24),
             const SizedBox(width: 12),
             Text(
-              AppLocalizations.of(context)!.voucher_claimed_title,
+              AppLocalizations.of(context).voucher_claimed_title,
               style: TextStyle(
                 color: context.tokens.textPrimary,
                                 fontWeight: FontWeight.w600,
@@ -982,7 +983,7 @@ class _VoucherScanScreenState extends State<VoucherScanScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context)!.voucher_claimed_subtitle,
+              AppLocalizations.of(context).voucher_claimed_subtitle,
               style: TextStyle(
                 color: context.tokens.textPrimary.withValues(alpha: 0.8),
                               ),
