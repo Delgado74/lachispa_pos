@@ -373,5 +373,7 @@
   "nfc_charge_error_prefix": "Ошибка приёма по NFC: ",
   "nfc_charge_unknown_error": "Неизвестная ошибка при списании",
   "share_ready_message": "Готово к отправке",
-  "lnurl_copied_message": "LNURL скопирован в буфер обмена"
+  "lnurl_copied_message": "LNURL скопирован в буфер обмена",
+  "qr_scanner_title": "Сканировать QR",
+  "qr_scanner_instructions": "Наведите камеру на QR-код\nчтобы сканировать счёт или адрес"
 }

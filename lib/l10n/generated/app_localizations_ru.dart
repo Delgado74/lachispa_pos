@@ -923,7 +923,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String currency_not_available_on_server(
-      Object currency, Object currencyName) {
+    Object currency,
+    Object currencyName,
+  ) {
     return '$currencyName ($currency) недоступна на этом сервере';
   }
 
@@ -978,4 +980,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get lnurl_copied_message => 'LNURL скопирован в буфер обмена';
+
+  @override
+  String get qr_scanner_title => 'Сканировать QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Наведите камеру на QR-код\nчтобы сканировать счёт или адрес';
 }

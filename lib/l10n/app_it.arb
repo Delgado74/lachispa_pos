@@ -373,5 +373,7 @@
   "nfc_charge_error_prefix": "Errore incasso NFC: ",
   "nfc_charge_unknown_error": "Errore sconosciuto durante l'incasso",
   "share_ready_message": "Pronto da condividere",
-  "lnurl_copied_message": "LNURL copiato negli appunti"
+  "lnurl_copied_message": "LNURL copiato negli appunti",
+  "qr_scanner_title": "Scansiona QR",
+  "qr_scanner_instructions": "Punta la fotocamera sul codice QR\nper scansionare la fattura o l'indirizzo"
 }

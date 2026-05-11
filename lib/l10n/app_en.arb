@@ -388,5 +388,7 @@
   "nfc_charge_error_prefix": "NFC charge error: ",
   "nfc_charge_unknown_error": "Unknown error during charge",
   "share_ready_message": "Ready to share",
-  "lnurl_copied_message": "LNURL copied to clipboard"
+  "lnurl_copied_message": "LNURL copied to clipboard",
+  "qr_scanner_title": "Scan QR",
+  "qr_scanner_instructions": "Point the camera at the QR code\nto scan the invoice or address"
 }
