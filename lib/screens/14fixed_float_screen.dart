@@ -18,6 +18,11 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
   bool _hasError = false;
   String? _errorMessage;
 
+  bool get _isMobilePlatform =>
+      !kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS);
+
   @override
   void initState() {
     super.initState();
@@ -27,7 +32,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
   void _initializeWebView() {
     try {
       // Only initialize WebView on mobile platforms
-      if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)) {
+      if (_isMobilePlatform) {
         _controller = WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
           ..setNavigationDelegate(
@@ -309,7 +314,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
 
           // Info text
           Text(
-            kIsWeb || !(defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)
+            !_isMobilePlatform
                 ? AppLocalizations.of(context)!.fixed_float_external_browser
                 : AppLocalizations.of(context)!.fixed_float_within_app,
             textAlign: TextAlign.center,

@@ -18,6 +18,11 @@ class _BoltzScreenState extends State<BoltzScreen> {
   bool _hasError = false;
   String? _errorMessage;
 
+  bool get _isMobilePlatform =>
+      !kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS);
+
   @override
   void initState() {
     super.initState();
@@ -27,7 +32,7 @@ class _BoltzScreenState extends State<BoltzScreen> {
   void _initializeWebView() {
     try {
       // Only initialize WebView on mobile platforms
-      if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)) {
+      if (_isMobilePlatform) {
         _controller = WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
           ..setNavigationDelegate(
@@ -309,7 +314,7 @@ class _BoltzScreenState extends State<BoltzScreen> {
 
           // Info text
           Text(
-            kIsWeb || !(defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)
+            !_isMobilePlatform
                 ? AppLocalizations.of(context)!.boltz_external_browser
                 : AppLocalizations.of(context)!.boltz_within_app,
             textAlign: TextAlign.center,
