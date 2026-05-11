@@ -188,7 +188,7 @@ See root project LICENSE file.
 
 ---
 
-<a name="espanol-section"></a>
+<a id="espanol-section"></a>
 
 # Documentación de Docker - LaChispa
 
