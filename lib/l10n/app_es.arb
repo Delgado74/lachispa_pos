@@ -373,5 +373,7 @@
   "nfc_charge_error_prefix": "Error en cobro NFC: ",
   "nfc_charge_unknown_error": "Error desconocido al cobrar",
   "share_ready_message": "Listo para compartir",
-  "lnurl_copied_message": "LNURL copiado al portapapeles"
+  "lnurl_copied_message": "LNURL copiado al portapapeles",
+  "qr_scanner_title": "Escanear QR",
+  "qr_scanner_instructions": "Apunta la cámara al código QR\npara escanear la factura o dirección"
 }

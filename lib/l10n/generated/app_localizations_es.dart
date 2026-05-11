@@ -932,7 +932,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String currency_not_available_on_server(
-      Object currency, Object currencyName) {
+    Object currency,
+    Object currencyName,
+  ) {
     return '$currencyName ($currency) no está disponible en este servidor';
   }
 
@@ -987,4 +989,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get lnurl_copied_message => 'LNURL copiado al portapapeles';
+
+  @override
+  String get qr_scanner_title => 'Escanear QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Apunta la cámara al código QR\npara escanear la factura o dirección';
 }
