@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/app_tokens.dart';
@@ -28,7 +27,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
   void _initializeWebView() {
     try {
       // Only initialize WebView on mobile platforms
-      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)) {
         _controller = WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
           ..setNavigationDelegate(
@@ -310,7 +309,7 @@ class _FixedFloatScreenState extends State<FixedFloatScreen> {
 
           // Info text
           Text(
-            kIsWeb || !(Platform.isAndroid || Platform.isIOS)
+            kIsWeb || !(defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS)
                 ? AppLocalizations.of(context)!.fixed_float_external_browser
                 : AppLocalizations.of(context)!.fixed_float_within_app,
             textAlign: TextAlign.center,

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' show Platform;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -38,7 +37,7 @@ class NfcChargeService {
   }
 
   void _configureDio() {
-    final isAndroid = !kIsWeb && Platform.isAndroid;
+    final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
     _dio.options.headers['User-Agent'] = isAndroid
         ? AppInfoService.getUserAgent('Android')
         : AppInfoService.getUserAgent();

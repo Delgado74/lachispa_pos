@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'dart:math' as math;
-import 'dart:io' show Platform;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode;
+import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode, defaultTargetPlatform, TargetPlatform;
 import '../models/lightning_invoice.dart';
 import '../models/decoded_invoice.dart';
 import '../core/utils/proxy_config.dart';
@@ -24,7 +23,7 @@ class InvoiceService {
   }
 
   void _configureDio() {
-    final isAndroid = !kIsWeb && Platform.isAndroid;
+    final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
     final isWeb = kIsWeb;
     
     _dio.options.headers['Content-Type'] = 'application/json';
@@ -120,7 +119,7 @@ class InvoiceService {
         'Content-Type': 'application/json',
       };
 
-      final isAndroid = !kIsWeb && Platform.isAndroid;
+      final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
       
       // Build extras with fiat information if provided
       // Try multiple approaches to ensure LNBits accepts the fiat data
@@ -667,7 +666,7 @@ class InvoiceService {
         'Content-Type': 'application/json',
       };
 
-      final isAndroid = !kIsWeb && Platform.isAndroid;
+      final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
 
       // For amountless invoices, convert sats to millisatoshis for LNBits API
       final int? amountMsat = amount != null ? amount * 1000 : null;
@@ -1082,7 +1081,7 @@ class InvoiceService {
       final username = parts[0];
       final domain = parts[1];
       
-      final isAndroid = !kIsWeb && Platform.isAndroid;
+      final isAndroid = !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
       final isWeb = kIsWeb;
       
       // Check if it's external domain on web - exit immediately to avoid CORS
