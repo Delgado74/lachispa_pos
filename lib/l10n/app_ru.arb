@@ -226,7 +226,7 @@
   
   "about_app_subtitle": "Lightning кошелек",
   "about_app_description": "Мобильное приложение для управления Bitcoin через Lightning Network с использованием LNBits в качестве бэкенда.",
-  "about_app_sister": "Сестра ElCaju (elcaju.me). При поддержке Cuba Bitcoin.",
+  "about_app_sister": "Сестра ElCaju. При поддержке Cuba Bitcoin.",
   "lightning_address_copy": "Копировать",
   "lightning_address_default": "По умолчанию",
   "lightning_address_delete": "Удалить",

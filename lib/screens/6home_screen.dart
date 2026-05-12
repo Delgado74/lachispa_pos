@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
@@ -1936,19 +1937,28 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
               ),
             ),
             const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () => launchUrl(Uri.parse('https://elcaju.me'), mode: LaunchMode.externalApplication),
-              child: Text(
-                sister,
-                style: TextStyle(
-                  color: context.tokens.accentBright,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.underline,
-                  decorationColor: context.tokens.accentBright,
+            Builder(builder: (context) {
+              final t = context.tokens;
+              final base = TextStyle(color: t.textPrimary.withValues(alpha: 0.7), fontSize: 13);
+              final link = base.copyWith(color: t.accentBright, fontWeight: FontWeight.w500);
+              final elcajuIdx = sister.indexOf('ElCaju');
+              final bitcoinIdx = sister.indexOf('Cuba Bitcoin');
+              return Text.rich(TextSpan(style: base, children: [
+                TextSpan(text: sister.substring(0, elcajuIdx)),
+                TextSpan(
+                  text: 'ElCaju',
+                  style: link,
+                  recognizer: TapGestureRecognizer()..onTap = () => launchUrl(Uri.parse('https://elcaju.me'), mode: LaunchMode.externalApplication),
                 ),
-              ),
-            ),
+                TextSpan(text: sister.substring(elcajuIdx + 6, bitcoinIdx)),
+                TextSpan(
+                  text: 'Cuba Bitcoin',
+                  style: link,
+                  recognizer: TapGestureRecognizer()..onTap = () => launchUrl(Uri.parse('https://cubabitcoin.org'), mode: LaunchMode.externalApplication),
+                ),
+                TextSpan(text: sister.substring(bitcoinIdx + 12)),
+              ]));
+            }),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(12),
