@@ -1557,7 +1557,7 @@ abstract class AppLocalizations {
   /// No description provided for @about_app_sister.
   ///
   /// In es, this message translates to:
-  /// **'Hermana de ElCaju (elcaju.me). Impulsado por Cuba Bitcoin.'**
+  /// **'Hermana de ElCaju. Impulsado por Cuba Bitcoin.'**
   String get about_app_sister;
 
   /// No description provided for @lightning_address_copy.

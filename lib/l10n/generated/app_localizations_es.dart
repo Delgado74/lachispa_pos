@@ -785,7 +785,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get about_app_sister =>
-      'Hermana de ElCaju (elcaju.me). Impulsado por Cuba Bitcoin.';
+      'Hermana de ElCaju. Impulsado por Cuba Bitcoin.';
 
   @override
   String get lightning_address_copy => 'Copiar';

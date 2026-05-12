@@ -800,7 +800,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get about_app_sister =>
-      'Sorella di ElCaju (elcaju.me). Alimentato da Cuba Bitcoin.';
+      'Sorella di ElCaju. Alimentato da Cuba Bitcoin.';
 
   @override
   String get lightning_address_copy => 'Copia';

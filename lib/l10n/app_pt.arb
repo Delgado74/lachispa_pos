@@ -226,7 +226,7 @@
   
   "about_app_subtitle": "Carteira Lightning",
   "about_app_description": "Uma aplicação móvel para gerir Bitcoin através da Lightning Network usando LNBits como backend.",
-  "about_app_sister": "Irmã do ElCaju (elcaju.me). Impulsionado por Cuba Bitcoin.",
+  "about_app_sister": "Irmã do ElCaju. Impulsionado por Cuba Bitcoin.",
   "lightning_address_copy": "Copiar",
   "lightning_address_default": "Por defeito",
   "lightning_address_delete": "Eliminar",
