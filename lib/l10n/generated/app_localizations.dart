@@ -1554,6 +1554,12 @@ abstract class AppLocalizations {
   /// **'Una aplicación móvil para gestionar Bitcoin a través de Lightning Network usando LNBits como backend.'**
   String get about_app_description;
 
+  /// No description provided for @about_app_sister.
+  ///
+  /// In es, this message translates to:
+  /// **'Hermana de ElCaju (elcaju.me). Impulsado por Cuba Bitcoin.'**
+  String get about_app_sister;
+
   /// No description provided for @lightning_address_copy.
   ///
   /// In es, this message translates to:

@@ -226,6 +226,7 @@
   
   "about_app_subtitle": "Portefeuille Lightning",
   "about_app_description": "Une application mobile pour gérer Bitcoin via le réseau Lightning en utilisant LNBits comme backend.",
+  "about_app_sister": "Sœur d'ElCaju (elcaju.me). Propulsé par Cuba Bitcoin.",
   "lightning_address_copy": "Copier",
   "lightning_address_default": "Par défaut",
   "lightning_address_delete": "Supprimer",

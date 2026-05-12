@@ -802,6 +802,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Une application mobile pour gérer Bitcoin via le réseau Lightning en utilisant LNBits comme backend.';
 
   @override
+  String get about_app_sister =>
+      'Sœur d\'ElCaju (elcaju.me). Propulsé par Cuba Bitcoin.';
+
+  @override
   String get lightning_address_copy => 'Copier';
 
   @override
