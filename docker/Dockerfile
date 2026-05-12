@@ -1,7 +1,5 @@
 FROM ghcr.io/cirruslabs/flutter:3.41.9 AS build
 
-ARG FLUTTER_WEB_RENDERER=html
-
 WORKDIR /app
 
 COPY pubspec.yaml pubspec.lock ./
@@ -11,7 +9,7 @@ RUN --mount=type=cache,target=/root/.pub-cache \
 
 COPY . .
 
-RUN flutter build web --release --web-renderer=$FLUTTER_WEB_RENDERER
+RUN flutter build web --release
 
 FROM nginxinc/nginx-unprivileged:alpine
 
