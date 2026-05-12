@@ -183,6 +183,7 @@
   "theme_lachispa": "LaChispa",
   "theme_light": "Hell",
   "theme_dark": "Dunkel",
+  "theme_pizzaday": "Pizza Day",
 
   "copy_invoice_button": "Rechnung kopieren",
   "invoice_copied_message": "Rechnung in die Zwischenablage kopiert",

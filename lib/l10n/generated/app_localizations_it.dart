@@ -683,6 +683,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get theme_dark => 'Scuro';
 
   @override
+  String get theme_pizzaday => 'Pizza Day';
+
+  @override
   String get copy_invoice_button => 'Copia fattura';
 
   @override

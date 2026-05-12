@@ -183,6 +183,7 @@
   "theme_lachispa": "LaChispa",
   "theme_light": "Chiaro",
   "theme_dark": "Scuro",
+  "theme_pizzaday": "Pizza Day",
 
   "copy_invoice_button": "Copia fattura",
   "invoice_copied_message": "Fattura copiata negli appunti",

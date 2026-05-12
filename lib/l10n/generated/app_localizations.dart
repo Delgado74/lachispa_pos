@@ -1344,6 +1344,12 @@ abstract class AppLocalizations {
   /// **'Oscuro'**
   String get theme_dark;
 
+  /// No description provided for @theme_pizzaday.
+  ///
+  /// In es, this message translates to:
+  /// **'Pizza Day'**
+  String get theme_pizzaday;
+
   /// No description provided for @copy_invoice_button.
   ///
   /// In es, this message translates to:

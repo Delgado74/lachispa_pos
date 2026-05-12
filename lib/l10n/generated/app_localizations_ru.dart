@@ -666,6 +666,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get theme_dark => 'Тёмная';
 
   @override
+  String get theme_pizzaday => 'Pizza Day';
+
+  @override
   String get copy_invoice_button => 'Копировать счёт';
 
   @override
