@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import '../providers/auth_provider.dart';
@@ -1879,43 +1880,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   }
 
   void _showAboutDialog() {
+    final l = AppLocalizations.of(context)!;
     final languageProvider = Provider.of<LanguageProvider>(context, listen: false);
-    final currentLanguage = languageProvider.currentLocale.languageCode;
-    
-    String subtitle;
-    String description;
-    
-    switch (currentLanguage) {
-      case 'en':
-        subtitle = 'Lightning Wallet';
-        description = 'A mobile application to manage Bitcoin through Lightning Network using LNBits as backend.';
-        break;
-      case 'pt':
-        subtitle = 'Carteira Lightning';
-        description = 'Uma aplicação móvel para gerir Bitcoin através da Lightning Network usando LNBits como backend.';
-        break;
-      case 'de':
-        subtitle = 'Lightning-Wallet';
-        description = 'Eine mobile Anwendung zur Verwaltung von Bitcoin über das Lightning-Netzwerk mit LNBits als Backend.';
-        break;
-      case 'fr':
-        subtitle = 'Portefeuille Lightning';
-        description = 'Une application mobile pour gérer Bitcoin via le réseau Lightning en utilisant LNBits comme backend.';
-        break;
-      case 'it':
-        subtitle = 'Portafoglio Lightning';
-        description = 'Un\'applicazione mobile per gestire Bitcoin tramite Lightning Network utilizzando LNBits come backend.';
-        break;
-      case 'ru':
-        subtitle = 'Lightning кошелек';
-        description = 'Мобильное приложение для управления Bitcoin через Lightning Network с использованием LNBits в качестве бэкенда.';
-        break;
-      default: // es
-        subtitle = 'Billetera Lightning';
-        description = 'Una aplicación móvil para gestionar Bitcoin a través de Lightning Network usando LNBits como backend.';
-        break;
-    }
-    
+    final subtitle = l.about_app_subtitle;
+    final description = l.about_app_description;
+    final sister = l.about_app_sister;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -1963,6 +1933,20 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
               style: TextStyle(
                 color: context.tokens.textPrimary.withValues(alpha: 0.7),
                 fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 8),
+            GestureDetector(
+              onTap: () => launchUrl(Uri.parse('https://elcaju.me'), mode: LaunchMode.externalApplication),
+              child: Text(
+                sister,
+                style: TextStyle(
+                  color: context.tokens.accentBright,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  decoration: TextDecoration.underline,
+                  decorationColor: context.tokens.accentBright,
+                ),
               ),
             ),
             const SizedBox(height: 16),
