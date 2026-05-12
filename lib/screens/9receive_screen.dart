@@ -20,6 +20,8 @@ import '../theme/app_tokens.dart';
 import '7ln_address_screen.dart';
 import 'voucher_scan_screen.dart';
 
+final Set<String> clearedInvoiceHashes = {};
+
 class ReceiveScreen extends StatefulWidget {
   const ReceiveScreen({super.key});
 
@@ -28,6 +30,7 @@ class ReceiveScreen extends StatefulWidget {
 }
 
 class _ReceiveScreenState extends State<ReceiveScreen> {
+
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
   String _selectedCurrency = 'sats';
@@ -782,6 +785,12 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   void _clearInvoice() {
     _invoicePaymentTimer?.cancel();
     _invoicePaymentTimeoutTimer?.cancel();
+
+    if (_generatedInvoice != null) {
+      final hash = _generatedInvoice!.paymentHash;
+      unawaited(_tryCancelInvoiceOnServer(hash));
+    }
+
     setState(() {
       _generatedInvoice = null;
     });
@@ -789,6 +798,29 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
       icon: Icons.check_circle,
       message: AppLocalizations.of(context)!.invoice_cleared_message,
     );
+  }
+
+  Future<void> _tryCancelInvoiceOnServer(String paymentHash) async {
+    try {
+      final walletProvider = context.read<WalletProvider>();
+      final authProvider = context.read<AuthProvider>();
+      final serverUrl = authProvider.sessionData?.serverUrl;
+      final wallet = walletProvider.primaryWallet;
+
+      if (serverUrl == null || wallet == null) return;
+
+      final cancelled = await _invoiceService.cancelInvoice(
+        serverUrl: serverUrl,
+        adminKey: wallet.inKey,
+        paymentHash: paymentHash,
+      );
+
+      if (!cancelled) {
+        clearedInvoiceHashes.add(paymentHash);
+      }
+    } catch (e) {
+      clearedInvoiceHashes.add(paymentHash);
+    }
   }
 
   void _showCopySheet(LNAddress? defaultAddress) {
