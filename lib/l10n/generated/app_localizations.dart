@@ -1979,6 +1979,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'La clave de facturación no puede estar vacía'**
   String get invoice_key_empty;
+
+  /// No description provided for @qr_scanner_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Escanear QR'**
+  String get qr_scanner_title;
+
+  /// No description provided for @qr_scanner_instructions.
+  ///
+  /// In es, this message translates to:
+  /// **'Apunta la cámara al código QR\npara escanear la factura o dirección'**
+  String get qr_scanner_instructions;
 }
 
 class _AppLocalizationsDelegate

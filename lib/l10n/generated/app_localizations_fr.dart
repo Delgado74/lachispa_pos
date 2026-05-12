@@ -1058,4 +1058,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get invoice_key_empty => 'La clé de facturation ne peut pas être vide';
+
+  @override
+  String get qr_scanner_title => 'Scanner QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Pointez la caméra vers le code QR\npour scanner la facture ou l\'adresse';
 }

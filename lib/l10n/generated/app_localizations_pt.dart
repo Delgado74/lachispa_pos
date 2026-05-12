@@ -1037,4 +1037,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get invoice_key_empty => 'A chave da fatura não pode estar vazia';
+
+  @override
+  String get qr_scanner_title => 'Escanear QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Aponte a câmera para o código QR\npara escanear a fatura ou endereço';
 }

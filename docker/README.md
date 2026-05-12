@@ -81,7 +81,7 @@ The service includes Traefik labels for automatic discovery:
 labels:
   - "traefik.enable=true"
   - "traefik.http.routers.lachispa.rule=Host(`lachispa.local`)"
-  - "traefik.http.services.lachispa.loadbalancer.server.port=80"
+  - "traefik.http.services.lachispa.loadbalancer.server.port=8080"
 ```
 
 Ensure Traefik is running in your Docker environment.
@@ -188,7 +188,7 @@ See root project LICENSE file.
 
 ---
 
-<a name="espanol-section"></a>
+<a id="espanol-section"></a>
 
 # Documentación de Docker - LaChispa
 
@@ -273,7 +273,7 @@ El servicio incluye etiquetas de Traefik para descubrimiento automático:
 labels:
   - "traefik.enable=true"
   - "traefik.http.routers.lachispa.rule=Host(`lachispa.local`)"
-  - "traefik.http.services.lachispa.loadbalancer.server.port=80"
+  - "traefik.http.services.lachispa.loadbalancer.server.port=8080"
 ```
 
 Asegúrate de que Traefik esté ejecutándose en tu entorno Docker.

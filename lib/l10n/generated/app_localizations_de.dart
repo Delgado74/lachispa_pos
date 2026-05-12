@@ -1050,4 +1050,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get invoice_key_empty => 'Rechnungsschlüssel darf nicht leer sein';
+
+  @override
+  String get qr_scanner_title => 'QR scannen';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Kamera auf den QR-Code richten\num Rechnung oder Adresse zu scannen';
 }

@@ -1023,4 +1023,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invoice_key_empty => 'Invoice key cannot be empty';
+
+  @override
+  String get qr_scanner_title => 'Scan QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Point the camera at the QR code\nto scan the invoice or address';
 }

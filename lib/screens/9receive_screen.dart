@@ -511,15 +511,15 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
             onTap: () => _showCopySheet(defaultAddress),
           ),
           _buildBarAction(
-            icon: Icons.ios_share_rounded,
-            label: AppLocalizations.of(context)!.share_button,
-            onTap: () => _shareContent(defaultAddress),
-          ),
-          _buildBarAction(
             icon: Icons.nfc_rounded,
             label: AppLocalizations.of(context)!.nfc_action_label,
             enabled: _nfcAvailable,
             onTap: _nfcAvailable ? _activateNfc : _showNfcUnavailable,
+          ),
+          _buildBarAction(
+            icon: Icons.ios_share_rounded,
+            label: AppLocalizations.of(context)!.share_button,
+            onTap: () => _shareContent(defaultAddress),
           ),
         ],
       ),

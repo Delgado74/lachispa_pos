@@ -398,7 +398,6 @@
   "nfc_charge_unknown_error": "Unknown error during charge",
   "share_ready_message": "Ready to share",
   "lnurl_copied_message": "LNURL copied to clipboard",
-
   "invoice_key_qr_title": "Invoice Key QR",
   "invoice_key_qr_description": "Use this QR code with LaChispaPOS or other Lightning apps to receive payments without exposing your admin key.",
   "invoice_key_qr_subtitle": "Show QR for other apps",
@@ -410,5 +409,7 @@
   "invoice_key_show": "Show key",
   "invoice_key_hide": "Hide key",
   "invoice_key_copy_failed": "Failed to copy invoice key",
-  "invoice_key_empty": "Invoice key cannot be empty"
+  "invoice_key_empty": "Invoice key cannot be empty",
+  "qr_scanner_title": "Scan QR",
+  "qr_scanner_instructions": "Point the camera at the QR code\nto scan the invoice or address"
 }
