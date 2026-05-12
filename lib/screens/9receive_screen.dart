@@ -127,7 +127,9 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     _invoicePaymentTimer?.cancel();
     _invoicePaymentTimeoutTimer?.cancel();
     if (_generatedInvoice != null) {
-      ClearedInvoiceStore.instance.add(_generatedInvoice!.paymentHash);
+      final hash = _generatedInvoice!.paymentHash;
+      ClearedInvoiceStore.instance.add(hash);
+      unawaited(_tryCancelInvoiceOnServer(hash));
     }
     super.dispose();
   }
@@ -807,7 +809,9 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     _invoicePaymentTimer?.cancel();
     _invoicePaymentTimeoutTimer?.cancel();
     if (_generatedInvoice != null) {
-      ClearedInvoiceStore.instance.add(_generatedInvoice!.paymentHash);
+      final hash = _generatedInvoice!.paymentHash;
+      ClearedInvoiceStore.instance.add(hash);
+      unawaited(_tryCancelInvoiceOnServer(hash));
     }
     setState(() {
       _generatedInvoice = null;
