@@ -382,5 +382,7 @@
       "error": { "type": "String" }
     }
   },
-  "nfc_processing_card": "Elaborazione dati della carta..."
+  "nfc_processing_card": "Elaborazione dati della carta...",
+  "qr_scanner_title": "Scansiona QR",
+  "qr_scanner_instructions": "Punta la fotocamera sul codice QR\nper scansionare la fattura o l'indirizzo"
 }

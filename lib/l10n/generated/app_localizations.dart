@@ -1925,6 +1925,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Procesando datos de la tarjeta...'**
   String get nfc_processing_card;
+
+  /// No description provided for @qr_scanner_title.
+  ///
+  /// In es, this message translates to:
+  /// **'Escanear QR'**
+  String get qr_scanner_title;
+
+  /// No description provided for @qr_scanner_instructions.
+  ///
+  /// In es, this message translates to:
+  /// **'Apunta la cámara al código QR\npara escanear la factura o dirección'**
+  String get qr_scanner_instructions;
 }
 
 class _AppLocalizationsDelegate

@@ -992,4 +992,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get nfc_processing_card => 'Обработка данных карты...';
+
+  @override
+  String get qr_scanner_title => 'Сканировать QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Наведите камеру на QR-код\nчтобы сканировать счёт или адрес';
 }

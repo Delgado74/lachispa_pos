@@ -1015,4 +1015,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get nfc_processing_card => 'Elaborazione dati della carta...';
+
+  @override
+  String get qr_scanner_title => 'Scansiona QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Punta la fotocamera sul codice QR\nper scansionare la fattura o l\'indirizzo';
 }

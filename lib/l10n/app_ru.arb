@@ -382,5 +382,7 @@
       "error": { "type": "String" }
     }
   },
-  "nfc_processing_card": "Обработка данных карты..."
+  "nfc_processing_card": "Обработка данных карты...",
+  "qr_scanner_title": "Сканировать QR",
+  "qr_scanner_instructions": "Наведите камеру на QR-код\nчтобы сканировать счёт или адрес"
 }

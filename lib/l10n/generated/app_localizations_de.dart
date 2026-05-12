@@ -1012,4 +1012,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get nfc_processing_card => 'Kartendaten werden verarbeitet...';
+
+  @override
+  String get qr_scanner_title => 'QR scannen';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Kamera auf den QR-Code richten\num Rechnung oder Adresse zu scannen';
 }

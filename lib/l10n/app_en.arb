@@ -397,5 +397,7 @@
       "error": { "type": "String" }
     }
   },
-  "nfc_processing_card": "Processing card data..."
+  "nfc_processing_card": "Processing card data...",
+  "qr_scanner_title": "Scan QR",
+  "qr_scanner_instructions": "Point the camera at the QR code\nto scan the invoice or address"
 }

@@ -988,4 +988,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nfc_processing_card => 'Processing card data...';
+
+  @override
+  String get qr_scanner_title => 'Scan QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Point the camera at the QR code\nto scan the invoice or address';
 }
