@@ -1,4 +1,4 @@
-FROM ghcr.io/cirruslabs/flutter:3.27.3 AS build
+FROM ghcr.io/cirruslabs/flutter:3.41.9 AS build
 
 ARG FLUTTER_WEB_RENDERER=html
 
