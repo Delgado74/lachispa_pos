@@ -10,7 +10,7 @@ import '../services/wallet_service.dart';
 import '../models/transaction_info.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/app_tokens.dart';
-import '9receive_screen.dart';
+import '../services/cleared_invoice_store.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -169,7 +169,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
     var filtered = _transactions.where((tx) =>
         !(tx.isPending &&
           tx.paymentHash != null &&
-          clearedInvoiceHashes.contains(tx.paymentHash))
+          ClearedInvoiceStore.instance.contains(tx.paymentHash))
     ).toList();
 
     switch (_currentFilter) {
