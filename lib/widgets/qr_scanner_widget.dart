@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '../l10n/generated/app_localizations.dart';
 import '../theme/app_tokens.dart';
 
 class _QrScannerOverlayShape extends ShapeBorder {
@@ -253,7 +254,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
 
                     // Title
                     Text(
-                      'Escanear QR',
+                      AppLocalizations.of(context)!.qr_scanner_title,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -299,7 +300,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                       ),
                     ),
                     child: Text(
-                      'Point the camera at the QR code\nto scan the invoice or address',
+                      AppLocalizations.of(context)!.qr_scanner_instructions,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,

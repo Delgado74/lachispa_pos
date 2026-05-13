@@ -24,7 +24,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.3'
+          flutter-version: '3.41.9'
           channel: 'stable'
 
       - name: Install dependencies
@@ -83,11 +83,10 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            FLUTTER_WEB_RENDERER=html
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -108,9 +107,8 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: LaChispa ${{ github.ref_name }}
+          generate_release_notes: true
           body: |
-            ## LaChispa ${{ github.ref_name }}
-
             ### Descargas Android
 
             - **Universal (recomendado)**: `lachispa-${{ github.ref_name }}-universal.apk`
@@ -119,14 +117,11 @@ jobs:
             - **armeabi-v7a** (dispositivos antiguos 32-bit): `lachispa-${{ github.ref_name }}-armeabi-v7a.apk`
             - **x86_64** (emuladores): `lachispa-${{ github.ref_name }}-x86_64.apk`
 
-            URL estable para botón de descarga en la web (siempre apunta a la última release):
-            `https://github.com/${{ github.repository }}/releases/latest/download/lachispa-universal.apk`
-
             ### Docker
 
             ```bash
             docker pull ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-            docker run -p 7777:80 ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            docker run -p 7777:8080 ghcr.io/${{ github.repository }}:${{ github.ref_name }}
             ```
           files: |
             release-apks/*.apk

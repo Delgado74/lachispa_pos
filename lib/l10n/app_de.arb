@@ -183,6 +183,7 @@
   "theme_lachispa": "LaChispa",
   "theme_light": "Hell",
   "theme_dark": "Dunkel",
+  "theme_pizzaday": "Pizza Day",
 
   "copy_invoice_button": "Rechnung kopieren",
   "invoice_copied_message": "Rechnung in die Zwischenablage kopiert",
@@ -226,6 +227,7 @@
   
   "about_app_subtitle": "Lightning-Wallet",
   "about_app_description": "Eine mobile Anwendung zur Verwaltung von Bitcoin über das Lightning-Netzwerk mit LNBits als Backend.",
+  "about_app_sister": "Schwester von ElCaju. Unterstützt von Cuba Bitcoin.",
   "lightning_address_copy": "Kopieren",
   "lightning_address_default": "Standard",
   "lightning_address_delete": "Löschen",
@@ -415,4 +417,6 @@
   "invoice_key_hide": "Schlüssel verbergen",
   "invoice_key_copy_failed": "Rechnungsschlüssel konnte nicht kopiert werden",
   "invoice_key_empty": "Rechnungsschlüssel darf nicht leer sein"
+  "qr_scanner_title": "QR scannen",
+  "qr_scanner_instructions": "Kamera auf den QR-Code richten\num Rechnung oder Adresse zu scannen"
 }

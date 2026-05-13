@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:math' as math;
 import '../providers/auth_provider.dart';
@@ -7,6 +9,7 @@ import '../providers/wallet_provider.dart';
 import '../providers/language_provider.dart';
 import '../services/transaction_detector.dart';
 import '../providers/currency_settings_provider.dart';
+import '../providers/theme_provider.dart';
 import '../services/app_info_service.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../theme/app_tokens.dart';
@@ -64,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   bool _showDepositSpark = false;
   late Timer _sparkTimer;
   final List<Particle> _particles = [];
+  final List<_PizzaSparkParticle> _pizzaParticles = [];
   final math.Random _random = math.Random();
   
   // Interactive states
@@ -456,9 +460,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
           mainBalance,
           textAlign: TextAlign.center,
           style: TextStyle(
-                        fontSize: _getBalanceFontSize(isMobile, currencyProvider),
+            fontSize: _getBalanceFontSize(isMobile, currencyProvider),
             fontWeight: FontWeight.bold,
-            color: context.tokens.textPrimary,
+            color: context.read<ThemeProvider>().current == AppTheme.pizzaday
+                ? context.tokens.accentSolid
+                : context.tokens.textPrimary,
           ),
         ),
         // Secondary balance (sats) when not in sats mode
@@ -558,37 +564,44 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   // Create celebration sparks for deposits
   void createDepositSpark() {
     if (!mounted) return;
-    
+
     print('[HOME_SCREEN] Activating deposit spark!');
-    
-    // Create 5-10 simultaneous sparks
-    final sparkCount = _random.nextInt(6) + 5; // 5-10 chispas
-    
+    final isPizzaDay = context.read<ThemeProvider>().current == AppTheme.pizzaday;
+
+    final sparkCount = _random.nextInt(6) + 5;
     for (int spark = 0; spark < sparkCount; spark++) {
       final screenSize = MediaQuery.of(context).size;
       final x = _random.nextDouble() * screenSize.width;
       final y = _random.nextDouble() * screenSize.height;
-      final particleCount = _random.nextInt(31) + 20; // 20-50 particles per spark
-      
-      for (int i = 0; i < particleCount; i++) {
-        _particles.add(Particle(x, y, _random));
+
+      if (isPizzaDay) {
+        final pizzaCount = _random.nextInt(3) + 2;
+        for (int i = 0; i < pizzaCount; i++) {
+          _pizzaParticles.add(_PizzaSparkParticle(x, y, _random));
+        }
+      } else {
+        final particleCount = _random.nextInt(31) + 20;
+        for (int i = 0; i < particleCount; i++) {
+          _particles.add(Particle(x, y, _random));
+        }
       }
     }
-    
+
     setState(() {
       _showDepositSpark = true;
     });
-    
+
     // Activate deposit celebration
     depositCelebration();
-    
+
     // Auto-hide after 3 seconds with automatic cleanup
     Timer(const Duration(seconds: 3), () {
       if (mounted) {
         setState(() {
           _showDepositSpark = false;
         });
-        _particles.clear(); // Remove dead particles
+        _particles.clear();
+        _pizzaParticles.clear();
       }
     });
   }
@@ -608,12 +621,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   
   void _updateParticles() {
     if (!mounted) return;
-    
     setState(() {
-      // Remove dead particles automatically (optimization)
       _particles.removeWhere((particle) {
         particle.update();
         return !particle.isAlive;
+      });
+      _pizzaParticles.removeWhere((p) {
+        p.update();
+        return !p.isAlive;
       });
     });
   }
@@ -717,6 +732,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                 Expanded(
                   child: Stack(
                     children: [
+                      if (context.read<ThemeProvider>().current == AppTheme.pizzaday)
+                        Positioned.fill(
+                          child: IgnorePointer(
+                            child: CustomPaint(painter: _PizzaDoughPainter()),
+                          ),
+                        ),
+                      if (context.read<ThemeProvider>().current == AppTheme.pizzaday)
+                        _buildPizzaEmojiBackground(),
                       SafeArea(
                         child: Column(
                           children: [
@@ -808,7 +831,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                       ),
           
                       // Particle system with z-index 100 (overlay)
-                      if (_showDepositSpark)
+                      if (_showDepositSpark &&
+                          context.read<ThemeProvider>().current != AppTheme.pizzaday)
                         Positioned.fill(
                           child: IgnorePointer(
                             child: AnimatedBuilder(
@@ -817,9 +841,25 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                                 return CustomPaint(
                                   painter: SparkPainter(_particles),
                                   size: Size.infinite,
-                                  willChange: true, // Optimization for animations
+                                  willChange: true,
                                 );
                               },
+                            ),
+                          ),
+                        ),
+                      if (_showDepositSpark &&
+                          context.read<ThemeProvider>().current == AppTheme.pizzaday)
+                        Positioned.fill(
+                          child: IgnorePointer(
+                            child: Stack(
+                              children: _pizzaParticles.map((p) => Positioned(
+                                left: p.x - p.size / 2,
+                                top: p.y - p.size / 2,
+                                child: Opacity(
+                                  opacity: p.opacity.clamp(0.0, 1.0),
+                                  child: Text('🍕', style: TextStyle(fontSize: p.size)),
+                                ),
+                              )).toList(),
                             ),
                           ),
                         ),
@@ -856,6 +896,45 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
     );
   }
   
+  static const _toppingEmojis = ['🍄', '🍅', '🍍', '🥩', '🥓', '🫑', '🧅', '🫒'];
+
+  Widget _buildPizzaEmojiBackground() {
+    final toppings = [
+      (left: 12.0,  right: null, top: 60.0,  size: 40.0, angle: -0.3, i: 0),
+      (left: null,  right: 18.0, top: 140.0, size: 34.0, angle: 0.9,  i: 1),
+      (left: 55.0,  right: null, top: 290.0, size: 38.0, angle: -1.1, i: 2),
+      (left: null,  right: 40.0, top: 380.0, size: 32.0, angle: 0.4,  i: 3),
+      (left: 8.0,   right: null, top: 500.0, size: 42.0, angle: 1.4,  i: 4),
+      (left: null,  right: 15.0, top: 590.0, size: 36.0, angle: -0.7, i: 5),
+      (left: 110.0, right: null, top: 175.0, size: 30.0, angle: 1.0,  i: 6),
+      (left: null,  right: 90.0, top: 465.0, size: 34.0, angle: -1.5, i: 7),
+      (left: 70.0,  right: null, top: 690.0, size: 38.0, angle: 0.2,  i: 0),
+      (left: null,  right: 60.0, top: 740.0, size: 30.0, angle: -0.5, i: 1),
+      (left: 30.0,  right: null, top: 830.0, size: 36.0, angle: 0.7,  i: 2),
+      (left: null,  right: 35.0, top: 250.0, size: 32.0, angle: -0.9, i: 3),
+    ];
+    return IgnorePointer(
+      child: Opacity(
+        opacity: 0.22,
+        child: Stack(
+          fit: StackFit.expand,
+          children: toppings.map((t) => Positioned(
+            left: t.left,
+            right: t.right,
+            top: t.top,
+            child: Transform.rotate(
+              angle: t.angle,
+              child: Text(
+                _toppingEmojis[t.i % _toppingEmojis.length],
+                style: TextStyle(fontSize: t.size),
+              ),
+            ),
+          )).toList(),
+        ),
+      ),
+    );
+  }
+
   Widget _buildHeader(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -1878,43 +1957,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   }
 
   void _showAboutDialog() {
+    final l = AppLocalizations.of(context)!;
     final languageProvider = Provider.of<LanguageProvider>(context, listen: false);
-    final currentLanguage = languageProvider.currentLocale.languageCode;
-    
-    String subtitle;
-    String description;
-    
-    switch (currentLanguage) {
-      case 'en':
-        subtitle = 'Lightning Wallet';
-        description = 'A mobile application to manage Bitcoin through Lightning Network using LNBits as backend.';
-        break;
-      case 'pt':
-        subtitle = 'Carteira Lightning';
-        description = 'Uma aplicação móvel para gerir Bitcoin através da Lightning Network usando LNBits como backend.';
-        break;
-      case 'de':
-        subtitle = 'Lightning-Wallet';
-        description = 'Eine mobile Anwendung zur Verwaltung von Bitcoin über das Lightning-Netzwerk mit LNBits als Backend.';
-        break;
-      case 'fr':
-        subtitle = 'Portefeuille Lightning';
-        description = 'Une application mobile pour gérer Bitcoin via le réseau Lightning en utilisant LNBits comme backend.';
-        break;
-      case 'it':
-        subtitle = 'Portafoglio Lightning';
-        description = 'Un\'applicazione mobile per gestire Bitcoin tramite Lightning Network utilizzando LNBits come backend.';
-        break;
-      case 'ru':
-        subtitle = 'Lightning кошелек';
-        description = 'Мобильное приложение для управления Bitcoin через Lightning Network с использованием LNBits в качестве бэкенда.';
-        break;
-      default: // es
-        subtitle = 'Billetera Lightning';
-        description = 'Una aplicación móvil para gestionar Bitcoin a través de Lightning Network usando LNBits como backend.';
-        break;
-    }
-    
+    final subtitle = l.about_app_subtitle;
+    final description = l.about_app_description;
+    final sister = l.about_app_sister;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -1964,6 +2012,29 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                 fontSize: 14,
               ),
             ),
+            const SizedBox(height: 8),
+            Builder(builder: (context) {
+              final t = context.tokens;
+              final base = TextStyle(color: t.textPrimary.withValues(alpha: 0.7), fontSize: 13);
+              final link = base.copyWith(color: t.accentBright, fontWeight: FontWeight.w500);
+              final elcajuIdx = sister.indexOf('ElCaju');
+              final bitcoinIdx = sister.indexOf('Cuba Bitcoin');
+              return Text.rich(TextSpan(style: base, children: [
+                TextSpan(text: sister.substring(0, elcajuIdx)),
+                TextSpan(
+                  text: 'ElCaju',
+                  style: link,
+                  recognizer: TapGestureRecognizer()..onTap = () => launchUrl(Uri.parse('https://elcaju.me'), mode: LaunchMode.externalApplication),
+                ),
+                TextSpan(text: sister.substring(elcajuIdx + 6, bitcoinIdx)),
+                TextSpan(
+                  text: 'Cuba Bitcoin',
+                  style: link,
+                  recognizer: TapGestureRecognizer()..onTap = () => launchUrl(Uri.parse('https://cubabitcoin.org'), mode: LaunchMode.externalApplication),
+                ),
+                TextSpan(text: sister.substring(bitcoinIdx + 12)),
+              ]));
+            }),
             const SizedBox(height: 16),
             Container(
               padding: const EdgeInsets.all(12),
@@ -2242,4 +2313,91 @@ class SparkPainter extends CustomPainter {
     // Only repaint if particle count changed (optimization)
     return particles.length != oldDelegate.particles.length;
   }
+}
+
+class _PizzaDoughPainter extends CustomPainter {
+  void _blob(Canvas canvas, List<Offset> pts, Color color) {
+    final paint = Paint()..color = color..style = PaintingStyle.fill;
+    final path = Path();
+    final n = pts.length;
+    path.moveTo((pts[0].dx + pts[n - 1].dx) / 2, (pts[0].dy + pts[n - 1].dy) / 2);
+    for (int i = 0; i < n; i++) {
+      final curr = pts[i];
+      final next = pts[(i + 1) % n];
+      path.quadraticBezierTo(curr.dx, curr.dy, (curr.dx + next.dx) / 2, (curr.dy + next.dy) / 2);
+    }
+    path.close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  void paint(Canvas canvas, Size s) {
+    // Mostaza — manchas grandes tipo pincelada
+    _blob(canvas, [
+      Offset(s.width * 0.0,  s.height * 0.10),
+      Offset(s.width * 0.38, s.height * 0.04),
+      Offset(s.width * 0.48, s.height * 0.22),
+      Offset(s.width * 0.12, s.height * 0.30),
+    ], const Color(0x18F7AD45));
+
+    _blob(canvas, [
+      Offset(s.width * 0.55, s.height * 0.55),
+      Offset(s.width * 0.95, s.height * 0.50),
+      Offset(s.width * 0.98, s.height * 0.72),
+      Offset(s.width * 0.60, s.height * 0.75),
+    ], const Color(0x15F7AD45));
+
+    _blob(canvas, [
+      Offset(s.width * 0.10, s.height * 0.72),
+      Offset(s.width * 0.45, s.height * 0.68),
+      Offset(s.width * 0.50, s.height * 0.84),
+      Offset(s.width * 0.08, s.height * 0.88),
+    ], const Color(0x14F7AD45));
+
+    // Tomate — manchas irregulares más pequeñas
+    _blob(canvas, [
+      Offset(s.width * 0.62, s.height * 0.12),
+      Offset(s.width * 0.90, s.height * 0.08),
+      Offset(s.width * 0.96, s.height * 0.26),
+      Offset(s.width * 0.68, s.height * 0.28),
+    ], const Color(0x12BB3E00));
+
+    _blob(canvas, [
+      Offset(s.width * 0.02, s.height * 0.42),
+      Offset(s.width * 0.30, s.height * 0.38),
+      Offset(s.width * 0.34, s.height * 0.54),
+      Offset(s.width * 0.04, s.height * 0.56),
+    ], const Color(0x10BB3E00));
+
+    _blob(canvas, [
+      Offset(s.width * 0.50, s.height * 0.86),
+      Offset(s.width * 0.82, s.height * 0.82),
+      Offset(s.width * 0.88, s.height * 0.96),
+      Offset(s.width * 0.48, s.height * 0.98),
+    ], const Color(0x11BB3E00));
+  }
+
+  @override
+  bool shouldRepaint(_PizzaDoughPainter _) => false;
+}
+
+class _PizzaSparkParticle {
+  double x, y, opacity, vx, vy;
+  final double size;
+
+  _PizzaSparkParticle(this.x, this.y, math.Random rnd)
+      : vx = (rnd.nextDouble() - 0.5) * 8,
+        vy = -(rnd.nextDouble() * 5 + 3),
+        opacity = 1.0,
+        size = 22 + rnd.nextDouble() * 26;
+
+  void update() {
+    x += vx;
+    y += vy;
+    vy += 0.15; // gravedad suave
+    vx *= 0.98;
+    opacity -= 0.018;
+  }
+
+  bool get isAlive => opacity > 0.01;
 }

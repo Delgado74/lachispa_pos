@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'dart:math' as math;
-import 'dart:io' show Platform;
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode;
+import 'package:flutter/foundation.dart' show kIsWeb, kDebugMode, defaultTargetPlatform, TargetPlatform;
 import '../models/lightning_invoice.dart';
 import '../models/decoded_invoice.dart';
 import '../core/utils/proxy_config.dart';
@@ -19,29 +18,31 @@ void _debugLog(String message) {
 class InvoiceService {
   final Dio _dio = Dio();
 
+  bool get _isAndroid =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+
   InvoiceService() {
     _configureDio();
   }
 
   void _configureDio() {
-    final isAndroid = !kIsWeb && Platform.isAndroid;
-    const isWeb = kIsWeb;
+    final isWeb = kIsWeb;
     
     _dio.options.headers['Content-Type'] = 'application/json';
-    _dio.options.headers['User-Agent'] = isAndroid 
+    _dio.options.headers['User-Agent'] = _isAndroid 
         ? AppInfoService.getUserAgent('Android') 
         : isWeb 
           ? AppInfoService.getUserAgent('Web')
           : AppInfoService.getUserAgent();
     
     // Longer timeouts for proxy and Android devices
-    _dio.options.connectTimeout = isAndroid 
+    _dio.options.connectTimeout = _isAndroid 
         ? const Duration(seconds: 30) 
         : const Duration(seconds: 20);
-    _dio.options.receiveTimeout = isAndroid 
+    _dio.options.receiveTimeout = _isAndroid 
         ? const Duration(seconds: 30) 
         : const Duration(seconds: 20);
-    _dio.options.sendTimeout = isAndroid 
+    _dio.options.sendTimeout = _isAndroid 
         ? const Duration(seconds: 30) 
         : const Duration(seconds: 20);
     
@@ -52,7 +53,7 @@ class InvoiceService {
     }
     
     // Android WebView requires specific headers to avoid request blocking
-    if (isAndroid) {
+    if (_isAndroid) {
       _dio.options.headers['Accept'] = 'application/json';
       _dio.options.headers['Cache-Control'] = 'no-cache';
       _dio.options.headers.remove('Accept-Encoding');
@@ -62,21 +63,21 @@ class InvoiceService {
     }
     
     _dio.options.followRedirects = true;
-    _dio.options.maxRedirects = isAndroid ? 3 : 5;
+    _dio.options.maxRedirects = _isAndroid ? 3 : 5;
     _dio.options.validateStatus = (status) {
       return status != null && status >= 200 && status < 400;
     };
     
     _dio.interceptors.add(LogInterceptor(
-      requestBody: isAndroid,
+      requestBody: _isAndroid,
       responseBody: true,
-      requestHeader: isAndroid,
-      responseHeader: isAndroid,
+      requestHeader: _isAndroid,
+      responseHeader: _isAndroid,
       error: true,
       logPrint: (obj) => _debugLog('[INVOICE_SERVICE] $obj'),
     ));
     
-    _debugLog('[INVOICE_SERVICE] Configured for ${isAndroid ? "Android" : isWeb ? "Web" : "Desktop"}');
+    _debugLog('[INVOICE_SERVICE] Configured for ${_isAndroid ? "Android" : isWeb ? "Web" : "Desktop"}');
   }
 
   void _configureProxyForDio(Dio dio, {bool enableLogging = false}) {
@@ -120,8 +121,7 @@ class InvoiceService {
         'Content-Type': 'application/json',
       };
 
-      final isAndroid = !kIsWeb && Platform.isAndroid;
-      
+        
       // Build extras with fiat information if provided
       // Try multiple approaches to ensure LNBits accepts the fiat data
       Map<String, dynamic>? extras;
@@ -144,7 +144,7 @@ class InvoiceService {
       // Platform-optimized endpoint ordering for different LNBits API variants
       List<Map<String, dynamic>> endpoints;
       
-      if (isAndroid) {
+      if (_isAndroid) {
         // Android-optimized endpoints tested manually
         endpoints = [
           // Try LNBits LNURLP endpoint with fiat info (common pattern)
@@ -344,7 +344,7 @@ class InvoiceService {
         try {
           _debugLog('[INVOICE_SERVICE] Trying endpoint: $url (${i + 1}/${endpoints.length})');
           _debugLog('[INVOICE_SERVICE] Data: $data');
-          _debugLog('[INVOICE_SERVICE] Platform: ${isAndroid ? "Android" : "Web/Desktop"}');
+          _debugLog('[INVOICE_SERVICE] Platform: ${_isAndroid ? "Android" : "Web/Desktop"}');
           _debugLog('[INVOICE_SERVICE] Headers: $headers');
           
           // Special logging for fiat endpoints
@@ -667,8 +667,7 @@ class InvoiceService {
         'Content-Type': 'application/json',
       };
 
-      final isAndroid = !kIsWeb && Platform.isAndroid;
-
+  
       // For amountless invoices, convert sats to millisatoshis for LNBits API
       final int? amountMsat = amount != null ? amount * 1000 : null;
 
@@ -677,7 +676,7 @@ class InvoiceService {
       // Platform-optimized endpoints for payment processing
       List<Map<String, dynamic>> endpoints;
 
-      if (isAndroid) {
+      if (_isAndroid) {
         // Android-optimized payment endpoints tested
         endpoints = [
           {
@@ -800,7 +799,7 @@ class InvoiceService {
         try {
           _debugLog('[INVOICE_SERVICE] Trying endpoint $url (${i + 1}/${endpoints.length})');
           _debugLog('[INVOICE_SERVICE] Data: $data');
-          _debugLog('[INVOICE_SERVICE] Platform: ${isAndroid ? "Android" : "Web/Desktop"}');
+          _debugLog('[INVOICE_SERVICE] Platform: ${_isAndroid ? "Android" : "Web/Desktop"}');
           _debugLog('[INVOICE_SERVICE] Headers: $headers');
 
           final response = await _dio.post(
@@ -1082,8 +1081,7 @@ class InvoiceService {
       final username = parts[0];
       final domain = parts[1];
       
-      final isAndroid = !kIsWeb && Platform.isAndroid;
-      const isWeb = kIsWeb;
+        final isWeb = kIsWeb;
       
       // Check if it's external domain on web - exit immediately to avoid CORS
       if (isWeb && currentServerUrl != null) {
@@ -1116,14 +1114,14 @@ class InvoiceService {
       for (final url in urls) {
         try {
           _debugLog('[INVOICE_SERVICE] Trying resolution: $url');
-          _debugLog('[INVOICE_SERVICE] Platform: ${isAndroid ? "Android" : "Web/Desktop"}');
+          _debugLog('[INVOICE_SERVICE] Platform: ${_isAndroid ? "Android" : "Web/Desktop"}');
           
           // Create specific client for external request
           final externalDio = Dio();
-          externalDio.options.connectTimeout = isAndroid 
+          externalDio.options.connectTimeout = _isAndroid 
               ? const Duration(seconds: 20) 
               : const Duration(seconds: 15);
-          externalDio.options.receiveTimeout = isAndroid 
+          externalDio.options.receiveTimeout = _isAndroid 
               ? const Duration(seconds: 20) 
               : const Duration(seconds: 15);
           externalDio.options.headers['User-Agent'] = AppInfoService.getUserAgent();
@@ -1131,7 +1129,7 @@ class InvoiceService {
           
           _configureProxyForDio(externalDio);
           
-          if (isAndroid) {
+          if (_isAndroid) {
             externalDio.options.headers['Cache-Control'] = 'no-cache';
             externalDio.options.followRedirects = true;
             externalDio.options.maxRedirects = 3;
