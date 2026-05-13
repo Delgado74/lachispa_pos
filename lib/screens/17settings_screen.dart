@@ -247,4 +247,124 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+  IconData _themeIcon(AppTheme theme) {
+    switch (theme) {
+      case AppTheme.lachispa:
+        return Icons.bolt;
+      case AppTheme.light:
+        return Icons.light_mode;
+      case AppTheme.dark:
+        return Icons.dark_mode;
+      case AppTheme.pizzaday:
+        return Icons.local_pizza;
+    }
+  }
+
+  String _themeLabel(BuildContext context, AppTheme theme) {
+    final l = AppLocalizations.of(context)!;
+    switch (theme) {
+      case AppTheme.lachispa:
+        return l.theme_lachispa;
+      case AppTheme.light:
+        return l.theme_light;
+      case AppTheme.dark:
+        return l.theme_dark;
+      case AppTheme.pizzaday:
+        return l.theme_pizzaday;
+    }
+  }
+
+  void _showThemeSelector(ThemeProvider themeProvider) {
+    final t = context.tokens;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (modalContext) => Consumer<ThemeProvider>(
+        builder: (context, provider, _) => Container(
+          decoration: BoxDecoration(
+            color: t.dialogBackground,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 8),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: t.textPrimary.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  AppLocalizations.of(context)!.select_theme,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: t.textPrimary,
+                  ),
+                ),
+              ),
+              ...AppTheme.values.map((option) {
+                final isSelected = provider.current == option;
+                return Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () async {
+                      await provider.changeTheme(option);
+                      if (mounted) Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            _themeIcon(option),
+                            color: isSelected ? t.accentSolid : t.textPrimary,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Text(
+                              _themeLabel(context, option),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: isSelected
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
+                                color: isSelected
+                                    ? t.accentSolid
+                                    : t.textPrimary,
+                              ),
+                            ),
+                          ),
+                          if (isSelected)
+                            Icon(
+                              Icons.check_circle,
+                              color: t.accentSolid,
+                              size: 24,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 }

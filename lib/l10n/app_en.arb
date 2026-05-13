@@ -252,6 +252,7 @@
   "theme_lachispa": "LaChispa",
   "theme_light": "Light",
   "theme_dark": "Dark",
+  "theme_pizzaday": "Pizza Day",
 
   "copy_invoice_button": "Copy invoice",
   "invoice_copied_message": "Invoice copied to clipboard",
@@ -295,6 +296,7 @@
   
   "about_app_subtitle": "Lightning Wallet",
   "about_app_description": "A mobile application to manage Bitcoin through Lightning Network using LNBits as backend.",
+  "about_app_sister": "Sister of ElCaju. Powered by Cuba Bitcoin.",
   "lightning_address_copy": "Copy",
   "lightning_address_default": "Default",
   "lightning_address_delete": "Delete",

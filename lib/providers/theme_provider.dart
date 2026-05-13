@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/themes.dart';
 
-enum AppTheme { lachispa, light, dark }
+enum AppTheme { lachispa, light, dark, pizzaday }
 
 class ThemeProvider extends ChangeNotifier {
   static const String _themeKey = 'selected_theme';
@@ -18,6 +18,8 @@ class ThemeProvider extends ChangeNotifier {
         return lightTheme();
       case AppTheme.dark:
         return darkTheme();
+      case AppTheme.pizzaday:
+        return pizzaDayTheme();
     }
   }
 
