@@ -1344,6 +1344,12 @@ abstract class AppLocalizations {
   /// **'Oscuro'**
   String get theme_dark;
 
+  /// No description provided for @theme_pizzaday.
+  ///
+  /// In es, this message translates to:
+  /// **'Pizza Day'**
+  String get theme_pizzaday;
+
   /// No description provided for @copy_invoice_button.
   ///
   /// In es, this message translates to:
@@ -1553,6 +1559,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Una aplicación móvil para gestionar Bitcoin a través de Lightning Network usando LNBits como backend.'**
   String get about_app_description;
+
+  /// No description provided for @about_app_sister.
+  ///
+  /// In es, this message translates to:
+  /// **'Hermana de ElCaju. Impulsado por Cuba Bitcoin.'**
+  String get about_app_sister;
 
   /// No description provided for @lightning_address_copy.
   ///

@@ -681,6 +681,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get theme_dark => 'Dunkel';
 
   @override
+  String get theme_pizzaday => 'Pizza Day';
+
+  @override
   String get copy_invoice_button => 'Rechnung kopieren';
 
   @override
@@ -795,6 +798,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get about_app_description =>
       'Eine mobile Anwendung zur Verwaltung von Bitcoin über das Lightning-Netzwerk mit LNBits als Backend.';
+
+  @override
+  String get about_app_sister =>
+      'Schwester von ElCaju. Unterstützt von Cuba Bitcoin.';
 
   @override
   String get lightning_address_copy => 'Kopieren';
