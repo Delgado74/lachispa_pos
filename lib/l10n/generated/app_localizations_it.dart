@@ -683,6 +683,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get theme_dark => 'Scuro';
 
   @override
+  String get theme_pizzaday => 'Pizza Day';
+
+  @override
   String get copy_invoice_button => 'Copia fattura';
 
   @override
@@ -797,6 +800,10 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get about_app_description =>
       'Un\'applicazione mobile per gestire Bitcoin tramite Lightning Network utilizzando LNBits come backend.';
+
+  @override
+  String get about_app_sister =>
+      'Sorella di ElCaju. Alimentato da Cuba Bitcoin.';
 
   @override
   String get lightning_address_copy => 'Copia';
@@ -944,7 +951,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String currency_not_available_on_server(
-      Object currency, Object currencyName) {
+    Object currency,
+    Object currencyName,
+  ) {
     return '$currencyName ($currency) non è disponibile su questo server';
   }
 
@@ -1034,4 +1043,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get nfc_network_error => 'Errore di rete';
+
+  @override
+  String get qr_scanner_title => 'Scansiona QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Punta la fotocamera sul codice QR\nper scansionare la fattura o l\'indirizzo';
 }

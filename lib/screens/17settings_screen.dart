@@ -238,6 +238,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return Icons.light_mode;
       case AppTheme.dark:
         return Icons.dark_mode;
+      case AppTheme.pizzaday:
+        return Icons.local_pizza;
     }
   }
 
@@ -250,6 +252,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return l.theme_light;
       case AppTheme.dark:
         return l.theme_dark;
+      case AppTheme.pizzaday:
+        return l.theme_pizzaday;
     }
   }
 

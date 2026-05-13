@@ -183,6 +183,7 @@
   "theme_lachispa": "LaChispa",
   "theme_light": "Clair",
   "theme_dark": "Sombre",
+  "theme_pizzaday": "Pizza Day",
 
   "copy_invoice_button": "Copier la facture",
   "invoice_copied_message": "Facture copiée dans le presse-papiers",
@@ -226,6 +227,7 @@
   
   "about_app_subtitle": "Portefeuille Lightning",
   "about_app_description": "Une application mobile pour gérer Bitcoin via le réseau Lightning en utilisant LNBits comme backend.",
+  "about_app_sister": "Sœur d'ElCaju. Propulsé par Cuba Bitcoin.",
   "lightning_address_copy": "Copier",
   "lightning_address_default": "Par défaut",
   "lightning_address_delete": "Supprimer",
@@ -384,5 +386,7 @@
   "nfc_not_boltcard": "Pas une Boltcard",
   "nfc_incomplete_data": "Données incomplètes",
   "nfc_invalid_response": "Réponse invalide",
-  "nfc_network_error": "Erreur réseau"
+  "nfc_network_error": "Erreur réseau",
+  "qr_scanner_title": "Scanner QR",
+  "qr_scanner_instructions": "Pointez la caméra vers le code QR\npour scanner la facture ou l'adresse"
 }

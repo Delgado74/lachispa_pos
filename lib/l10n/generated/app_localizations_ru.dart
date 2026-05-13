@@ -666,6 +666,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get theme_dark => 'Тёмная';
 
   @override
+  String get theme_pizzaday => 'Pizza Day';
+
+  @override
   String get copy_invoice_button => 'Копировать счёт';
 
   @override
@@ -776,6 +779,9 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get about_app_description =>
       'Мобильное приложение для управления Bitcoin через Lightning Network с использованием LNBits в качестве бэкенда.';
+
+  @override
+  String get about_app_sister => 'Сестра ElCaju. При поддержке Cuba Bitcoin.';
 
   @override
   String get lightning_address_copy => 'Копировать';
@@ -923,7 +929,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String currency_not_available_on_server(
-      Object currency, Object currencyName) {
+    Object currency,
+    Object currencyName,
+  ) {
     return '$currencyName ($currency) недоступна на этом сервере';
   }
 
@@ -1011,4 +1019,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get nfc_network_error => 'Ошибка сети';
+
+  @override
+  String get qr_scanner_title => 'Сканировать QR';
+
+  @override
+  String get qr_scanner_instructions =>
+      'Наведите камеру на QR-код\nчтобы сканировать счёт или адрес';
 }

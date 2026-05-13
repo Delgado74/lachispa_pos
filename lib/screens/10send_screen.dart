@@ -359,17 +359,7 @@ class _SendScreenState extends State<SendScreen> {
           return Container(
             width: double.infinity,
             height: double.infinity,
-            // 2-stop variant of the brand gradient on send-flow screens
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF0F1419),
-                  Color(0xFF2D3FE7),
-                ],
-              ),
-            ),
+            decoration: BoxDecoration(gradient: t.backgroundGradient),
             child: SafeArea(
               child: Column(
                 children: [
