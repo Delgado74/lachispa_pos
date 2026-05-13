@@ -183,6 +183,7 @@
   "theme_lachispa": "LaChispa",
   "theme_light": "Chiaro",
   "theme_dark": "Scuro",
+  "theme_pizzaday": "Pizza Day",
 
   "copy_invoice_button": "Copia fattura",
   "invoice_copied_message": "Fattura copiata negli appunti",
@@ -226,6 +227,7 @@
   
   "about_app_subtitle": "Portafoglio Lightning",
   "about_app_description": "Un'applicazione mobile per gestire Bitcoin tramite Lightning Network utilizzando LNBits come backend.",
+  "about_app_sister": "Sorella di ElCaju. Alimentato da Cuba Bitcoin.",
   "lightning_address_copy": "Copia",
   "lightning_address_default": "Predefinito",
   "lightning_address_delete": "Elimina",

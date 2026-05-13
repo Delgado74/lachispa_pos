@@ -183,6 +183,7 @@
   "theme_lachispa": "LaChispa",
   "theme_light": "Светлая",
   "theme_dark": "Тёмная",
+  "theme_pizzaday": "Pizza Day",
 
   "copy_invoice_button": "Копировать счёт",
   "invoice_copied_message": "Счёт скопирован в буфер обмена",
@@ -226,6 +227,7 @@
   
   "about_app_subtitle": "Lightning кошелек",
   "about_app_description": "Мобильное приложение для управления Bitcoin через Lightning Network с использованием LNBits в качестве бэкенда.",
+  "about_app_sister": "Сестра ElCaju. При поддержке Cuba Bitcoin.",
   "lightning_address_copy": "Копировать",
   "lightning_address_default": "По умолчанию",
   "lightning_address_delete": "Удалить",

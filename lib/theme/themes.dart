@@ -123,6 +123,62 @@ ThemeData lightTheme() {
 }
 
 // =====================================================================
+// Pizza Day — Laszlo's 10 000 BTC · pepperoni red · golden cheese
+// =====================================================================
+
+const AppTokens pizzaDayTokens = AppTokens(
+  backgroundGradient: LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFFFFF0A0), Color(0xFFFFF0A0)],
+  ),
+  scaffoldBase: Color(0xFFFFF0A0),         // queso amarillo fuerte
+  surface: Color(0xFFFFF1D7),              // crema — palette 2
+  outline: Color(0xFFF7AD45),              // queso dorado — palette 2
+  outlineStrong: Color(0xFFBB3E00),        // tomate quemado — palette 2
+  textPrimary: Color(0xFF2A1500),          // marrón oscuro cálido
+  textSecondary: Color(0xFF7A3500),        // tomate oscuro
+  textTertiary: Color(0xFFAA5500),         // muted naranja
+  textAccent: Color(0xFFBB3E00),           // tomate quemado
+  accentGradient: LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [Color(0xFFBB3E00), Color(0xFFF7AD45)],
+  ),
+  accentSolid: Color(0xFFBB3E00),          // tomate quemado — CTA principal
+  accentBright: Color(0xFF5F8D37),         // brócoli/albahaca — palette 2
+  accentForeground: Color(0xFFFFF1D7),     // crema sobre rojo
+  statusHealthy: Color(0xFF5F8D37),        // verde brócoli — palette 2
+  statusUnhealthy: Color(0xFF8B0000),      // rojo oscuro
+  statusChecking: Color(0x33F7AD45),       // queso @ 20%
+  statusWarning: Color(0xFFF7AD45),        // queso dorado
+  statusWarningSoft: Color(0xFFFFDDA0),    // queso suave
+  ctaShadow: Color(0x33000000),
+  dialogBackground: Color(0xFFFFF1D7),     // crema
+  inputFill: Color(0xFFFFF1D7),
+);
+
+ThemeData pizzaDayTheme() {
+  return ThemeData(
+    useMaterial3: true,
+    fontFamily: 'Manrope',
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: pizzaDayTokens.scaffoldBase,
+    colorScheme: const ColorScheme.light(
+      primary: Color(0xFFBB3E00),
+      onPrimary: Color(0xFFFFF1D7),
+      secondary: Color(0xFFF7AD45),
+      onSecondary: Color(0xFF2A1500),
+      surface: Color(0xFFFFF1D7),
+      onSurface: Color(0xFF2A1500),
+      error: Color(0xFF8B0000),
+      onError: Colors.white,
+    ),
+    extensions: const [pizzaDayTokens],
+  );
+}
+
+// =====================================================================
 // Dark — sovereign tool · terminal-elegant · flat layers
 // =====================================================================
 

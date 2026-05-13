@@ -38,6 +38,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   final YadioService _yadioService = YadioService();
   final TransactionDetector _transactionDetector = TransactionDetector();
   bool _isGeneratingInvoice = false;
+  bool _isCheckingInvoiceStatus = false;
 
   Timer? _invoicePaymentTimer;
   Timer? _invoicePaymentTimeoutTimer;
@@ -1388,6 +1389,9 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
         return;
       }
 
+      if (_isCheckingInvoiceStatus) return;
+      _isCheckingInvoiceStatus = true;
+
       try {
         final isPaid = await _invoiceService.checkInvoiceStatus(
           serverUrl: serverUrl,
@@ -1397,6 +1401,8 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
         if (isPaid) {
           timer.cancel();
+          _invoicePaymentTimeoutTimer?.cancel();
+          _invoicePaymentTimeoutTimer = null;
 
           if (mounted) {
             _transactionDetector.triggerEventSpark('invoice_paid');
@@ -1430,6 +1436,8 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
         }
       } catch (_) {
         // Continue checking on temporary errors
+      } finally {
+        _isCheckingInvoiceStatus = false;
       }
     });
 
