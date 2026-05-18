@@ -416,7 +416,7 @@
   "invoice_key_show": "Mostrar chave",
   "invoice_key_hide": "Ocultar chave",
   "invoice_key_copy_failed": "Falha ao copiar a chave da fatura",
-  "invoice_key_empty": "A chave da fatura não pode estar vazia"
+  "invoice_key_empty": "A chave da fatura não pode estar vazia",
   "qr_scanner_title": "Escanear QR",
   "qr_scanner_instructions": "Aponte a câmera para o código QR\npara escanear a fatura ou endereço"
 }

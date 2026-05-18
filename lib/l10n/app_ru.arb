@@ -416,7 +416,7 @@
   "invoice_key_show": "Показать ключ",
   "invoice_key_hide": "Скрыть ключ",
   "invoice_key_copy_failed": "Не удалось скопировать ключ счета",
-  "invoice_key_empty": "Ключ счета не может быть пустым"
+  "invoice_key_empty": "Ключ счета не может быть пустым",
   "qr_scanner_title": "Сканировать QR",
   "qr_scanner_instructions": "Наведите камеру на QR-код\nчтобы сканировать счёт или адрес"
 }

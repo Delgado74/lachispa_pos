@@ -431,7 +431,7 @@
   "invoice_key_show": "Show key",
   "invoice_key_hide": "Hide key",
   "invoice_key_copy_failed": "Failed to copy invoice key",
-  "invoice_key_empty": "Invoice key cannot be empty"
+  "invoice_key_empty": "Invoice key cannot be empty",
   "qr_scanner_title": "Scan QR",
   "qr_scanner_instructions": "Point the camera at the QR code\nto scan the invoice or address"
 }

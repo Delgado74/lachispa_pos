@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/currency_settings_provider.dart';
+import '../providers/theme_provider.dart';
+import '../theme/app_tokens.dart';
 import '../l10n/generated/app_localizations.dart';
 import '7ln_address_screen.dart';
 import '16currency_settings_screen.dart';
@@ -125,6 +127,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   const LanguageSelectionScreen(),
                             ),
                           ),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // Theme Settings
+                    Consumer<ThemeProvider>(
+                      builder: (context, themeProvider, child) {
+                        return _buildSettingsItem(
+                          icon: _themeIcon(themeProvider.current),
+                          iconColor: const Color(0xFF4C63F7),
+                          title: AppLocalizations.of(context)!.select_theme,
+                          subtitle: _themeLabel(context, themeProvider.current),
+                          onTap: () => _showThemeSelector(themeProvider),
                         );
                       },
                     ),

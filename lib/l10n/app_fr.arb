@@ -416,7 +416,7 @@
   "invoice_key_show": "Afficher la clé",
   "invoice_key_hide": "Masquer la clé",
   "invoice_key_copy_failed": "Impossible de copier la clé de facturation",
-  "invoice_key_empty": "La clé de facturation ne peut pas être vide"
+  "invoice_key_empty": "La clé de facturation ne peut pas être vide",
   "qr_scanner_title": "Scanner QR",
   "qr_scanner_instructions": "Pointez la caméra vers le code QR\npour scanner la facture ou l'adresse"
 }
