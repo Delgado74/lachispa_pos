@@ -950,12 +950,11 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
   void _doClearPendingTransaction(TransactionInfo transaction) {
     if (transaction.paymentHash == null) return;
 
-    ClearedInvoiceStore.instance.add(transaction.paymentHash!);
+    unawaited(ClearedInvoiceStore.instance.add(transaction.paymentHash!));
     unawaited(_tryCancelInvoiceOnServer(transaction.paymentHash!));
 
-    setState(() {});
-
     if (!mounted) return;
+    setState(() {});
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(AppLocalizations.of(context)!.invoice_cleared_from_history)),
     );
@@ -998,7 +997,7 @@ class _HistoryScreenState extends State<HistoryScreen> with TickerProviderStateM
 
       await _invoiceService.cancelInvoice(
         serverUrl: serverUrl,
-        adminKey: wallet.inKey,
+        adminKey: wallet.adminKey,
         paymentHash: paymentHash,
       );
     } catch (_) {}

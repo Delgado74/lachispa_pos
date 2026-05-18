@@ -48,6 +48,9 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   bool _nfcAvailable = false;
   bool _nfcChecked = false;
 
+  String? _cachedServerUrl;
+  WalletInfo? _cachedWallet;
+
   @override
   void initState() {
     super.initState();
@@ -129,7 +132,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     _invoicePaymentTimeoutTimer?.cancel();
     if (_generatedInvoice != null) {
       final hash = _generatedInvoice!.paymentHash;
-      ClearedInvoiceStore.instance.add(hash);
+      unawaited(ClearedInvoiceStore.instance.add(hash));
       unawaited(_tryCancelInvoiceOnServer(hash));
     }
     super.dispose();
@@ -788,18 +791,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   }
 
   void _clearInvoice() {
-    _invoicePaymentTimer?.cancel();
-    _invoicePaymentTimeoutTimer?.cancel();
-
-    if (_generatedInvoice != null) {
-      final hash = _generatedInvoice!.paymentHash;
-      ClearedInvoiceStore.instance.add(hash);
-      unawaited(_tryCancelInvoiceOnServer(hash));
-    }
-
-    setState(() {
-      _generatedInvoice = null;
-    });
+    _discardInvoice();
     _showAccentSnackBar(
       icon: Icons.check_circle,
       message: AppLocalizations.of(context)!.invoice_cleared_message,
@@ -811,7 +803,7 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
     _invoicePaymentTimeoutTimer?.cancel();
     if (_generatedInvoice != null) {
       final hash = _generatedInvoice!.paymentHash;
-      ClearedInvoiceStore.instance.add(hash);
+      unawaited(ClearedInvoiceStore.instance.add(hash));
       unawaited(_tryCancelInvoiceOnServer(hash));
     }
     setState(() {
@@ -820,17 +812,13 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
   }
 
   Future<void> _tryCancelInvoiceOnServer(String paymentHash) async {
+    final serverUrl = _cachedServerUrl;
+    final wallet = _cachedWallet;
+    if (serverUrl == null || wallet == null) return;
     try {
-      final walletProvider = context.read<WalletProvider>();
-      final authProvider = context.read<AuthProvider>();
-      final serverUrl = authProvider.sessionData?.serverUrl;
-      final wallet = walletProvider.primaryWallet;
-
-      if (serverUrl == null || wallet == null) return;
-
       await _invoiceService.cancelInvoice(
         serverUrl: serverUrl,
-        adminKey: wallet.inKey,
+        adminKey: wallet.adminKey,
         paymentHash: paymentHash,
       );
     } catch (_) {}
@@ -1365,6 +1353,9 @@ class _ReceiveScreenState extends State<ReceiveScreen> {
 
       final wallet = walletProvider.primaryWallet;
       final serverUrl = authProvider.sessionData?.serverUrl;
+
+      _cachedWallet = wallet;
+      _cachedServerUrl = serverUrl;
 
       if (wallet == null || serverUrl == null) {
         throw Exception(AppLocalizations.of(context)!.no_wallet_error);
